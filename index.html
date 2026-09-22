@@ -1,0 +1,2715 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estructuras de Almacenamiento Dinámicas — Apunte interactivo · IP2</title>
+<meta name="description" content="Apunte interactivo de Introducción a la Programación 2: listas, árboles binarios y estructuras combinadas en Java, con laboratorios animados paso a paso.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4F0E6; --paperHi:#FCFAF3; --paper2:#ECE6D6;
+  --ink:#211D15; --ink2:#6E675A; --ink3:#3A362C;
+  --line:#DAD3C2; --lineD:#C7BFA9;
+  --acc:#C43D14; --accS:#D9481C; --teal:#0F6E5C; --gold:#9A7B00; --pet:#33658A;
+  --codeBg:#211C13; --codeTx:#EDE6D6;
+  --serif:'Fraunces',Georgia,serif; --sans:'Instrument Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --shadow:6px 6px 0 0 rgba(33,29,21,.05);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+::selection{background:rgba(196,61,20,.22)}
+header.top{position:fixed;top:0;left:0;right:0;z-index:60;height:56px;background:rgba(244,240,230,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;padding:0 20px}
+.brand{font-family:var(--mono);font-size:12px;letter-spacing:.08em;font-weight:700;white-space:nowrap}
+.brand b{color:var(--acc)}
+.top-links{display:flex;gap:4px;margin-left:auto}
+.top-links a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--ink2);text-decoration:none;padding:6px 10px;border-radius:6px}
+.top-links a:hover{color:var(--ink);background:var(--paper2)}
+#progress{position:absolute;left:0;bottom:-1px;height:2px;background:var(--accS);width:0%}
+.btn-index{display:none;margin-left:auto}
+.shell{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:256px minmax(0,1fr)}
+nav.toc{position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;padding:36px 20px 40px 26px;border-right:1px solid var(--line)}
+.toc h6{font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--ink2);margin:0 0 14px}
+.toc a{display:flex;gap:10px;align-items:baseline;text-decoration:none;color:var(--ink3);padding:7px 8px;border-radius:6px;font-size:13.5px;line-height:1.35}
+.toc a:hover{background:var(--paper2)}
+.toc a .n{font-family:var(--mono);font-size:10.5px;color:var(--ink2);min-width:18px}
+.toc a.on{color:var(--acc);background:rgba(196,61,20,.07)}
+.toc a.on .n{color:var(--acc)}
+.toc .sub{margin-left:14px;border-left:1px solid var(--lineD);padding-left:2px}
+.toc .sub a{font-size:12.5px;padding:5px 8px;color:var(--ink2)}
+.toc .sub a.on{background:transparent}
+.toc-foot{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10px;color:var(--ink2);line-height:1.8}
+main{min-width:0}
+.content{padding:100px 42px 90px;max-width:880px}
+section.chap{position:relative;padding-top:26px;margin-bottom:60px;scroll-margin-top:70px}
+.ch-head{display:flex;gap:22px;align-items:flex-start;border-bottom:2px solid var(--ink);padding-bottom:22px;margin-bottom:34px}
+.ch-num{font-family:var(--serif);font-weight:600;font-size:78px;line-height:.85;color:transparent;-webkit-text-stroke:1.6px rgba(33,29,21,.34);flex:none;user-select:none}
+@supports not (-webkit-text-stroke:1px black){.ch-num{color:rgba(33,29,21,.18)}}
+.ch-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:var(--acc);margin-bottom:8px}
+.ch-head h2{font-family:var(--serif);font-weight:600;font-size:clamp(28px,4vw,40px);line-height:1.08;letter-spacing:-.01em}
+.ch-lead{margin-top:10px;font-size:16px;color:var(--ink3);line-height:1.6;max-width:62ch}
+.prose h3{font-family:var(--serif);font-weight:600;font-size:22px;margin:44px 0 6px;letter-spacing:-.01em;display:flex;align-items:baseline;gap:10px}
+.prose h3 .sec{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--acc);letter-spacing:.06em}
+.prose p{font-size:16.5px;line-height:1.75;color:var(--ink3);margin:14px 0;max-width:72ch}
+.prose p b,.prose li b{color:var(--ink)}
+.prose ul,.prose ol{margin:14px 0 14px 22px;max-width:70ch}
+.prose li{font-size:16px;line-height:1.7;color:var(--ink3);margin:7px 0}
+.prose li::marker{color:var(--acc);font-weight:700}
+dfn{font-style:italic;font-weight:600;border-bottom:2px dotted var(--accS);text-decoration:none}
+.def,.warn{margin:22px 0;padding:16px 20px 14px;border-radius:2px;max-width:76ch;position:relative}
+.def{background:var(--paper2);border-left:3px solid var(--acc)}
+.warn{background:rgba(154,123,0,.08);border-left:3px solid var(--gold)}
+.def .tag,.warn .tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.2em;font-weight:700;margin-bottom:7px}
+.def .tag{color:var(--acc)} .warn .tag{color:var(--gold)}
+.def p,.warn p{margin:0;font-size:15px;line-height:1.65}
+.mnote{display:block;margin:18px 0;padding:12px 16px;border-left:2px solid var(--lineD);max-width:76ch;font-size:14px;line-height:1.6;color:var(--ink2)}
+.mnote .mt{font-family:var(--mono);font-size:10px;letter-spacing:.18em;font-weight:700;display:block;margin-bottom:5px;color:var(--ink2)}
+@media (min-width:1400px){.mnote{position:absolute;right:-248px;width:216px;margin:0;padding:0 0 0 14px;border-left:2px solid var(--lineD);font-size:12.5px}}
+table.ed{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px;max-width:78ch}
+table.ed th{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-align:left;border-bottom:2px solid var(--ink);padding:9px 12px 8px;color:var(--ink)}
+table.ed td{border-bottom:1px solid var(--lineD);padding:10px 12px;color:var(--ink3);vertical-align:top}
+table.ed td:first-child{font-weight:600;color:var(--ink)}
+table.ed .mono{font-family:var(--mono);font-size:12.5px}
+table.ed .best{color:var(--teal);font-weight:700}
+table.ed .bad{color:var(--acc);font-weight:700}
+.codebox{margin:22px 0;max-width:78ch;border-radius:8px;overflow:hidden;box-shadow:var(--shadow);border:1px solid #322B1D}
+.cb-tab{display:flex;align-items:center;gap:10px;background:#2A2418;padding:8px 14px;font-family:var(--mono);font-size:11px;color:#B9AF97;letter-spacing:.04em}
+.cb-tab::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accS)}
+.cb-tab .lang{margin-left:auto;font-size:9.5px;letter-spacing:.2em;color:#7E745C}
+.codebox pre{background:var(--codeBg);color:var(--codeTx);overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.62;padding:12px 0;scrollbar-width:thin;scrollbar-color:#4A4230 transparent}
+.codebox pre::-webkit-scrollbar{height:8px}
+.codebox pre::-webkit-scrollbar-thumb{background:#4A4230;border-radius:4px}
+.cl{display:flex;padding:0 16px 0 0;min-height:21px;transition:background .25s;border-left:3px solid transparent}
+.cl .ln{flex:none;width:44px;text-align:right;padding-right:16px;color:#6B6250;user-select:none;font-size:11px;line-height:21px}
+.cl .lc{white-space:pre;line-height:21px}
+.cl.on{background:rgba(217,72,28,.16);border-left-color:var(--accS)}
+.cl.on .ln{color:#E8A186}
+.c-kw{color:#FF8A5C;font-weight:500} .c-ty{color:#74C7B2} .c-str{color:#E8C97A} .c-num{color:#E8C97A} .c-cmt{color:#8B8372;font-style:italic} .c-fn{color:#F2E7CE}
+.lab{margin:30px 0;border:1.5px solid var(--ink);border-radius:12px;background:var(--paperHi);box-shadow:var(--shadow);overflow:hidden;max-width:1000px}
+.lab:focus-within{outline:2px solid var(--accS);outline-offset:2px}
+.lab-top{display:flex;align-items:baseline;gap:12px;padding:14px 18px 12px;border-bottom:1.5px solid var(--ink);flex-wrap:wrap}
+.lab-tag{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.16em;background:var(--ink);color:var(--paper);padding:4px 9px;border-radius:4px;flex:none}
+.lab-title{font-family:var(--serif);font-weight:600;font-size:17px;letter-spacing:-.01em}
+.lab-hint{font-family:var(--mono);font-size:10.5px;color:var(--ink2);margin-left:auto;letter-spacing:.03em}
+.lab-ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 18px;border-bottom:1px solid var(--line)}
+.lab-ctl input{width:74px;height:36px;border:1.5px solid var(--ink);border-radius:7px;background:var(--paperHi);font-family:var(--mono);font-size:14px;padding:0 10px;color:var(--ink)}
+.lab-ctl input:focus{outline:2px solid var(--accS);outline-offset:1px}
+.lab-ctl input.err{border-color:var(--accS);animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.lab-ctl .lbl{font-family:var(--mono);font-size:10.5px;color:var(--ink2);letter-spacing:.06em;margin-right:-2px}
+.op{height:36px;padding:0 14px;border:1.5px solid var(--ink);border-radius:7px;background:transparent;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:background .15s,color .15s,transform .06s;white-space:nowrap}
+.op:hover{background:var(--ink);color:var(--paper)}
+.op:active{transform:translateY(1px)}
+.op.warnb{border-color:var(--acc);color:var(--acc)}
+.op.warnb:hover{background:var(--acc);color:var(--paper)}
+.op.ghost{border-style:dashed;color:var(--ink2)}
+.ctl-msg{font-family:var(--mono);font-size:11px;color:var(--acc);flex-basis:100%;min-height:0}
+.lab-grid{display:grid;grid-template-columns:1fr}
+.lab-fig{padding:14px 16px 6px;order:1}
+.lab-code{order:2;border-top:1px solid var(--line)}
+.lab-code .codebox{margin:12px 16px;max-width:none;box-shadow:none}
+.lab-code .codebox pre{max-height:330px;overflow-y:auto}
+@media (min-width:1180px){.lab-grid{grid-template-columns:44% 56%}.lab-fig{order:2;border-left:1px solid var(--line);padding:14px 16px 8px}.lab-code{order:1;border-top:none}}
+.lab-fig svg{width:100%;height:auto;display:block}
+.lab-note{display:flex;gap:10px;align-items:baseline;padding:9px 18px 14px;border-top:1px dashed var(--lineD);min-height:52px}
+.lab-note .fno{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--acc);flex:none}
+.lab-note em{font-family:var(--serif);font-style:italic;font-size:14.5px;color:var(--ink3);line-height:1.5}
+.lab-player{display:flex;align-items:center;gap:8px;padding:12px 18px;border-top:1.5px solid var(--ink);background:var(--paper)}
+.pbtn{width:36px;height:36px;border:1.5px solid var(--ink);border-radius:8px;background:var(--paperHi);cursor:pointer;display:grid;place-items:center;color:var(--ink);flex:none;transition:background .15s,color .15s,transform .06s}
+.pbtn:hover{background:var(--ink);color:var(--paper)}
+.pbtn:active{transform:translateY(1px)}
+.pbtn:disabled{opacity:.32;pointer-events:none}
+.pbtn svg{width:15px;height:15px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.pbtn.play{border-color:var(--acc);color:var(--acc)}
+.pbtn.play:hover{background:var(--acc);color:var(--paper)}
+.pcount{font-family:var(--mono);font-size:11.5px;color:var(--ink2);margin-left:6px;letter-spacing:.05em;white-space:nowrap}
+.pcount b{color:var(--ink)}
+.kbd-hint{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink2);display:none}
+@media (min-width:700px){.kbd-hint{display:block}}
+kbd{font-family:var(--mono);font-size:9.5px;border:1px solid var(--lineD);border-radius:4px;padding:1px 5px;background:var(--paperHi)}
+svg text{user-select:none}
+.nd-r{fill:#FFFDF6;stroke:var(--ink);stroke-width:1.5;transition:stroke .3s,fill .3s}
+.nd.hl .nd-r{stroke:var(--accS);stroke-width:2.6}
+.nd.vis .nd-r{fill:#DDEBE3;stroke:var(--teal);stroke-width:2}
+.nd.dying{opacity:.16;transition:opacity .6s}
+.nd.dying .nd-r{stroke-dasharray:4 4;stroke:var(--ink2)}
+.nd.ghost .nd-r{stroke:var(--accS);stroke-width:2;stroke-dasharray:6 5}
+.nd-sep{stroke:var(--ink);stroke-width:1.2}
+.nd-val{font-family:var(--mono);font-size:16px;font-weight:700;fill:var(--ink);text-anchor:middle}
+.nd-dim{fill:var(--ink);transition:fill .3s}
+.nd.hl .nd-dim{fill:var(--accS)}
+.edge{stroke:var(--ink);stroke-width:1.7;fill:none;transition:opacity .5s}
+.edge.fresh{stroke:var(--accS);stroke-width:2.4}
+.edge.teal{stroke:var(--teal)}
+.edge.dim{stroke:var(--lineD);stroke-dasharray:5 5}
+.ring{stroke:var(--teal);stroke-width:1.8;fill:none;stroke-dasharray:4 6;opacity:.45;transition:opacity .4s,stroke-width .4s}
+.ring.flow{opacity:1;stroke-width:2.6;animation:march 1.1s linear infinite}
+@keyframes march{to{stroke-dashoffset:-20}}
+.ptr-l{font-family:var(--mono);font-size:13px;font-weight:700;paint-order:stroke;stroke:var(--paperHi);stroke-width:5px}
+.hud{font-family:var(--mono);font-size:11.5px;fill:var(--ink2)}
+.hud b{fill:var(--ink)}
+.retbox{fill:var(--paperHi);stroke:var(--accS);stroke-width:1.8;rx:6}
+.rettx{font-family:var(--mono);font-size:13px;font-weight:700;fill:var(--accS);text-anchor:middle}
+.chip-r{fill:var(--paperHi);stroke:var(--teal);stroke-width:1.4;transition:opacity .4s}
+.chip-t{font-family:var(--mono);font-size:12.5px;font-weight:700;fill:var(--teal);text-anchor:middle}
+.stk-r{fill:#EDE7D5;stroke:var(--ink);stroke-width:1.2;transition:opacity .3s}
+.tn-c{fill:#FFFDF6;stroke:var(--ink);stroke-width:1.6;transition:fill .35s,stroke .35s,stroke-width .35s}
+.tn.hl .tn-c{stroke:var(--accS);stroke-width:3}
+.tn.vis .tn-c{fill:#DDEBE3;stroke:var(--teal);stroke-width:2.2}
+.tn.gone{opacity:.15;transition:opacity .5s}
+.tn-t{font-family:var(--mono);font-size:15px;font-weight:700;fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+.tn-e{stroke:var(--ink);stroke-width:1.6;fill:none;transition:stroke .35s,stroke-width .35s}
+.tn-e.on{stroke:var(--accS);stroke-width:2.8}
+.halo{fill:none;stroke:var(--accS);stroke-width:2;stroke-dasharray:5 6;transform-box:fill-box;transform-origin:center;animation:spin 5s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ground{stroke:var(--ink);stroke-width:2}
+.hero{padding:120px 42px 40px;max-width:1080px;position:relative}
+.hero-grid{display:grid;gap:36px;grid-template-columns:1fr;align-items:center}
+@media (min-width:940px){.hero-grid{grid-template-columns:1.05fr .95fr}}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.26em;color:var(--acc);margin-bottom:18px}
+h1{font-family:var(--serif);font-weight:560;font-size:clamp(38px,6.2vw,74px);line-height:1.02;letter-spacing:-.02em}
+h1 .it{font-style:italic;font-weight:480;color:var(--acc)}
+.hero .lead{margin:24px 0 8px;font-size:17px;line-height:1.65;color:var(--ink3);max-width:52ch}
+.hero-meta{display:flex;flex-wrap:wrap;gap:0 26px;margin:26px 0 8px;padding:16px 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--lineD)}
+.hero-meta div{padding:4px 0}
+.hero-meta .k{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--ink2);display:block;margin-bottom:3px}
+.hero-meta .v{font-family:var(--serif);font-size:21px;font-weight:600}
+.hero-cta{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
+.cta{display:inline-flex;align-items:center;gap:9px;height:46px;padding:0 22px;border-radius:9px;border:1.5px solid var(--ink);text-decoration:none;font-weight:600;font-size:14.5px;color:var(--ink);transition:background .15s,color .15s,transform .06s}
+.cta:hover{background:var(--ink);color:var(--paper)}
+.cta:active{transform:translateY(1px)}
+.cta.prim{background:var(--ink);color:var(--paper)}
+.cta.prim:hover{background:var(--acc);border-color:var(--acc)}
+.cta svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round}
+.hero-fig{border:1.5px solid var(--ink);border-radius:12px;background:var(--paperHi);box-shadow:var(--shadow);padding:14px 14px 4px}
+.hero-fig svg{width:100%;height:auto;display:block}
+.hero-cap{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--ink2);padding:10px 4px 12px;line-height:1.5}
+.hero-cap b{font-family:var(--mono);font-style:normal;font-size:10px;letter-spacing:.14em;color:var(--acc)}
+.howto{margin:56px 0 0;max-width:760px;border-top:1px solid var(--lineD);padding-top:26px}
+.howto h5{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;color:var(--ink2);margin-bottom:16px}
+.howto ol{list-style:none;display:grid;gap:14px;grid-template-columns:1fr}
+@media (min-width:720px){.howto ol{grid-template-columns:repeat(3,1fr)}}
+.howto li{display:flex;gap:12px;align-items:flex-start;font-size:13.5px;color:var(--ink3);line-height:1.55}
+.howto li .num{font-family:var(--serif);font-size:26px;font-weight:600;color:transparent;-webkit-text-stroke:1.2px var(--accS);flex:none;line-height:1}
+.study li{list-style:none;position:relative;padding-left:30px;margin:10px 0}
+.study li::before{content:"";position:absolute;left:0;top:7px;width:15px;height:15px;border:1.5px solid var(--ink);border-radius:4px}
+.study li::after{content:"";position:absolute;left:4px;top:10px;width:8px;height:5px;border-left:2.4px solid var(--accS);border-bottom:2.4px solid var(--accS);transform:rotate(-48deg)}
+footer{border-top:2px solid var(--ink);margin-top:30px;padding:34px 42px 60px;display:flex;flex-wrap:wrap;gap:20px;align-items:baseline}
+footer .colo{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--ink2)}
+footer .top-link{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink2)}
+footer .top-link a{color:var(--acc);text-decoration:none}
+#overlay{position:fixed;inset:0;background:rgba(33,29,21,.34);z-index:70;opacity:0;pointer-events:none;transition:opacity .25s}
+#drawer{position:fixed;top:0;left:0;bottom:0;width:290px;background:var(--paper);z-index:71;transform:translateX(-102%);transition:transform .3s cubic-bezier(.3,.9,.3,1);border-right:1.5px solid var(--ink);overflow-y:auto;padding:20px 14px 40px}
+#drawer.open{transform:translateX(0)}
+#overlay.open{opacity:1;pointer-events:auto}
+#drawer .closer{position:sticky;top:0;float:right;margin-bottom:10px}
+@media (max-width:1079px){
+  .shell{grid-template-columns:1fr}
+  nav.toc{display:none}
+  .top-links{display:none}
+  .btn-index{display:grid;place-items:center;width:38px;height:38px;border:1.5px solid var(--ink);border-radius:8px;background:transparent;cursor:pointer}
+  .btn-index svg{width:16px;height:16px;stroke:var(--ink);stroke-width:2}
+  .content{padding:88px 20px 70px}
+  .hero{padding:96px 20px 20px}
+  footer{padding:30px 20px 50px}
+}
+@media (max-width:719px){
+  .ch-head{gap:14px}
+  .ch-num{font-size:52px}
+  .lab-code .codebox pre{max-height:250px}
+  .lab-ctl .op{flex:1 1 auto}
+  .hero-meta{gap:0 18px}
+  .hero-meta .v{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+}
+/* ---- extras: figuras conceptuales ---- */
+.lab.mini{max-width:780px;cursor:pointer}
+.lab.mini .lab-fig{padding:12px 14px 4px}
+.lab.mini .lab-note{min-height:46px}
+.h-edge{stroke:var(--teal);stroke-width:1.6;fill:none;stroke-dasharray:4 5}
+.h-edge.on{stroke:var(--accS);stroke-width:2.4;stroke-dasharray:none}
+.born{animation:pop .45s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{0%{transform:scale(.3);opacity:0}100%{transform:scale(1);opacity:1}}
+</style>
+</head>
+<body>
+
+<header class="top" id="top">
+  <div class="brand">IP<b>2</b> · ESTRUCTURAS DINÁMICAS</div>
+  <nav class="top-links">
+    <a href="#c1">01 Punteros</a><a href="#c2">02 Lista simple</a><a href="#c3">03 Variantes</a>
+    <a href="#c4">04 Árboles</a><a href="#c5">05 Combinadas</a><a href="#c6">06 Cierre</a>
+  </nav>
+  <button class="btn-index" id="btn-index" aria-label="Abrir índice">
+    <svg viewBox="0 0 16 16"><path d="M2 4.5h12M2 8h12M2 11.5h8"/></svg>
+  </button>
+  <div id="progress"></div>
+</header>
+
+<div class="shell">
+<nav class="toc" id="toc">
+  <h6>ÍNDICE DEL APUNTE</h6>
+  <a href="#c1" data-spy="c1"><span class="n">01</span><span>Punteros y memoria dinámica</span></a>
+  <div class="sub">
+    <a href="#s1-2" data-spy="s1-2"><span class="n">1.2</span><span>La referencia</span></a>
+    <a href="#lab-mem-anchor" data-spy="lab-mem-anchor"><span class="n">LAB</span><span>Memoria en vivo</span></a>
+  </div>
+  <a href="#c2" data-spy="c2"><span class="n">02</span><span>El nodo y la lista simple</span></a>
+  <div class="sub">
+    <a href="#s2-1" data-spy="s2-1"><span class="n">2.1</span><span>La clase Nodo</span></a>
+    <a href="#lab-lista-anchor" data-spy="lab-lista-anchor"><span class="n">LAB</span><span>Playground de lista</span></a>
+    <a href="#s2-3" data-spy="s2-3"><span class="n">2.3</span><span>Los tres punteros de trabajo</span></a>
+  </div>
+  <a href="#c3" data-spy="c3"><span class="n">03</span><span>Variantes de lista</span></a>
+  <div class="sub">
+    <a href="#s3-1" data-spy="s3-1"><span class="n">3.1</span><span>Doblemente enlazada</span></a>
+    <a href="#s3-2" data-spy="s3-2"><span class="n">3.2</span><span>Circular</span></a>
+    <a href="#s3-3" data-spy="s3-3"><span class="n">3.3</span><span>Indexada</span></a>
+  </div>
+  <a href="#c4" data-spy="c4"><span class="n">04</span><span>Árboles binarios de búsqueda</span></a>
+  <div class="sub">
+    <a href="#s4-2" data-spy="s4-2"><span class="n">4.2</span><span>Insertar y buscar</span></a>
+    <a href="#s4-3" data-spy="s4-3"><span class="n">4.3</span><span>Recorridos</span></a>
+    <a href="#s4-4" data-spy="s4-4"><span class="n">4.4</span><span>Eliminar</span></a>
+    <a href="#s4-5" data-spy="s4-5"><span class="n">4.5</span><span>Algoritmos clave</span></a>
+  </div>
+  <a href="#c5" data-spy="c5"><span class="n">05</span><span>Estructuras combinadas</span></a>
+  <div class="sub">
+    <a href="#s5-1" data-spy="s5-1"><span class="n">5.1</span><span>Árbol de listas</span></a>
+    <a href="#s5-2" data-spy="s5-2"><span class="n">5.2</span><span>Lista de árboles</span></a>
+    <a href="#s5-3" data-spy="s5-3"><span class="n">5.3</span><span>Lista de referencias</span></a>
+    <a href="#s5-4" data-spy="s5-4"><span class="n">5.4</span><span>Tercer puntero: anillo de hermanos</span></a>
+    <a href="#s5-5" data-spy="s5-5"><span class="n">5.5</span><span>Otras combinaciones</span></a>
+  </div>
+  <a href="#c6" data-spy="c6"><span class="n">06</span><span>Cierre y comparativa</span></a>
+  <div class="toc-foot">JAVA · SIN OBJETOS, SOLO CLASES<br>12 LABORATORIOS ANIMADOS<br>APUNTE DE CÁTEDRA · 2025</div>
+</nav>
+
+<main>
+  <div class="hero">
+    <div class="hero-grid">
+      <div>
+        <div class="kicker">INTRODUCCIÓN A LA PROGRAMACIÓN 2 · MATERIAL INTERACTIVO</div>
+        <h1>Estructuras de almacenamiento <span class="it">dinámicas</span></h1>
+        <p class="lead">Un apunte que se ejecuta: cada estructura está dibujada, y cada línea de Java corre al lado de su diagrama. Punteros que avanzan, nodos que nacen y se desenlazan, recorridos que se apilan y se desapilan.</p>
+        <div class="hero-meta">
+          <div><span class="k">CAPÍTULOS</span><span class="v">06</span></div>
+          <div><span class="k">LABORATORIOS</span><span class="v">12</span></div>
+          <div><span class="k">LENGUAJE</span><span class="v">Java</span></div>
+          <div><span class="k">PARADIGMA</span><span class="v">solo clases</span></div>
+        </div>
+        <div class="hero-cta">
+          <a class="cta prim" href="#c1">Empezar por el capítulo 01 <svg viewBox="0 0 14 14"><path d="M7 2v10M3 8l4 4 4-4"/></svg></a>
+          <a class="cta" href="#c5">Ir a las combinadas</a>
+        </div>
+      </div>
+      <div class="hero-fig">
+        <div id="hero-fig"></div>
+        <div class="hero-cap"><b>FIG. 0</b> &nbsp;La lista muta sola: insertar al final y quitar del inicio son, literalmente, dos movimientos de punteros. Fijate cómo el resto se reacomoda solo.</div>
+      </div>
+    </div>
+    <div class="howto">
+      <h5>CÓMO USAR ESTE APUNTE</h5>
+      <ol>
+        <li><span class="num">1</span><span><b>Leé</b> cada sección con calma: los conceptos están en el orden en que la cátedra los encadena.</span></li>
+        <li><span class="num">2</span><span><b>Ejecutá</b> los laboratorios paso a paso: la línea de Java que se resalta es la que está corriendo en el diagrama.</span></li>
+        <li><span class="num">3</span><span><b>Probá tus valores</b>: escribí tus propios números en los playgrounds y mirá qué camino toma el algoritmo.</span></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="content">
+
+  <!-- ============ CAPÍTULO 1 ============ -->
+  <section class="chap prose" id="c1">
+    <header class="ch-head">
+      <div class="ch-num">01</div>
+      <div>
+        <div class="ch-kicker">CAPÍTULO 01 · EL PUNTO DE PARTIDA</div>
+        <h2>Punteros y memoria dinámica</h2>
+        <p class="ch-lead">Antes de enlazar un solo nodo hay que entender dónde viven los objetos, qué guarda realmente una variable de tipo clase y por qué Java puede "limpiar" la memoria solo.</p>
+      </div>
+    </header>
+
+    <h3><span class="sec">§ 1.1</span> Estática vs. dinámica</h3>
+    <p>Un <dfn>arreglo</dfn> es una estructura <b>estática</b>: su tamaño se decide antes de compilar y no cambia jamás. Si declarás <code style="font-family:var(--mono);font-size:13.5px">int[] v = new int[100];</code>, tenés exactamente 100 casillas: si necesitás 101, tenés que pedir otro arreglo y copiar todo; si usás 10, desperdiciás 90.</p>
+    <p>Una <dfn>estructura dinámica</dfn> hace lo contrario: <b>crece y se achica durante la ejecución</b>. En lugar de reservar un bloque contiguo, pide pedacitos de memoria —<b>nodos</b>— y los conecta entre sí mediante <dfn>punteros</dfn> (en Java los llamamos <b>referencias</b>). La estructura no es un bloque: es un <i>camino</i> que se va siguiendo de nodo en nodo.</p>
+    <div id="fig-estatica"></div>
+    <aside class="mnote"><span class="mt">NOTA AL MARGEN</span>La palabra clave es <b>encadenado</b>: en una estructura dinámica, llegar al elemento 7 implica pasar (o saltar) por los 6 anteriores. Ese es el precio del crecimiento ilimitado.</aside>
+
+    <h3 id="s1-2"><span class="sec">§ 1.2</span> Qué guarda realmente una variable</h3>
+    <p>Java divide la memoria en dos zonas. En el <b>stack</b> (pila) viven las variables locales, con su valor directamente. En el <b>heap</b> (montón) viven los objetos que creamos con <code style="font-family:var(--mono);font-size:13.5px">new</code>. Y acá está el punto que cambia todo:</p>
+    <div class="def"><span class="tag">DEFINICIÓN · REFERENCIA O PUNTERO</span>
+      <p>Una variable cuyo tipo es una <b>clase</b> no guarda el objeto: guarda su <b>dirección de memoria</b>. Decimos que la variable <b>apunta</b> al objeto. Si nadie apunta a un objeto, es basura.</p>
+    </div>
+    <p>La palabra <code style="font-family:var(--mono);font-size:13.5px">null</code> representa el puntero que "no apunta a nada" — y es el estado natural de una estructura vacía. Dos variables pueden apuntar al <b>mismo</b> objeto: cambiar el dato por una se ve desde la otra, porque hay un solo objeto detrás.</p>
+
+    <div id="lab-mem-anchor"></div>
+    <div class="lab" id="lab-mem" tabindex="-1"></div>
+
+    <h3><span class="sec">§ 1.3</span> El recolector de basura</h3>
+    <p>Cuando un objeto del heap queda sin referencias (por ejemplo, al re-apuntar <code style="font-family:var(--mono);font-size:13.5px">prim</code> a otro nodo), Java lo detecta y libera su memoria automáticamente: es el <dfn>garbage collector</dfn>. En lenguajes como C vos liberás la memoria a mano; en Java el costo de olvidarte de un <code style="font-family:var(--mono);font-size:13.5px">free</code> desaparece, a cambio de no controlar <i>cuándo</i> ocurre la limpieza.</p>
+    <div class="warn"><span class="tag">ATENCIÓN</span>
+      <p>"Quedó desreferenciado" no significa "desapareció ya". El nodo puede seguir dibujado un instante más en memoria, pero para tu programa ya no existe: nadie puede alcanzarlo.</p>
+    </div>
+
+    <h3><span class="sec">§ 1.4</span> ¿Cuándo conviene lo dinámico?</h3>
+    <p>El criterio es operativo. Insertar en el medio de un arreglo exige <b>desplazar</b> todos los elementos posteriores: costo proporcional al tamaño. Insertar en el medio de una lista enlazada exige, una vez encontrado el lugar, <b>cambiar dos punteros</b>: costo constante. La tabla completa está en el <a href="#c6" style="color:var(--acc)">capítulo 06</a>, pero la intuición ya la podés fijar: <b>el arreglo gana en acceso por posición, la lista gana en reacomodo</b>.</p>
+    <div id="fig-costo"></div>
+  </section>
+
+  <!-- ============ CAPÍTULO 2 ============ -->
+  <section class="chap prose" id="c2">
+    <header class="ch-head">
+      <div class="ch-num">02</div>
+      <div>
+        <div class="ch-kicker">CAPÍTULO 02 · LA ESTRUCTURA MADRE</div>
+        <h2>El nodo y la lista simplemente enlazada</h2>
+        <p class="ch-lead">Con una sola clase de dos campos se construye la estructura más importante del curso. Todo lo que viene después —dobles, circulares, árboles— es esta misma idea, reorientada.</p>
+      </div>
+    </header>
+
+    <h3 id="s2-1"><span class="sec">§ 2.1</span> La clase Nodo: una clase que se contiene a sí misma</h3>
+    <p>El truco que habilita todo el capítulo es la <dfn>autoreferencia</dfn>: un atributo cuyo tipo es la propia clase que se está definiendo. Un nodo guarda un dato y <b>la dirección del siguiente</b>:</p>
+    <div id="code-nodo"></div>
+    <p>Java permite esto porque el atributo <code style="font-family:var(--mono);font-size:13.5px">siguiente</code> no contiene un nodo: contiene una <b>referencia</b>. El compilador no necesita saber cuán larga será la cadena — puede ser infinita en teoría y de longitud exactamente necesaria en la práctica.</p>
+    <aside class="mnote"><span class="mt">NOTA AL MARGEN</span>Al dibujar, usamos una convención de apunte: cada nodo es una caja con el <b>dato</b> y el campo <b>sig</b>; una flecha saliente es la referencia; el símbolo de tierra marca el final de la cadena.</aside>
+
+    <h3><span class="sec">§ 2.2</span> La cabecera y la lista vacía</h3>
+    <p>La lista completa se sostiene de <b>una sola referencia</b>: <code style="font-family:var(--mono);font-size:13.5px">prim</code>. Si <code style="font-family:var(--mono);font-size:13.5px">prim == null</code>, la lista está vacía; si no, siguiendo <code style="font-family:var(--mono);font-size:13.5px">prim.siguiente</code> se alcanza todo. <b>Perder la cabecera es perder la estructura entera</b>: es el error número uno de este tema.</p>
+    <div id="fig-perder"></div>
+
+    <div id="lab-lista-anchor"></div>
+    <div class="lab" id="lab-lista" tabindex="-1"></div>
+
+    <h3 id="s2-3"><span class="sec">§ 2.3</span> Los tres punteros de trabajo</h3>
+    <p>Casi todo algoritmo sobre listas se escribe combinando tres roles de puntero. Reconocerlos en un enunciado es media solución:</p>
+    <table class="ed">
+      <tr><th>PUNTERO</th><th>ROL</th><th>REGLA DE ORO</th></tr>
+      <tr><td class="mono">prim</td><td>la cabecera: el único acceso garantizado a la lista</td><td>jamás se pierde ni se avanza sin guardar el nuevo valor</td></tr>
+      <tr><td class="mono">aux</td><td>el caminante: recorre para buscar, contar o leer</td><td>avanza con <span class="mono">aux = aux.siguiente</span>, siempre que no sea null</td></tr>
+      <tr><td class="mono">prev / nuevo</td><td>el ancla y el recién llegado en las inserciones y borrados</td><td>primero el nuevo mira, después lo apuntan — nunca al revés</td></tr>
+    </table>
+    <div id="fig-punteros"></div>
+
+    <h3><span class="sec">§ 2.4</span> Errores clásicos (que el compilador no atrapa)</h3>
+    <ul>
+      <li><b>NullPointerException:</b> escribir <code style="font-family:var(--mono);font-size:13.5px">aux.siguiente</code> cuando <code style="font-family:var(--mono);font-size:13.5px">aux</code> ya llegó a <code style="font-family:var(--mono);font-size:13.5px">null</code>. Toda condición de corte debe chequearse <b>antes</b> de desreferenciar.</li>
+      <li><b>Cortar la cadena:</b> hacer <code style="font-family:var(--mono);font-size:13.5px">prev.siguiente = nuevo</code> <i>antes</i> de que <code style="font-family:var(--mono);font-size:13.5px">nuevo.siguiente</code> apunte al resto: el tramo posterior queda inalcanzable y el GC lo borra sin aviso.</li>
+      <li><b>Bucle infinito:</b> enganchar el final de la lista a un nodo anterior sin darse cuenta. (El capítulo 03 lo hace a propósito: la lista circular.)</li>
+    </ul>
+    <div class="warn"><span class="tag">REGLA DE ORO DEL ENGANCHE</span>
+      <p>En toda inserción: <b>1)</b> el nodo nuevo apunta al resto de la cadena, <b>2)</b> recién entonces la cadena apunta al nuevo. Invertir el orden puede costarte la lista completa.</p>
+    </div>
+    <div id="fig-cortar"></div>
+  </section>
+
+  <!-- ============ CAPÍTULO 3 ============ -->
+  <section class="chap prose" id="c3">
+    <header class="ch-head">
+      <div class="ch-num">03</div>
+      <div>
+        <div class="ch-kicker">CAPÍTULO 03 · LA MISMA IDEA, REORIENTADA</div>
+        <h2>Variantes de lista</h2>
+        <p class="ch-lead">Doblemente enlazada, circular, indexada: tres mutaciones del mismo nodo que resuelven tres problemas distintos de recorrido.</p>
+      </div>
+    </header>
+
+    <h3 id="s3-1"><span class="sec">§ 3.1</span> Doblemente enlazada: mirar para atrás</h3>
+    <p>El precio de la lista simple es que solo se camina en un sentido: para volver atrás hay que empezar de nuevo desde <code style="font-family:var(--mono);font-size:13.5px">prim</code>. La <dfn>lista doblemente enlazada</dfn> agrega un puntero <code style="font-family:var(--mono);font-size:13.5px">ant</code> por nodo: cada nodo conoce a su vecino de adelante <i>y</i> de atrás. El costo es memoria (un puntero más por nodo) y <b>disciplina</b>: cada inserción o borrado debe mantener los enlaces en las dos direcciones.</p>
+    <div class="lab" id="lab-doble" tabindex="-1"></div>
+    <div class="def"><span class="tag">REGLA DE LOS CUATRO ENLACES</span>
+      <p>Insertar <span class="mono">n</span> entre <span class="mono">a</span> y <span class="mono">b</span> exige exactamente cuatro asignaciones: <span class="mono">n.sig = b</span>, <span class="mono">n.ant = a</span>, <span class="mono">a.sig = n</span>, <span class="mono">b.ant = n</span>. Saltarte una y la estructura queda internamente contradictoria.</p>
+    </div>
+
+    <h3 id="s3-2"><span class="sec">§ 3.2</span> Circular: la lista sin final</h3>
+    <p>En la <dfn>lista circular</dfn>, el último nodo apunta de vuelta al primero: no existe el <code style="font-family:var(--mono);font-size:13.5px">null</code> final. La consecuencia práctica: <b>ningún nodo es "el principio" de verdad</b> — se puede entrar al anillo desde cualquier punto y recorrerlo todo.</p>
+    <p>El problema técnico es la condición de corte: el <code style="font-family:var(--mono);font-size:13.5px">while (aux != null)</code> clásico nunca termina. La solución canónica es el <b>do-while con guardia</b>: entrar al menos una vez y cortar cuando el caminante regresa al nodo de entrada.</p>
+    <div class="lab" id="lab-circ" tabindex="-1"></div>
+    <aside class="mnote"><span class="mt">NOTA AL MARGEN</span>Guardar además un puntero <span class="mono">ult</span> convierte "insertar al final" en <b>O(1)</b>: el último ya conoce al primero, no hace falta recorrer nada.</aside>
+
+    <h3 id="s3-3"><span class="sec">§ 3.3</span> Indexada: puentes hacia el medio</h3>
+    <p>El defecto de toda lista es el acceso por posición: llegar al elemento 400 exige 400 saltos. Una <dfn>lista indexada</dfn> superpone un <b>arreglo de referencias</b> que apunta a nodos "molinete" del interior: para buscar, primero se elige el sector en la tabla y recién ahí se camina <b>dentro del sector</b>.</p>
+    <div class="lab" id="lab-index" tabindex="-1"></div>
+    <p>Es la misma idea que subyace a los índices de bases de datos y a las <i>skip lists</i>: pagar memoria extra por punteros de atajo, para ahorrar recorrido. La tabla solo funciona si la lista está <b>ordenada</b> — si no, los sectores no delimitan rangos y el atajo no sirve.</p>
+  </section>
+
+  <!-- ============ CAPÍTULO 4 ============ -->
+  <section class="chap prose" id="c4">
+    <header class="ch-head">
+      <div class="ch-num">04</div>
+      <div>
+        <div class="ch-kicker">CAPÍTULO 04 · DE UNA DIMENSIÓN A DOS</div>
+        <h2>Árboles binarios de búsqueda</h2>
+        <p class="ch-lead">Si cada nodo apunta a <b>dos</b> siguientes en lugar de uno, la línea se convierte en árbol. Con una regla de orden, la búsqueda pasa de lineal a logarítmica.</p>
+      </div>
+    </header>
+
+    <h3><span class="sec">§ 4.1</span> Vocabulario y la regla de orden</h3>
+    <p>Un <dfn>árbol binario</dfn> es la lista simple multiplicada: cada nodo tiene <b>dos</b> punteros, <code style="font-family:var(--mono);font-size:13.5px">izq</code> y <code style="font-family:var(--mono);font-size:13.5px">der</code>. El nodo sin padre es la <b>raíz</b> (nuestro equivalente de <code style="font-family:var(--mono);font-size:13.5px">prim</code>); los nodos sin hijos son <b>hojas</b>; la cantidad de "pisos" es la <b>altura</b>.</p>
+    <p>Un árbol binario cualquiera no sirve para buscar: hace falta la <dfn>propiedad de orden del ABB</dfn>:</p>
+    <div class="def"><span class="tag">PROPIEDAD DEL ÁRBOL BINARIO DE BÚSQUEDA</span>
+      <p>Para todo nodo: <b>todo lo que cuelga a la izquierda es menor, todo lo que cuelga a la derecha es mayor</b>. La propiedad vale para subárboles completos, no solo para los hijos directos.</p>
+    </div>
+    <p>Con esa regla, cada comparación <b>descarta medio subárbol</b>: buscar en un árbol balanceado de 1.000.000 de nodos toma ~20 pasos, no 1.000.000.</p>
+    <div id="fig-abb"></div>
+
+    <h3 id="s4-2"><span class="sec">§ 4.2</span> Insertar y buscar</h3>
+    <div class="lab" id="lab-bst" tabindex="-1"></div>
+    <aside class="mnote"><span class="mt">NOTA AL MARGEN</span>Notá el patrón: en la lista insertabas con <span class="mono">prev</span> + <span class="mono">nuevo</span>; acá el rol de <span class="mono">prev</span> lo cumple <span class="mono">aux</span> — es el <b>padre</b> del hueco donde caerá el nuevo nodo.</aside>
+
+    <h3 id="s4-3"><span class="sec">§ 4.3</span> Recorrer: los cuatro órdenes</h3>
+    <p>Recorrer un árbol es distinto a recorrer una lista: en cada nodo hay que decidir qué hacer <b>antes</b> y <b>después</b> de bajar. La recursión lo expresa natural, y cada orden sirve para un problema distinto:</p>
+    <ul>
+      <li><b>Preorden</b> (nodo, izquierda, derecha): copiar/persistir el árbol — el padre se registra antes que sus hijos.</li>
+      <li><b>Inorden</b> (izquierda, nodo, derecha): <b>enumera los datos ordenados</b> — es el recorrido estrella del ABB.</li>
+      <li><b>Postorden</b> (izquierda, derecha, nodo): liberar/evaluar — los hijos se procesan antes que el padre.</li>
+      <li><b>Por niveles</b> (amplitud): capa por capa con una <b>cola</b> — no es recursivo.</li>
+    </ul>
+    <div class="lab" id="lab-rec" tabindex="-1"></div>
+    <p>El recorrido por niveles necesita una cola FIFO. La buena noticia: ya sabés construirla — es una lista enlazada con dos punteros, uno a cada extremo:</p>
+    <div id="code-cola"></div>
+
+    <h3 id="s4-4"><span class="sec">§ 4.4</span> Eliminar: los tres casos</h3>
+    <p>Borrar un nodo del ABB es el algoritmo más fino del capítulo, porque el hueco que deja hay que taparlo sin romper la propiedad de orden. Según cuántos hijos tenga el nodo, la estrategia cambia:</p>
+    <ol>
+      <li><b>Hoja:</b> se corta la rama — el padre apunta a <code style="font-family:var(--mono);font-size:13.5px">null</code>.</li>
+      <li><b>Un hijo:</b> el hijo "sube" — el padre adopta directamente al nieto.</li>
+      <li><b>Dos hijos:</b> no puede subir ninguno de los dos. Se busca el <dfn>sucesor inorden</dfn> (el mínimo del subárbol derecho: el próximo valor en el orden), se <b>copian sus datos</b> hacia el nodo a borrar, y se elimina al sucesor — que por ser mínimo no tiene hijo izquierdo y cae en el caso 1 o 2.</li>
+    </ol>
+    <div class="lab" id="lab-del" tabindex="-1"></div>
+
+    <h3 id="s4-5"><span class="sec">§ 4.5</span> Los algoritmos que hay que saber de memoria</h3>
+    <p>Más allá de insertar/buscar/eliminar, la materia pide estos tres. Observá que el mínimo y el máximo son recorridos <b>iterativos</b> de una sola línea conceptual:</p>
+    <div id="code-min"></div>
+    <p>Y la altura es el ejemplo perfecto de recursión sobre árbol: la altura de un nodo es 1 + la mayor de las alturas de sus hijos; la de un árbol vacío es −1 por convención:</p>
+    <div id="code-alt"></div>
+    <div id="fig-alt"></div>
+    <div class="warn"><span class="tag">EL PEOR CASO</span>
+      <p>Insertá los datos <b>ya ordenados</b> en un ABB y cada nodo caerá siempre por la derecha: el árbol <b>degenera en una lista</b> y toda operación vuelve a ser O(n). Los árboles AVL (próxima materia) rotan nodos para impedirlo. El laboratorio 5.3 explota justamente ese defecto.</p>
+    </div>
+  </section>
+
+  <!-- ============ CAPÍTULO 5 ============ -->
+  <section class="chap prose" id="c5">
+    <header class="ch-head">
+      <div class="ch-num">05</div>
+      <div>
+        <div class="ch-kicker">CAPÍTULO 05 · ESTRUCTURAS COMBINADAS</div>
+        <h2>Árboles y listas, juntos</h2>
+        <p class="ch-lead">Las estructuras reales casi nunca son puras: un nodo de árbol que lleva una lista colgando, una lista cuyos nodos llevan árboles, atajos que cruzan de una a otra. Acá vive lo más lindo del tema.</p>
+      </div>
+    </header>
+    <p>Combinar no es decoración: cada combinación resuelve un problema de <b>granularidad</b>. El árbol divide el espacio de búsqueda; la lista absorbe los elementos "iguales" o consecutivos. Un mismo dominio se puede modelar de varias formas — y la elección cambia el costo de cada operación.</p>
+
+    <h3 id="s5-1"><span class="sec">§ 5.1</span> Árbol de listas</h3>
+    <p>Cada nodo del árbol guarda, además de <code style="font-family:var(--mono);font-size:13.5px">izq</code>/<code style="font-family:var(--mono);font-size:13.5px">der</code>, la cabecera de una <b>lista enlazada propia</b>. El ejemplo típico de cátedra: un árbol de <b>áreas</b> ordenadas alfabéticamente, y colgando de cada área, la lista de registros que pertenecen a esa área. El árbol localiza el sector; la lista desagrega el contenido.</p>
+    <div class="lab" id="lab-al" tabindex="-1"></div>
+
+    <h3 id="s5-2"><span class="sec">§ 5.2</span> Lista de árboles (el bosque)</h3>
+    <p>La combinación inversa: una lista enlazada donde el <b>dato de cada nodo es la raíz de un árbol</b>. El conjunto se llama <dfn>bosque</dfn>. Sirve cuando tenés bloques independientes que conviene mantener ordenados linealmente (por ejemplo: un ranking, donde cada posición es el ABB de un jugador con sus partidas).</p>
+    <div class="lab" id="lab-bosque" tabindex="-1"></div>
+
+    <h3 id="s5-3"><span class="sec">§ 5.3</span> Lista de referencias conectada a un árbol</h3>
+    <p>Un híbrido muy potente: el árbol sigue siendo el árbol, pero por <b>afuera</b> se construye una lista cuyos nodos no guardan datos — guardan <b>referencias a nodos internos del árbol</b>. Son "atajos" que permiten entrar al árbol ya cerca del objetivo.</p>
+    <p>El laboratorio usa deliberadamente el peor caso del capítulo 04 — un ABB degenerado por inserciones ordenadas — para que el ahorro se vea con crudeza: sin atajos, llegar al fondo del árbol degenerado cuesta un salto por piso.</p>
+    <div class="lab" id="lab-atajo" tabindex="-1"></div>
+    <aside class="mnote"><span class="mt">NOTA AL MARGEN</span>El trade-off es siempre el mismo: <b>memoria por tiempo</b>. Cada atajo es un nodo extra que además hay que mantener sincronizado si el árbol cambia.</aside>
+
+    <h3 id="s5-4"><span class="sec">§ 5.4</span> Tercer puntero: el anillo de hermanos</h3>
+    <p>La combinación más exótica y la favorita de los finales: un árbol donde <b>cada nodo tiene tres punteros</b> — <code style="font-family:var(--mono);font-size:13.5px">izq</code> y <code style="font-family:var(--mono);font-size:13.5px">der</code> para la estructura arbórea, más un <code style="font-family:var(--mono);font-size:13.5px">herm</code> que conecta a los <b>hermanos</b> (nodos con el mismo padre) formando una <b>lista circular</b>.</p>
+    <p>¿Qué resuelve? En un árbol binario puro, para enumerar los hijos de un nodo hay que bajar y volver a subir por <code style="font-family:var(--mono);font-size:13.5px">izq</code>. Con el anillo, el padre guarda el <b>primer</b> hijo y desde ahí se recorren todos los hermanos <b>girando por el anillo</b>, sin volver al padre. El corte es exactamente el del capítulo 03: parar cuando el caminante vuelve al hijo de entrada.</p>
+    <div class="lab" id="lab-herm" tabindex="-1"></div>
+
+    <h3 id="s5-5"><span class="sec">§ 5.5</span> Otras combinaciones que verás después</h3>
+    <ul>
+      <li><b>Árbol de árboles:</b> el dato de cada nodo es la raíz de un subárbol — jerarquías por niveles (directorios de directorios).</li>
+      <li><b>Listas de adyacencia:</b> un arreglo (o lista) de listas: una por vértice de un grafo. Es la puerta de entrada a grafos.</li>
+      <li><b>Matriz de listas:</b> una por fila/celda — la estructura clásica de dispersión (matriz dispersa, hash encadenado).</li>
+    </ul>
+    <div id="fig-ady"></div>
+    <p>En todas conviene preguntarse lo mismo: <b>¿qué estructura localiza y cuál desagrega?</b> Esa pregunta es el criterio de diseño de estructuras combinadas.</p>
+  </section>
+
+  <!-- ============ CAPÍTULO 6 ============ -->
+  <section class="chap prose" id="c6">
+    <header class="ch-head">
+      <div class="ch-num">06</div>
+      <div>
+        <div class="ch-kicker">CAPÍTULO 06 · CIERRE</div>
+        <h2>Comparativa y guía de estudio</h2>
+        <p class="ch-lead">Todo el apunte en una tabla, y un checklist para el examen.</p>
+      </div>
+    </header>
+
+    <h3><span class="sec">§ 6.1</span> Costos operacionales</h3>
+    <table class="ed">
+      <tr><th>OPERACIÓN</th><th>ARREGLO</th><th>LISTA (ENLAZADA)</th><th>ABB BALANCEADO</th></tr>
+      <tr><td>Acceso por posición</td><td class="best mono">O(1)</td><td class="bad mono">O(n)</td><td class="mono">— (sin posición)</td></tr>
+      <tr><td>Insertar al inicio</td><td class="bad mono">O(n)</td><td class="best mono">O(1)</td><td class="mono">—</td></tr>
+      <tr><td>Insertar al final</td><td class="best mono">O(1)*</td><td class="best mono">O(1)†</td><td class="bad mono">O(log n)</td></tr>
+      <tr><td>Insertar manteniendo orden</td><td class="bad mono">O(n)</td><td class="mono">O(n) + O(1) eng.</td><td class="best mono">O(log n)</td></tr>
+      <tr><td>Buscar por valor (sin orden)</td><td class="bad mono">O(n)</td><td class="bad mono">O(n)</td><td class="best mono">O(log n)</td></tr>
+      <tr><td>Peor caso (degenerado)</td><td class="mono">—</td><td class="mono">O(n)</td><td class="bad mono">O(n)</td></tr>
+    </table>
+    <p style="font-family:var(--mono);font-size:11.5px;color:var(--ink2)">* con lugar libre pre-reservado · † con puntero al último · eng. = enganche de punteros</p>
+    <div id="fig-costos"></div>
+
+    <h3><span class="sec">§ 6.2</span> Checklist antes del examen</h3>
+    <ul class="study">
+      <li>Sé explicar qué guarda una variable de clase y qué significa <span class="mono">null</span>.</li>
+      <li>Escribo la clase <span class="mono">Nodo</span> de memoria, para lista simple y para árbol.</li>
+      <li>Inserto al inicio, al final y en posición sin cortar la cadena — en ese orden de enlaces.</li>
+      <li>Elimino por valor contemplando los tres casos: lista vacía, primer nodo, interior/final.</li>
+      <li>Distingo por qué los 4 enlaces de la lista doble y por qué el do-while de la circular.</li>
+      <li>Recorro un ABB en preorden, inorden, postorden y por niveles, y sé para qué sirve cada uno.</li>
+      <li>Elimino en ABB el caso de dos hijos con sucesor inorden, sin romper la propiedad de orden.</li>
+      <li>Reconozco las combinadas: árbol de listas, bosque, referencias cruzadas y anillo de hermanos.</li>
+    </ul>
+
+    <h3><span class="sec">§ 6.3</span> Y después de esto</h3>
+    <p>Este apunte se queda a propósito antes de la frontera de la herencia: el <i>generics</i> (<code style="font-family:var(--mono);font-size:13.5px">Nodo&lt;T&gt;</code>), los <b>iteradores</b> y los <b>árboles balanceados (AVL)</b> llegan con la materia que sigue. La base es exactamente esta: un nodo, dos o tres punteros, y las reglas de oro para no perder la cadena.</p>
+  </section>
+
+  </div><!-- /content -->
+</main>
+</div>
+
+<footer>
+  <div class="colo">Apunte interactivo de cátedra — Introducción a la Programación 2 · estructuras de almacenamiento dinámicas en Java.</div>
+  <div class="top-link"><a href="#top">VOLVER ARRIBA ↑</a></div>
+</footer>
+
+<div id="overlay"></div>
+<nav id="drawer">
+  <button class="pbtn closer" id="btn-close" aria-label="Cerrar índice">
+    <svg viewBox="0 0 16 16"><path d="M3 3l10 10M13 3L3 13"/></svg>
+  </button>
+  <div id="drawer-toc"></div>
+</nav>
+
+<script>
+(function(){
+'use strict';
+/* ============ núcleo: cada módulo aislado, un fallo no tumba el resto ============ */
+var BOOT={ok:[],err:[]};
+function safe(name,fn){try{fn();BOOT.ok.push(name)}catch(e){BOOT.err.push(name+' → '+(e&&e.message||e));console.error('[IP2]['+name+']',e)}}
+
+var $=function(s,c){return (c||document).querySelector(s)};
+var $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+var SVGNS='http://www.w3.org/2000/svg';
+var RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+var SLOW=RM?2.4:1;                 /* menos movimiento = más lento, NO congelado */
+function clone(o){return JSON.parse(JSON.stringify(o))}
+var cs=getComputedStyle(document.documentElement);
+function cv(v,d){var x=(cs.getPropertyValue(v)||'').trim();return x||d}
+var COL={acc:cv('--accS','#D9481C'),ink:cv('--ink','#211D15'),teal:cv('--teal','#0F6E5C'),pet:cv('--pet','#33658A'),lineD:cv('--lineD','#C7BFA9'),ink2:cv('--ink2','#6E675A')};
+function S(t,a){var e=document.createElementNS(SVGNS,t);if(a)for(var k in a){if(k==='text')e.textContent=a[k];else e.setAttribute(k,a[k])}return e}
+function svgEl(w,h){return S('svg',{viewBox:'0 0 '+w+' '+h})}
+function mount(host,p){var s=svgEl(p.W,p.H);s.appendChild(p.g);host.appendChild(s);return s}
+function head(x,y,ang,c,sz){sz=sz||7;return S('polygon',{points:x+','+y+' '+(x-sz*Math.cos(ang-.44))+','+(y-sz*Math.sin(ang-.44))+' '+(x-sz*Math.cos(ang+.44))+','+(y-sz*Math.sin(ang+.44)),fill:c})}
+function arrow(sv,x1,y1,x2,y2,o){
+  o=o||{};var c=o.curve||0,dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy)||1;
+  var mx=(x1+x2)/2,my=(y1+y2)/2,nx=-dy/len,ny=dx/len,col=o.color||COL.ink,sw=o.sw||1.7;
+  var cx=mx+nx*c,cy=my+ny*c,ang=c?Math.atan2(y2-cy,x2-cx):Math.atan2(dy,dx);
+  var tx=x2-1.5*Math.cos(ang),ty=y2-1.5*Math.sin(ang);
+  var d=c?('M'+x1+' Q'+cx+' '+cy+' '+tx+' '+ty):('M'+x1+' L'+tx+' '+ty);
+  var a={d:d,fill:'none',stroke:col,'stroke-width':sw};
+  if(o.dash)a['stroke-dasharray']=o.dash;
+  sv.appendChild(S('path',a));sv.appendChild(head(tx,ty,ang,col,o.hs));
+}
+function ground(sv,x,y){
+  sv.appendChild(S('line',{x1:x,y1:y,x2:x,y2:y+7,stroke:COL.ink,'stroke-width':1.6}));
+  [16,10,4].forEach(function(w,i){sv.appendChild(S('line',{x1:x-w/2,y1:y+8+i*4,x2:x+w/2,y2:y+8+i*4,stroke:COL.ink,'stroke-width':i?1.3:1.8}))});
+}
+function tagTxt(sv,x,y,t,o){
+  o=o||{};var a={x:x,y:y,class:'hud','text-anchor':o.anchor||'start',text:t},st='';
+  if(o.fill)st+='fill:'+o.fill+';';
+  if(o.mono)st+='font-size:10px;letter-spacing:.14em;';
+  if(st)a.style=st;
+  sv.appendChild(S('text',a));
+}
+function ptrLabel(sv,lx,ly,name,tx,ty,o){
+  o=o||{};var col=o.color||COL.ink;
+  sv.appendChild(S('text',{x:lx,y:ly,class:'ptr-l','text-anchor':'middle',style:'fill:'+col,text:name}));
+  arrow(sv,lx,ly+5,tx,ty,{color:col,curve:o.curve!==undefined?o.curve:-14,sw:1.6,hs:6});
+}
+function retBox(sv,x,y,t){
+  var w=String(t).length*8.6+20;
+  sv.appendChild(S('rect',{x:x-w/2,y:y-14,width:w,height:26,rx:6,class:'retbox'}));
+  sv.appendChild(S('text',{x:x,y:y+1,class:'rettx',text:t}));
+}
+function chip(sv,x,y,t){
+  var w=String(t).length*8.5+14;
+  sv.appendChild(S('rect',{x:x-w/2,y:y-11,width:w,height:22,rx:11,class:'chip-r'}));
+  sv.appendChild(S('text',{x:x,y:y+1,class:'chip-t',text:t}));
+}
+function listBox(sv,x,y,val,o){
+  o=o||{};var w=o.w||46,h=o.h||34;
+  var g=S('g',{transform:'translate('+x+','+y+')'});
+  var cls=(o.ghost?'nd ghost':'nd')+(o.hl?' hl':'')+(o.vis?' vis':'')+(o.dying?' dying':'')+(o.born?' born':'');
+  var inner=S('g',{class:cls});
+  if(o.fade!==undefined)inner.setAttribute('style','opacity:'+o.fade);
+  inner.appendChild(S('rect',{class:'nd-r',width:w,height:h,rx:4}));
+  inner.appendChild(S('line',{class:'nd-sep',x1:w-15,y1:0,x2:w-15,y2:h}));
+  inner.appendChild(S('text',{class:'nd-val',x:(w-15)/2,y:h/2+1,'dominant-baseline':'central',text:val}));
+  inner.appendChild(S('circle',{class:'nd-dim',cx:w-7,cy:h/2,r:2.6}));
+  g.appendChild(inner);sv.appendChild(g);return g;
+}
+function treeCircle(sv,x,y,val,o){
+  o=o||{};var g=S('g',{transform:'translate('+x+','+y+')'});
+  var cls='tn'+(o.hl?' hl':'')+(o.vis?' vis':'')+(o.gone?' gone':'')+(o.born?' born':'');
+  var inner=S('g',{class:cls});
+  if(o.fade!==undefined)inner.setAttribute('style','opacity:'+o.fade);
+  inner.appendChild(S('circle',{class:'tn-c',r:o.r||17}));
+  inner.appendChild(S('text',{class:'tn-t',style:o.small?'font-size:10.5px':'',text:val}));
+  g.appendChild(inner);sv.appendChild(g);return g;
+}
+var has=function(a,id){return !!(a&&a.indexOf(id)>=0)};
+
+/* ---------- renderer de lista simple ---------- */
+function listG(w,o){
+  o=o||{};
+  var NW=o.nw||46,NH=o.nh||34,GAP=o.gap||24,Y=o.y||92;
+  var ptrs=w.ptrs||[];
+  var hasBot=ptrs.some(function(p){return p.dy>0});
+  var n=w.nodes.length;
+  var W=Math.max(o.minW||560,54+n*(NW+GAP)+70);
+  var H=Y+NH+(hasBot?92:70);
+  var sv=S('g',{});
+  var X=function(i){return 54+i*(NW+GAP)};
+  var idx=function(id){for(var i=0;i<n;i++)if(w.nodes[i].id===id)return i;return -1};
+  if(!n)tagTxt(sv,54,Y-42,'∅ lista vacía  ·  prim = null',{fill:COL.ink2});
+  w.nodes.forEach(function(nn,i){
+    listBox(sv,X(i),Y,nn.val,{w:NW,h:NH,hl:has(w.hl,nn.id),vis:has(w.vis,nn.id),dying:has(w.dying,nn.id),born:has(w.born,nn.id),fade:(w.fade&&w.fade[nn.id]!==undefined)?w.fade[nn.id]:undefined});
+  });
+  var brokenAt=w.broken?idx(w.broken):-1;
+  for(var i=0;i<n-1;i++){
+    if(brokenAt===i)continue;
+    var dead=has(w.dying,w.nodes[i+1].id)||has(w.dying,w.nodes[i].id);
+    arrow(sv,X(i)+NW-9,Y+NH/2,X(i+1)+4,Y+NH/2,{color:dead?COL.lineD:COL.ink,sw:dead?1.2:1.7,dash:dead?'4 5':''});
+  }
+  var ends={};
+  if(brokenAt>=0)ends[brokenAt]=1;
+  if(n-1>=0)ends[n-1]=1;
+  Object.keys(ends).forEach(function(k){
+    var t=+k,tx=X(t)+NW-9;
+    arrow(sv,tx,Y+NH,tx,Y+NH+13,{color:COL.ink,sw:1.5,hs:5});
+    ground(sv,tx,Y+NH+14);
+  });
+  if(w.ghost){
+    var gx=X(w.ghost.at),gy=Y-54;
+    listBox(sv,gx,gy,w.ghost.val,{w:NW,h:NH,ghost:true,born:true,hl:w.ghost.hl});
+    if(w.ghost.to){
+      var j=idx(w.ghost.to);
+      if(j>=0)arrow(sv,gx+NW-9,gy+NH/2,X(j)+4,Y+NH/2,{color:COL.acc,sw:2.2,curve:-16});
+    }else{
+      arrow(sv,gx+NW-9,gy+NH,gx+NW-9,gy+NH+10,{color:COL.acc,sw:2,hs:5});
+      ground(sv,gx+NW-9,gy+NH+11);
+    }
+  }
+  if(w.jump){
+    var a=idx(w.jump.from),b=idx(w.jump.to);
+    if(a>=0&&b>=0)arrow(sv,X(a)+NW/2,Y-3,X(b)+NW/2,Y-3,{color:COL.acc,sw:2.3,curve:-34});
+  }
+  ptrs.forEach(function(p){
+    if(p.slot!==undefined){
+      var g2=X(p.slot)+NW/2;
+      ptrLabel(sv,g2,Y-96,p.name,g2,Y-58,{color:p.hot?COL.acc:COL.ink,curve:-8});
+      return;
+    }
+    var i2=p.id?idx(p.id):-1;
+    if(i2<0){
+      var lx=p.lx||70,ly=p.dy>0?Y+NH+58:Y-64-(p.row||0)*30;
+      sv.appendChild(S('text',{x:lx,y:ly,class:'ptr-l','text-anchor':'middle',style:'fill:'+(p.hot?COL.acc:COL.ink),text:p.name+' = null'}));
+      return;
+    }
+    var px=X(i2)+NW/2+(p.off||0),top=p.dy<0;
+    var ly2=top?Y-48-(p.row||0)*32:Y+NH+46+(p.row||0)*32;
+    ptrLabel(sv,px,ly2,p.name,px,top?Y-4:Y+NH+4,{color:p.hot?COL.acc:(p.teal?COL.teal:COL.ink),curve:top?-12:12});
+  });
+  if(w.hud)tagTxt(sv,W-14,28,w.hud,{anchor:'end'});
+  if(w.ret!==undefined&&w.ret!==null)retBox(sv,W-64,H-26,w.ret);
+  else if(w.ret===null)retBox(sv,W-64,H-26,'null');
+  return {g:sv,W:W,H:H,X:X,idx:idx,NW:NW,NH:NH,Y:Y};
+}
+
+/* ---------- renderer de árbol ---------- */
+function treeG(w,o){
+  o=o||{};
+  var dx=o.dx||56,dy=o.dy||62,X0=o.x0||48,Y0=o.y0||84,R=o.r||17;
+  var pos={},ci=0;
+  (function walk(n,d){if(!n)return;walk(n.l,d+1);pos[n.id]={x:ci++,d:d};walk(n.r,d+1)})(w.root,0);
+  var keys=Object.keys(pos),maxI=0,maxD=0;
+  keys.forEach(function(k){if(pos[k].x>maxI)maxI=pos[k].x;if(pos[k].d>maxD)maxD=pos[k].d});
+  var W=(o.w||X0*2+maxI*dx)+(o.extraW||0);
+  var H=o.h||(Y0+maxD*dy+(o.bottom||76));
+  var sv=S('g',{});
+  var XY=function(id){var p=pos[id]||{x:-1,d:-1};return {x:X0+p.x*dx,y:Y0+p.d*dy}};
+  if(!w.root){tagTxt(sv,X0,Y0,'∅ árbol vacío · raíz = null',{fill:COL.ink2});return {g:sv,W:W,H:H,XY:XY}}
+  (function edges(n){if(!n)return;[n.l,n.r].forEach(function(c){
+    if(!c)return;
+    var a=XY(n.id),b=XY(c.id),ang=Math.atan2(b.y-a.y,b.x-a.x);
+    sv.appendChild(S('line',{x1:a.x+Math.cos(ang)*(R+3),y1:a.y+Math.sin(ang)*(R+3),x2:b.x-Math.cos(ang)*(R+6),y2:b.y-Math.sin(ang)*(R+6),class:'tn-e'+(has(w.edgeOn,c.id)?' on':'')}));
+    edges(c);
+  })})(w.root);
+  (w.herm||[]).forEach(function(h,i){
+    var a=XY(h.a),b=XY(h.b),mx=(a.x+b.x)/2,my=Math.max(a.y,b.y)+46;
+    sv.appendChild(S('path',{d:'M'+a.x+' '+a.y+' Q'+mx+' '+my+' '+b.x+' '+b.y,class:'h-edge'+(has(w.hermOn,i)?' on':'')}));
+  });
+  if(w.ring&&w.ring.ids&&w.ring.ids.length){
+    var xs=w.ring.ids.map(function(id){return XY(id).x});
+    sv.appendChild(S('ellipse',{cx:(Math.min.apply(null,xs)+Math.max.apply(null,xs))/2,cy:XY(w.ring.ids[0]).y+64,rx:(Math.max.apply(null,xs)-Math.min.apply(null,xs))/2+38,ry:54,class:'ring flow'}));
+  }
+  (function nodes(n){if(!n)return;
+    var p=XY(n.id);
+    treeCircle(sv,p.x,p.y,n.val,{hl:has(w.hl,n.id),vis:has(w.vis,n.id),gone:has(w.gone,n.id),born:has(w.born,n.id),halo:w.halo===n.id,r:R,small:o.small,fade:(w.fade&&w.fade[n.id]!==undefined)?w.fade[n.id]:undefined});
+    if(w.oldVal&&w.oldVal.id===n.id)tagTxt(sv,p.x-4,p.y-R-9,String(w.oldVal.old),{fill:COL.ink2});
+    nodes(n.l);nodes(n.r);
+  })(w.root);
+  if(w.rootPtr!==false)ptrLabel(sv,XY(w.root.id).x,Y0-R-32,'raíz',XY(w.root.id).x,XY(w.root.id).y-R-4,{curve:-10});
+  (w.tags||[]).forEach(function(t){
+    var p=XY(t.id);
+    tagTxt(sv,p.x+(t.dx||0),p.y+(t.dy||-26),t.txt,{anchor:t.anchor||'middle',fill:t.fill});
+  });
+  if(w.levels)for(var d=0;d<=maxD;d++){
+    var y=Y0+d*dy;
+    sv.appendChild(S('line',{x1:6,y1:y,x2:X0-18,y2:y,stroke:COL.lineD,'stroke-dasharray':'3 4'}));
+    tagTxt(sv,4,y+4,'n'+d,{fill:COL.ink2});
+  }
+  if(w.hud)tagTxt(sv,W-12,26,w.hud,{anchor:'end'});
+  if(w.ret!==undefined)retBox(sv,W-72,H-26,w.ret===null?'null':String(w.ret));
+  return {g:sv,W:W,H:H,XY:XY};
+}
+
+/* ---------- código resaltado ---------- */
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+var JAVA_RE=/(\/\/.*)|("(?:[^"\\]|\\.)*")|\b(class|public|private|new|return|if|else|while|do|null|this|for|break|static|void|int|boolean|true|false|String|System)\b|\b([A-Z][A-Za-z0-9_]*)\b|\b(\d+)\b/g;
+function hlJava(src){
+  var out='',last=0,m;JAVA_RE.lastIndex=0;
+  while((m=JAVA_RE.exec(src))){
+    out+=esc(src.slice(last,m.index));
+    if(m[1])out+='<span class="c-cmt">'+esc(m[1])+'</span>';
+    else if(m[2])out+='<span class="c-str">'+esc(m[2])+'</span>';
+    else if(m[3])out+='<span class="c-kw">'+esc(m[3])+'</span>';
+    else if(m[4])out+='<span class="c-ty">'+esc(m[4])+'</span>';
+    else out+='<span class="c-num">'+esc(m[5])+'</span>';
+    last=JAVA_RE.lastIndex;
+  }
+  return out+esc(src.slice(last));
+}
+function buildCodebox(host,file,src){
+  var box=document.createElement('div');box.className='codebox';
+  box.innerHTML='<div class="cb-tab">'+file+'<span class="lang">JAVA</span></div>';
+  var pre=document.createElement('pre');
+  src.split('\n').forEach(function(ln,i){
+    var d=document.createElement('div');d.className='cl';
+    d.innerHTML='<span class="ln">'+(i+1)+'</span><span class="lc">'+(hlJava(ln)||' ')+'</span>';
+    pre.appendChild(d);
+  });
+  box.appendChild(pre);host.appendChild(box);
+  var cls=$$('.cl',pre);
+  return {hl:function(arr){
+    cls.forEach(function(c,i){c.classList.toggle('on',arr.indexOf(i+1)>=0)});
+    var first=null;
+    for(var i=0;i<cls.length;i++)if(cls[i].classList.contains('on')){first=cls[i];break}
+    if(first){var pr=pre.getBoundingClientRect(),fr=first.getBoundingClientRect();pre.scrollTop+=fr.top-pr.top-pre.clientHeight/2+fr.height/2}
+  }};
+}
+function fl(lines,frag,from){for(var i=from||0;i<lines.length;i++)if(lines[i].indexOf(frag)>=0)return i+1;return 1}
+function staticCode(id,file,src){var h=document.getElementById(id);if(h)buildCodebox(h,file,src)}
+
+/* ---------- player de laboratorio ---------- */
+var ICONS={
+  play:'<svg viewBox="0 0 16 16" style="fill:currentColor;stroke:none"><path d="M4.5 3l8.5 5-8.5 5z"/></svg>',
+  pause:'<svg viewBox="0 0 16 16"><path d="M5 3v10M11 3v10"/></svg>',
+  next:'<svg viewBox="0 0 16 16"><path d="M3 3l7 5-7 5M13 3v10"/></svg>',
+  prev:'<svg viewBox="0 0 16 16"><path d="M13 3l-7 5 7 5M3 3v10"/></svg>',
+  reset:'<svg viewBox="0 0 16 16"><path d="M13.2 8a5.2 5.2 0 1 1-1.8-4M13.2 2.6v3.2H10"/></svg>'
+};
+function makeLab(id,cfg){
+  var root=document.getElementById(id);if(!root)return null;
+  root.innerHTML=
+    '<div class="lab-top"><span class="lab-tag">'+cfg.tag+'</span><span class="lab-title">'+cfg.title+'</span>'+(cfg.hint?'<span class="lab-hint">'+cfg.hint+'</span>':'')+'</div>'+
+    '<div class="lab-ctl"></div>'+
+    '<div class="lab-grid"><div class="lab-code"></div><div class="lab-fig"></div></div>'+
+    '<div class="lab-note"><span class="fno">PASO</span><em></em></div>'+
+    '<div class="lab-player">'+
+    '<button class="pbtn" data-a="reset" title="Reiniciar secuencia">'+ICONS.reset+'</button>'+
+    '<button class="pbtn" data-a="prev" title="Paso atrás">'+ICONS.prev+'</button>'+
+    '<button class="pbtn play" data-a="play" title="Reproducir / pausar">'+ICONS.play+'</button>'+
+    '<button class="pbtn" data-a="next" title="Paso siguiente">'+ICONS.next+'</button>'+
+    '<span class="pcount"><b>0</b>&nbsp;/&nbsp;<span>0</span></span>'+
+    '<span class="kbd-hint"><kbd>←</kbd><kbd>→</kbd> pasos · <kbd>espacio</kbd> play</span></div>';
+  var q=function(s){return $(s,root)};
+  var code=buildCodebox(q('.lab-code'),cfg.file,cfg.code);
+  var note=q('.lab-note em'),cur=q('.pcount b'),tot=q('.pcount span');
+  var playBtn=q('[data-a=play]');
+  var L={steps:[],i:-1,timer:null,speed:(cfg.speed||1250)*SLOW,world:cfg.init?cfg.init():null};
+  function stop(){if(L.timer){clearInterval(L.timer);L.timer=null}playBtn.innerHTML=ICONS.play}
+  function render(){
+    var st=L.steps[L.i];
+    tot.textContent=L.steps.length;
+    var f=q('.lab-fig');f.innerHTML='';
+    if(!st){
+      cur.textContent='0';
+      note.textContent=cfg.idle||'Ejecutá una operación de arriba para generar la secuencia animada.';
+      code.hl([]);
+      if(cfg.draw&&L.world){try{cfg.draw(f,L.world,null)}catch(e){console.error('[draw idle]',e)}}
+      return;
+    }
+    cur.textContent=L.i+1;
+    note.textContent=st.note||'';
+    code.hl(st.lines||[]);
+    try{cfg.draw(f,st.world,st)}catch(e){console.error('[draw paso]',e)}
+  }
+  function go(i){if(!L.steps.length)return;L.i=Math.max(0,Math.min(L.steps.length-1,i));render()}
+  function play(){
+    if(L.timer){stop();return}
+    if(!L.steps.length)return;
+    if(L.i>=L.steps.length-1)go(0);
+    playBtn.innerHTML=ICONS.pause;
+    L.timer=setInterval(function(){if(L.i>=L.steps.length-1){stop();return}go(L.i+1)},L.speed);
+  }
+  $$('[data-a]',root).forEach(function(b){
+    b.addEventListener('click',function(){
+      var a=b.getAttribute('data-a');
+      if(a==='play')play();
+      else if(a==='next'){stop();go(L.i+1)}
+      else if(a==='prev'){stop();go(L.i-1)}
+      else{stop();if(L.steps.length)go(0)}
+    });
+  });
+  root.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'){e.preventDefault();stop();go(L.i+1)}
+    else if(e.key==='ArrowLeft'){e.preventDefault();stop();go(L.i-1)}
+    else if(e.key===' '){e.preventDefault();play()}
+  });
+  var api={
+    get world(){return L.world},set world(v){L.world=v},
+    render:render,
+    msg:function(t){
+      var m=$('.ctl-msg',root);
+      if(!t){if(m)m.remove();return}
+      if(!m){m=document.createElement('div');m.className='ctl-msg';q('.lab-ctl').appendChild(m)}
+      m.textContent=t;
+    },
+    run:function(steps){stop();L.steps=steps;L.i=0;render();play()}
+  };
+  if(cfg.controls)cfg.controls(api,q('.lab-ctl'));
+  render();
+  return api;
+}
+function ctlInput(ctl,key,label,ph,val){
+  ctl.insertAdjacentHTML('beforeend',(label?'<span class="lbl">'+label+'</span>':'')+'<input id="in-'+key+'" type="text" placeholder="'+(ph||'')+'" value="'+(val!==undefined?val:'')+'">');
+  return document.getElementById('in-'+key);
+}
+function ctlBtn(ctl,label,cls){
+  var b=document.createElement('button');
+  b.className='op'+(cls?' '+cls:'');b.textContent=label;
+  ctl.appendChild(b);return b;
+}
+function bad(input){input.classList.remove('err');void input.offsetWidth;input.classList.add('err')}
+function parseNum(s){var n=parseInt(s,10);return isFinite(n)?n:null}
+
+/* ---------- figura conceptual en loop ---------- */
+function loopFig(id,cfg){
+  var host=document.getElementById(id);if(!host)return;
+  var fig,cap,el;
+  if(cfg.bare){fig=host;cap=null;el=host}
+  else{
+    el=document.createElement('div');el.className='lab mini';
+    el.innerHTML='<div class="lab-top"><span class="lab-tag">'+cfg.tag+'</span><span class="lab-title">'+cfg.title+'</span><span class="lab-hint">CICLO AUTOMÁTICO · CLICK PAUSA</span></div><div class="lab-fig"></div><div class="lab-note"><span class="fno">MIRÁ</span><em></em></div>';
+    host.appendChild(el);
+    fig=$('.lab-fig',el);cap=$('em',el);
+  }
+  var i=0,timer=null,visible=true,paused=false;
+  function show(){
+    var f=cfg.frames[i];
+    fig.innerHTML='';
+    try{f.draw(fig)}catch(e){console.error('[figura '+id+']',e)}
+    if(cap)cap.textContent=f.cap||'';
+    i=(i+1)%cfg.frames.length;
+    if(timer!==null)clearTimeout(timer);
+    timer=null;
+    if(visible&&!paused)timer=setTimeout(show,(f.dur||cfg.dur||1900)*SLOW);
+  }
+  show();
+  el.addEventListener('click',function(){paused=!paused;if(!paused&&timer===null)timer=setTimeout(show,200)});
+  if(window.IntersectionObserver){
+    new IntersectionObserver(function(en){
+      en.forEach(function(x){
+        visible=x.isIntersecting;
+        if(visible&&!paused&&timer===null)timer=setTimeout(show,300);
+        if(!visible&&timer!==null){clearTimeout(timer);timer=null}
+      });
+    },{threshold:.1}).observe(el);
+  }
+}
+
+/* ================= HÉROE ================= */
+safe('hero',function(){
+  var idc=10;
+  function N(v){return {id:idc++,val:v}}
+  function W(nodes,over){
+    var b={nodes:nodes,ptrs:[{name:'prim',id:nodes.length?nodes[0].id:null,dy:-1}],hl:[],vis:[],born:[],dying:[],ghost:null,jump:null};
+    if(over)for(var k in over)b[k]=over[k];
+    return b;
+  }
+  loopFig('hero-fig',{bare:true,dur:1800,frames:[
+    {draw:function(h){mount(h,listG(W([{id:1,val:12},{id:2,val:7},{id:3,val:25}])))}},
+    {draw:function(h){mount(h,listG(W([{id:1,val:12},{id:2,val:7},{id:3,val:25}],{ghost:{val:40,at:3}})))}},
+    {draw:function(h){mount(h,listG(W([{id:1,val:12},{id:2,val:7},{id:3,val:25},{id:4,val:40}],{hl:[4],born:[4]})))}},
+    {draw:function(h){mount(h,listG(W([{id:1,val:12},{id:2,val:7},{id:3,val:25},{id:4,val:40}],{hl:[1]})))}},
+    {draw:function(h){mount(h,listG(W([{id:1,val:12},{id:2,val:7},{id:3,val:25},{id:4,val:40}],{ptrs:[{name:'prim',id:2,dy:-1,hot:true}],dying:[1]})))}},
+    {draw:function(h){mount(h,listG(W([{id:2,val:7},{id:3,val:25},{id:4,val:40}],{ghost:{val:5,at:0,to:2}})))}},
+    {draw:function(h){mount(h,listG(W([{id:5,val:5},{id:2,val:7},{id:3,val:25},{id:4,val:40}],{hl:[5],born:[5]})))}},
+    {draw:function(h){mount(h,listG(W([{id:5,val:5},{id:2,val:7},{id:3,val:25},{id:4,val:40}])))}}
+  ]});
+});
+
+/* ================= FIG 1 · estática vs dinámica ================= */
+safe('fig1-estatica',function(){
+  function arrG(sv,x,y,vals,total,label){
+    tagTxt(sv,x,y-14,label,{mono:1});
+    for(var i=0;i<total;i++){
+      var f=i<vals.length;
+      sv.appendChild(S('rect',{x:x+i*42,y:y,width:38,height:36,rx:4,fill:f?'#FFFDF6':'#F0EBDC',stroke:f?COL.ink:COL.lineD,'stroke-width':f?1.5:1.2}));
+      tagTxt(sv,x+i*42+19,y+20,f?vals[i]:'·',{anchor:'middle',fill:f?COL.ink:COL.lineD});
+    }
+  }
+  loopFig('fig-estatica',{tag:'FIG. 1 · § 1.1',title:'Estática vs. dinámica: quién paga el crecimiento',dur:2300,frames:[
+    {draw:function(h){var sv=svgEl(620,150);arrG(sv,40,50,[4,8,15],8,'ARREGLO · int[8]');tagTxt(sv,40,120,'5 casillas reservadas, pagadas… y sin usar',{fill:COL.ink2});h.appendChild(sv)},
+     cap:'El arreglo reserva TODO de antemano: esas casillas grises ya son tuyas, las uses o no.'},
+    {draw:function(h){var sv=svgEl(620,150);arrG(sv,40,50,[4,8,15],8,'ARREGLO · int[8]');tagTxt(sv,40+3*42-19,26,'llega un 4.º elemento',{anchor:'middle',fill:COL.acc});tagTxt(sv,40,120,'…pero el tamaño es fijo: no existe una novena casilla',{fill:COL.ink2});h.appendChild(sv)},
+     cap:'El tamaño se decidió antes de compilar: no hay manera de estirar el bloque.'},
+    {draw:function(h){var sv=svgEl(620,175);arrG(sv,30,42,[4,8,15],8,'int[8] viejo');arrG(sv,30,112,[4,8,15,0],9,'int[9] nuevo');for(var i=0;i<3;i++)arrow(sv,68+i*42,80,68+i*42,106,{color:COL.acc,sw:1.6,hs:5});h.appendChild(sv)},
+     cap:'La única salida: pedir OTRO bloque más grande y copiar todo. Eso es un arreglo nuevo, no un crecimiento.'},
+    {draw:function(h){mount(h,listG({nodes:[{id:1,val:4},{id:2,val:8},{id:3,val:15}],ptrs:[{name:'prim',id:1,dy:-1}],hl:[],vis:[],born:[],dying:[]},{minW:620,y:80}))},
+     cap:'La estructura dinámica no reserva nada: pide cada nodo recién cuando lo necesita.'},
+    {draw:function(h){mount(h,listG({nodes:[{id:1,val:4},{id:2,val:8},{id:3,val:15},{id:4,val:23}],ptrs:[{name:'prim',id:1,dy:-1}],hl:[4],vis:[],born:[4],dying:[]},{minW:620,y:80}))},
+     cap:'Crecer = pedir un nodo y engancharlo. El resto de la estructura ni se enteró.'},
+    {draw:function(h){mount(h,listG({nodes:[{id:1,val:4},{id:2,val:8},{id:3,val:15},{id:4,val:23}],ptrs:[{name:'prim',id:1,dy:-1}],hl:[],vis:[],born:[],dying:[2]},{minW:620,y:80}))},
+     cap:'Y achicarse = desenganchar: el 8 queda sin referencias y el GC devuelve su memoria.'}
+  ]});
+});
+
+/* ================= FIG 2 · costo de insertar ================= */
+safe('fig2-costo',function(){
+  function cells(sv,x,y,arr,label){
+    tagTxt(sv,x,y-14,label,{mono:1});
+    arr.forEach(function(c,i){
+      if(c===null)sv.appendChild(S('rect',{x:x+i*42,y:y,width:38,height:36,rx:4,fill:'none',stroke:COL.lineD,'stroke-width':1.2,'stroke-dasharray':'4 4'}));
+      else{
+        sv.appendChild(S('rect',{x:x+i*42,y:y,width:38,height:36,rx:4,fill:c.fresh?'#FBE9E2':'#FFFDF6',stroke:c.fresh?COL.acc:COL.ink,'stroke-width':c.fresh?2.2:1.5}));
+        tagTxt(sv,x+i*42+19,y+20,c.v,{anchor:'middle',fill:COL.ink});
+      }
+    });
+  }
+  loopFig('fig-costo',{tag:'FIG. 2 · § 1.4',title:'Insertar en el medio: desplazar contra re-enganchar',dur:1700,frames:[
+    {draw:function(h){var sv=svgEl(640,120);cells(sv,50,44,[{v:4},{v:8},null,{v:15},{v:23},null],'ARREGLO · insertar 9 en la posición 2');tagTxt(sv,50,110,'primero hay que HACER LUGAR',{fill:COL.ink2});h.appendChild(sv)},
+     cap:'En el arreglo, insertar en el medio empieza por un corrimiento: todos los posteriores se mueven uno a uno.'},
+    {draw:function(h){var sv=svgEl(640,120);cells(sv,50,44,[{v:4},{v:8},null,{v:15},null,{v:23}],'ARREGLO · insertar 9 en la posición 2');arrow(sv,50+4*42+19,40,50+5*42+19,36,{color:COL.acc,sw:1.8,hs:5});tagTxt(sv,50,110,'23 se corre un casillero…',{fill:COL.ink2});h.appendChild(sv)},
+     cap:'El 23 se desplaza a la derecha. Movimiento 1 de 2.'},
+    {draw:function(h){var sv=svgEl(640,120);cells(sv,50,44,[{v:4},{v:8},null,null,{v:15},{v:23}],'ARREGLO · insertar 9 en la posición 2');arrow(sv,50+3*42+19,40,50+4*42+19,36,{color:COL.acc,sw:1.8,hs:5});tagTxt(sv,50,110,'…luego el 15. Recién ahora cae el 9.',{fill:COL.ink2});h.appendChild(sv)},
+     cap:'El 15 también. Con n elementos serían n−2 desplazamientos: costo O(n).'},
+    {draw:function(h){var sv=svgEl(640,120);cells(sv,50,44,[{v:4},{v:8},{v:9,fresh:1},{v:15},{v:23},null],'ARREGLO · insertar 9 en la posición 2');tagTxt(sv,50,110,'movimientos: 2 (con 1.000 elementos: 998)',{fill:COL.acc});h.appendChild(sv)},
+     cap:'Finalmente el 9 ocupa su lugar. El costo crece con el tamaño: O(n).'},
+    {draw:function(h){mount(h,listG({nodes:[{id:1,val:4},{id:2,val:8},{id:3,val:15},{id:4,val:23}],ptrs:[{name:'prim',id:1,dy:-1}],ghost:{val:9,at:2,to:3},hl:[],vis:[],born:[],dying:[]},{minW:640,y:84}))},
+     cap:'En la lista: se encuentra el hueco caminando (eso sí cuesta), y después…'},
+    {draw:function(h){mount(h,listG({nodes:[{id:1,val:4},{id:2,val:8},{id:5,val:9},{id:3,val:15},{id:4,val:23}],ptrs:[{name:'prim',id:1,dy:-1}],hl:[5],vis:[],born:[5],dying:[],jump:{from:2,to:3}},{minW:640,y:84}))},
+     cap:'…el cambio son DOS punteros: el nuevo mira al resto y el ancla lo adopta. Enganche O(1): el tamaño no importa.'}
+  ]});
+});
+
+/* ================= FIG 3 · perder la cabecera ================= */
+safe('fig3-perder',function(){
+  function base(over){
+    var b={nodes:[{id:1,val:12},{id:2,val:7},{id:3,val:25},{id:4,val:40}],ptrs:[],hl:[],vis:[],born:[],dying:[],fade:null};
+    if(over)for(var k in over)b[k]=over[k];
+    return b;
+  }
+  loopFig('fig-perder',{tag:'FIG. 3 · § 2.2',title:'Perder la cabecera es perder todo',dur:2000,frames:[
+    {draw:function(h){mount(h,listG(base({ptrs:[{name:'prim',id:1,dy:-1,hot:true}]})))},cap:'Toda la lista cuelga de una única referencia: prim. Es la única puerta de entrada.'},
+    {draw:function(h){mount(h,listG(base({ptrs:[{name:'prim',id:null,dy:-1,hot:true}]})))},cap:'Si prim se sobreescribe sin guardar el valor anterior…'},
+    {draw:function(h){mount(h,listG(base({fade:{1:.55,2:.55,3:.55,4:.55}})))},cap:'…nadie apunta al 12. Y al 7 solo se llegaba pasando por el 12: la inalcanzabilidad se PROPAGA.'},
+    {draw:function(h){mount(h,listG(base({fade:{1:.28,2:.28,3:.28,4:.28}})))},cap:'Para el programa, los cuatro nodos ya no existen: no hay camino desde el stack hacia ellos.'},
+    {draw:function(h){var L=listG(base({fade:{1:.13,2:.13,3:.13,4:.13}}));var sv=mount(h,L);tagTxt(sv,54,40,'GC ⌫ 4 nodos liberados',{fill:COL.acc,mono:1})},cap:'El recolector los barre a todos. Por eso «jamás se pierde prim» es la regla número uno.'}
+  ]});
+});
+
+/* ================= FIG 4 · los tres punteros ================= */
+safe('fig4-punteros',function(){
+  function W(ptrs,ghost,extra){
+    var b={nodes:[{id:1,val:5},{id:2,val:12},{id:3,val:20},{id:4,val:31}],ptrs:ptrs,hl:[],vis:[],born:[],dying:[],ghost:ghost||null,jump:null};
+    if(extra)for(var k in extra)b[k]=extra[k];
+    return b;
+  }
+  var P=function(auxId,prevId){return [{name:'prim',id:1,dy:-1},{name:'aux',id:auxId,dy:-1,row:1,teal:true,hot:true},{name:'prev',id:prevId,dy:-1,row:2}]};
+  loopFig('fig-punteros',{tag:'FIG. 4 · § 2.3',title:'Los tres punteros en acción: insertar 25 en orden',dur:2000,frames:[
+    {draw:function(h){mount(h,listG(W(P(1,null))))},cap:'Insertar 25 en orden: prim sostiene la lista, aux examina y prev queda UN paso atrás, de ancla.'},
+    {draw:function(h){mount(h,listG(W(P(2,1))))},cap:'25 > 5 → avanzan los dos: aux a 12, prev queda en 5.'},
+    {draw:function(h){mount(h,listG(W(P(3,2))))},cap:'25 > 12 → de nuevo: aux a 20, prev queda en 12.'},
+    {draw:function(h){mount(h,listG(W(P(4,3),null,{hl:[4]})))},cap:'25 < 31 → aux se pasó: el hueco está entre prev(20) y aux(31). El while corta.'},
+    {draw:function(h){mount(h,listG(W(P(4,3),{val:25,at:3,to:4})))},cap:'El nuevo nace y PRIMERO mira al resto (nuevo.sig = aux): regla de oro del enganche.'},
+    {draw:function(h){mount(h,listG({nodes:[{id:1,val:5},{id:2,val:12},{id:3,val:20},{id:5,val:25},{id:4,val:31}],ptrs:[{name:'prim',id:1,dy:-1}],hl:[5],vis:[],born:[5],dying:[],ghost:null,jump:null}))},
+     cap:'DESPUÉS lo apunta el ancla (prev.sig = nuevo). Nunca al revés: la FIG. 5 muestra por qué.'}
+  ]});
+});
+
+/* ================= FIG 5 · cortar la cadena ================= */
+safe('fig5-cortar',function(){
+  function L3(){return [{id:1,val:4},{id:2,val:9},{id:3,val:16}]}
+  loopFig('fig-cortar',{tag:'FIG. 5 · § 2.4',title:'El orden de los enlaces: bien y mal, lado a lado',dur:2100,frames:[
+    {draw:function(h){mount(h,listG({nodes:L3(),ptrs:[{name:'prev',id:1,dy:-1,hot:true},{name:'aux',id:2,dy:-1,row:1,teal:true}],hl:[],vis:[],born:[],dying:[]}))},
+     cap:'Mismo punto de partida: enganchar 7 entre 4 y 9. La misión parece trivial…'},
+    {draw:function(h){mount(h,listG({nodes:L3(),ptrs:[{name:'prev',id:1,dy:-1,hot:true},{name:'aux',id:2,dy:-1,row:1,teal:true}],ghost:{val:7,at:1,to:2},hl:[],vis:[],born:[],dying:[]}))},
+     cap:'✔ ORDEN CORRECTO — paso 1: nuevo.sig = aux. El nuevo ya mira al resto de la cadena.'},
+    {draw:function(h){mount(h,listG({nodes:[{id:1,val:4},{id:4,val:7},{id:2,val:9},{id:3,val:16}],ptrs:[{name:'prim',id:1,dy:-1}],hl:[4],vis:[],born:[4],dying:[]}))},
+     cap:'✔ paso 2: prev.sig = nuevo. El 9 y el 16 siguen alcanzables: la cadena quedó entera.'},
+    {draw:function(h){mount(h,listG({nodes:L3(),ptrs:[{name:'prev',id:1,dy:-1,hot:true}],hl:[],vis:[],born:[],dying:[]}))},
+     cap:'Ahora el mismo enganche con el orden INVERTIDO — el error clásico de parcial:'},
+    {draw:function(h){mount(h,listG({nodes:[{id:1,val:4},{id:4,val:7},{id:2,val:9},{id:3,val:16}],ptrs:[{name:'prim',id:1,dy:-1}],hl:[4],born:[4],dying:[],broken:4,fade:{2:.5,3:.5}}))},
+     cap:'✘ prev.sig = nuevo PRIMERO: el 7 aún miraba a null… el tramo 9→16 quedó colgando de nada.'},
+    {draw:function(h){var L=listG({nodes:[{id:1,val:4},{id:4,val:7},{id:2,val:9},{id:3,val:16}],ptrs:[{name:'prim',id:1,dy:-1}],broken:4,fade:{2:.14,3:.14}});var sv=mount(h,L);tagTxt(sv,54,40,'GC ⌫ cadena cortada',{fill:COL.acc,mono:1})},
+     cap:'✘ El GC borra el 9 y el 16 sin aviso. Un solo enlace mal ordenado y perdiste media lista.'}
+  ]});
+});
+
+/* ================= FIG 6 · propiedad de orden ABB ================= */
+safe('fig6-abb',function(){
+  function TR(){return {id:1,val:50,l:{id:2,val:30,l:{id:4,val:20,l:null,r:null},r:{id:5,val:40,l:null,r:null}},r:{id:3,val:70,l:{id:6,val:60,l:null,r:null},r:{id:7,val:80,l:null,r:null}}}}
+  function F(over){return function(h){var b={root:TR(),hl:[],vis:[],edgeOn:[],tags:[]};if(over)for(var k in over)b[k]=over[k];mount(h,treeG(b,{dx:62,dy:66,x0:60,y0:88,bottom:84}))}}
+  loopFig('fig-abb',{tag:'FIG. 6 · § 4.1',title:'Vocabulario y propiedad de orden, en un solo árbol',dur:2300,frames:[
+    {draw:F({hl:[1],tags:[{id:1,txt:'raíz',dy:-28}]}),cap:'La raíz es el equivalente de prim: el único nodo sin padre, y la única entrada al árbol.'},
+    {draw:F({vis:[2,4,5],tags:[{id:2,txt:'todo este subárbol < 50',dy:64,fill:'#0F6E5C'}]}),cap:'Propiedad de orden: TODO lo que cuelga a la izquierda de 50 es menor — no solo su hijo directo.'},
+    {draw:F({vis:[3,6,7],tags:[{id:3,txt:'todo este subárbol > 50',dy:64,fill:'#0F6E5C'}]}),cap:'…y TODO lo que cuelga a la derecha es mayor. La propiedad vale para subárboles COMPLETOS.'},
+    {draw:F({hl:[4,5,6,7],tags:[{id:4,txt:'hoja',dy:-26},{id:5,txt:'hoja',dy:-26},{id:6,txt:'hoja',dy:-26},{id:7,txt:'hoja',dy:-26}]}),cap:'Los nodos sin hijos son las hojas: donde toda búsqueda termina (bien o con null).'},
+    {draw:F({levels:true,tags:[{id:1,txt:'altura 2',dy:-28,fill:'#D9481C'}]}),cap:'La altura cuenta los pisos (raíz en nivel 0): es justamente el costo máximo de una búsqueda.'}
+  ]});
+});
+
+/* ================= FIG 7 · altura recursiva ================= */
+safe('fig7-alt',function(){
+  function TR(){return {id:1,val:50,l:{id:2,val:30,l:{id:4,val:20,l:null,r:null},r:{id:5,val:40,l:null,r:null}},r:{id:3,val:70,l:null,r:{id:7,val:80,l:null,r:null}}}}
+  function F(over){return function(h){var b={root:TR(),hl:[],vis:[],edgeOn:[],tags:[]};if(over)for(var k in over)b[k]=over[k];mount(h,treeG(b,{dx:62,dy:66,x0:60,y0:88,bottom:84}))}}
+  loopFig('fig-alt',{tag:'FIG. 7 · § 4.5',title:'La altura se calcula de las hojas hacia arriba',dur:2200,frames:[
+    {draw:F({levels:true}),cap:'altura(null) = −1 por convención: es lo que hace que la cuenta cierre en las hojas.'},
+    {draw:F({vis:[4,5,7],tags:[{id:4,txt:'h=0',dy:30,fill:'#0F6E5C'},{id:5,txt:'h=0',dy:30,fill:'#0F6E5C'},{id:7,txt:'h=0',dy:30,fill:'#0F6E5C'}]}),cap:'Caso base: una hoja no tiene hijos → 1 + max(−1, −1) = 0.'},
+    {draw:F({vis:[4,5,7],hl:[2],tags:[{id:2,txt:'h=1',dy:30,fill:'#0F6E5C'}]}),cap:'30: 1 + max(h(20), h(40)) = 1 + 0 = 1. La respuesta de los hijos ya está calculada.'},
+    {draw:F({vis:[4,5,7],hl:[3],tags:[{id:3,txt:'h=1',dy:30,fill:'#0F6E5C'}]}),cap:'70: 1 + max(h(null), h(80)) = 1 + max(−1, 0) = 1. El hijo que falta cuenta como −1.'},
+    {draw:F({hl:[1],tags:[{id:1,txt:'h=2',dy:-28,fill:'#D9481C'}]}),cap:'La raíz: 1 + max(1, 1) = 2. La recursión devuelve el resultado subiendo por la pila de llamadas.'}
+  ]});
+});
+
+/* ================= FIG 8 · listas de adyacencia ================= */
+safe('fig8-ady',function(){
+  function drawAdj(h,edges){
+    var sv=svgEl(640,240);
+    var V={A:{x:70,y:70},B:{x:170,y:70},C:{x:70,y:170},D:{x:170,y:170}};
+    Object.keys(V).forEach(function(k){treeCircle(sv,V[k].x,V[k].y,k,{r:17})});
+    edges.forEach(function(e){
+      sv.appendChild(S('line',{x1:V[e[0]].x,y1:V[e[0]].y,x2:V[e[1]].x,y2:V[e[1]].y,class:'tn-e on'}));
+    });
+    tagTxt(sv,40,40,'EL GRAFO',{mono:1});
+    tagTxt(sv,300,40,'SU LISTA DE ADYACENCIA (una lista por vértice)',{mono:1});
+    ['A','B','C','D'].forEach(function(r,i){
+      var y=70+i*46;
+      treeCircle(sv,330,y,r,{r:15});
+      arrow(sv,347,y,370,y,{color:COL.teal,sw:1.5,hs:5});
+      var xs=380;
+      edges.forEach(function(e){
+        [0,1].forEach(function(k){
+          if(e[k]===r){
+            treeCircle(sv,xs,y,e[k?0:1],{r:14,vis:true});
+            arrow(sv,xs+14,y,xs+32,y,{color:COL.ink,sw:1.4,hs:5});
+            xs+=46;
+          }
+        });
+      });
+      if(xs===380)tagTxt(sv,395,y,'∅',{fill:COL.ink2});
+    });
+    h.appendChild(sv);
+  }
+  loopFig('fig-ady',{tag:'FIG. 8 · § 5.5',title:'Listas de adyacencia: la puerta de entrada a grafos',dur:2300,frames:[
+    {draw:function(h){drawAdj(h,[])},cap:'Un grafo: vértices conectados por aristas. ¿Cómo se guarda algo así con lo que ya sabés?'},
+    {draw:function(h){drawAdj(h,[['A','B']])},cap:'Cada vértice tiene SU lista enlazada. La arista A–B se guarda DOS veces: B en la lista de A…'},
+    {draw:function(h){drawAdj(h,[['A','B'],['A','C']])},cap:'…y A en la lista de B. Sumamos A–C: C entra en la lista de A, A en la de C.'},
+    {draw:function(h){drawAdj(h,[['A','B'],['A','C'],['B','D']])},cap:'Y B–D. Cada lista crece dinámicamente, nodo a nodo: ni más ni menos que las aristas de su vértice.'},
+    {draw:function(h){drawAdj(h,[['A','B'],['A','C'],['B','D'],['C','D']])},cap:'Cuatro listas de estructura dinámica que describen un grafo entero. Grafos es literalmente esto, escalado.'}
+  ]});
+});
+
+/* ================= FIG 9 · O(log n) vs O(n) ================= */
+safe('fig9-costos',function(){
+  loopFig('fig-costos',{tag:'FIG. 9 · § 6.1',title:'O(log n) contra O(n), a escala real',dur:2400,frames:[
+    {draw:function(h){var sv=svgEl(640,150);tagTxt(sv,30,36,'BUSCAR UN VALOR ENTRE 1.000.000 DE ELEMENTOS',{mono:1});tagTxt(sv,30,110,'¿cuántos pasos necesita cada estructura?',{fill:COL.ink2});h.appendChild(sv)},
+     cap:'La tabla del capítulo, traducida a escala: buscar un dato entre un millón de elementos.'},
+    {draw:function(h){var sv=svgEl(640,150);tagTxt(sv,30,36,'ABB BALANCEADO · O(log n)',{mono:1});sv.appendChild(S('rect',{x:30,y:52,width:34,height:34,rx:4,fill:'#DDEBE3',stroke:COL.teal,'stroke-width':1.6}));tagTxt(sv,80,74,'≈ 20 pasos',{fill:COL.teal});tagTxt(sv,30,120,'cada comparación descarta medio subárbol',{fill:COL.ink2});h.appendChild(sv)},
+     cap:'El ABB balanceado: cada comparación parte el espacio a la mitad. 20 pisos bastan para un millón.'},
+    {draw:function(h){var sv=svgEl(640,170);tagTxt(sv,30,36,'LISTA ENLAZADA · O(n)',{mono:1});sv.appendChild(S('rect',{x:30,y:52,width:580,height:34,rx:4,fill:'#FBE9E2',stroke:COL.acc,'stroke-width':1.6}));tagTxt(sv,610,74,'hasta 1.000.000',{anchor:'end',fill:COL.acc});tagTxt(sv,30,130,'un salto por nodo: no hay atajos en una cadena',{fill:COL.ink2});h.appendChild(sv)},
+     cap:'La lista: en el peor caso, un salto por cada elemento. La barra ni entra en el dibujo — esa es la idea.'}
+  ]});
+});
+
+/* ================= LAB 01 · memoria ================= */
+safe('lab01-memoria',function(){
+  var SRC=[
+    'Nodo a = new Nodo(7);      // el objeto vive en el HEAP; "a" guarda su dirección',
+    'Nodo b = a;                // aliasing: b apunta AL MISMO objeto',
+    'b.info = 99;               // una sola copia: a.info también es 99',
+    'Nodo c = new Nodo(5);      // otro objeto, otra dirección',
+    'a.sig = c;                 // la referencia cruza el heap: nace la cadena',
+    'a = null;                  // el 99 pierde una referencia…',
+    'b = null;                  // …y ahora NINGUNA: es basura',
+    '// GC: rastrea desde el stack → el 99 es inalcanzable, el 5 NO (c lo apunta)',
+    'c = null;                  // tampoco queda quien apunte al 5',
+    '// GC: heap vacío, memoria devuelta al sistema'
+  ];
+  var scenes,sceneIdx=0;
+  makeLab('lab-mem',{
+    tag:'LAB 01 · § 1.2–1.3',title:'Memoria en vivo: stack, heap y garbage collector',
+    hint:'guion en 8 escenas',file:'Memoria.java',code:SRC.join('\n'),
+    idle:'Pulsá «siguiente escena»: un guion recorre referencias, aliasing y el GC.',
+    init:function(){sceneIdx=0;return {vars:[],heap:[],hotVar:null,hl:[],gc:false}},
+    draw:function(h,w){
+      var sv=svgEl(660,330);
+      sv.appendChild(S('rect',{x:20,y:44,width:196,height:262,rx:10,fill:'#FCFAF3',stroke:COL.lineD,'stroke-width':1.4}));
+      sv.appendChild(S('rect',{x:252,y:44,width:388,height:262,rx:10,fill:'#FCFAF3',stroke:COL.lineD,'stroke-width':1.4}));
+      tagTxt(sv,118,66,'STACK · VARIABLES LOCALES',{anchor:'middle',mono:1});
+      tagTxt(sv,446,66,'HEAP · OBJETOS (new)',{anchor:'middle',mono:1});
+      var pos={A:{x:300,y:92},B:{x:478,y:92}};
+      w.heap.forEach(function(o){
+        var p=pos[o.addr]||{x:300,y:200};
+        var g=S('g',{transform:'translate('+p.x+','+p.y+')',opacity:o.dying?0.22:1});
+        g.appendChild(S('rect',{width:126,height:104,rx:8,class:'tn-c',style:o.dying?'stroke-dasharray:4 4':''}));
+        tagTxt(g,63,20,'@'+o.addr+' · Nodo',{anchor:'middle',fill:w.hl.indexOf(o.addr)>=0?COL.acc:COL.ink2,mono:1});
+        tagTxt(g,10,44,'info',{fill:COL.ink2,mono:1});
+        tagTxt(g,86,44,String(o.info),{anchor:'middle',fill:COL.ink,mono:1});
+        tagTxt(g,10,66,'sig',{fill:COL.ink2,mono:1});
+        tagTxt(g,86,66,o.sig?'@'+o.sig:'null',{anchor:'middle',fill:o.sig?COL.pet:COL.ink2,mono:1});
+        if(o.dying)tagTxt(g,63,96,'⌫ GC',{anchor:'middle',fill:COL.acc,mono:1});
+        sv.appendChild(g);
+      });
+      w.heap.forEach(function(o){
+        if(!o.sig)return;
+        var p=pos[o.addr],q2=pos[o.sig];
+        if(p&&q2)arrow(sv,p.x+126,p.y+80,q2.x+4,q2.y+80,{color:COL.pet,sw:1.8,curve:-26});
+      });
+      w.vars.forEach(function(v,i){
+        var y=100+i*40;
+        if(w.hotVar===v.n)sv.appendChild(S('rect',{x:30,y:y-16,width:176,height:26,rx:5,fill:'rgba(196,61,20,.08)'}));
+        tagTxt(sv,40,y,'Nodo '+v.n,{fill:COL.ink,mono:1});
+        if(v.ref){
+          var p=pos[v.ref];
+          sv.appendChild(S('rect',{x:118,y:y-15,width:64,height:22,rx:5,fill:'#FFF',stroke:COL.pet,'stroke-width':1.3}));
+          tagTxt(sv,150,y,'@'+v.ref,{anchor:'middle',fill:COL.pet,mono:1});
+          if(p)arrow(sv,182,y-6,p.x+63,p.y-4,{color:COL.pet,sw:1.7,curve:-30-i*8});
+        }else tagTxt(sv,150,y,'null',{anchor:'middle',fill:COL.ink2,mono:1});
+      });
+      if(!w.vars.length)tagTxt(sv,118,120,'(sin variables)',{anchor:'middle',fill:COL.ink2});
+      if(!w.heap.length)tagTxt(sv,446,120,'(sin objetos)',{anchor:'middle',fill:COL.ink2});
+      h.appendChild(sv);
+    },
+    controls:function(api,ctl){
+      var bNext=ctlBtn(ctl,'▶ siguiente escena'),bRst=ctlBtn(ctl,'↺ reiniciar guion','ghost');
+      var acc=[];
+      function W(){return api.world}
+      function push(lines,note){acc.push({lines:lines,note:note,world:clone(W())})}
+      function run(){var s=acc;acc=[];api.run(s)}
+      bNext.addEventListener('click',function(){
+        if(sceneIdx>=scenes.length){api.msg('Fin del guion: reinicialo para repetirlo.');return}
+        scenes[sceneIdx]();
+        sceneIdx++;
+        if(sceneIdx>=scenes.length)api.msg('Fin del guion ✓ — reinicialo para repetirlo.');
+      });
+      bRst.addEventListener('click',function(){
+        api.world={vars:[],heap:[],hotVar:null,hl:[],gc:false};
+        sceneIdx=0;api.msg(null);api.render();
+      });
+      scenes=[
+        function(){var w=W();push([1],'Nodo a = new Nodo(7): el objeto nace en el HEAP y "a" (en el stack) guarda su dirección.');
+          w.heap.push({addr:'A',info:7,sig:null});w.vars.push({n:'a',ref:'A'});w.hotVar='a';w.hl=['A'];
+          push([1],'La variable NO contiene al objeto: contiene @A, su dirección. Esa es la referencia.');run()},
+        function(){var w=W();w.hotVar='b';push([2],'Nodo b = a: no se copia el objeto, solo la dirección.');
+          w.vars.push({n:'b',ref:'A'});push([2],'a y b son dos nombres para UN solo objeto: aliasing.');run()},
+        function(){var w=W();w.hotVar='b';push([3],'b.info = 99 …');
+          w.heap[0].info=99;push([3],'…y como hay una sola copia, a.info también es 99. Nadie duplicó nada.');run()},
+        function(){var w=W();w.hotVar='c';push([4],'Nodo c = new Nodo(5): otro objeto, otra dirección (@B).');
+          w.heap.push({addr:'B',info:5,sig:null});w.vars.push({n:'c',ref:'B'});push([4],'Dos objetos, tres variables: contá las flechas, no los nombres.');run()},
+        function(){var w=W();w.hotVar='a';w.hl=['A','B'];push([5],'a.sig = c: una referencia puede vivir DENTRO de otro objeto.');
+          w.heap[0].sig='B';push([5],'La cadena cruza el heap: desde @A se alcanza @B.');run()},
+        function(){var w=W();w.hotVar='a';push([6],'a = null: el 99 pierde una flecha, pero b todavía lo sostiene.');
+          w.vars[0].ref=null;w.hotVar='b';w.vars[1].ref=null;push([7],'b = null: ahora NINGUNA variable apunta a @A. ¿Y @B? c lo sigue apuntando.');run()},
+        function(){var w=W();w.hotVar='c';w.hl=['B'];push([8],'GC: rastrea lo alcanzable desde el stack → @B sobrevive (c lo apunta).');
+          w.heap[0].dying=true;push([8],'@A es basura: solo era alcanzable a través de variables que ya no existen.');
+          w.heap.shift();push([8],'Memoria de @A devuelta. Ojo: el GC no sigue referencias DESDE la basura — @B queda a salvo.');run()},
+        function(){var w=W();w.hotVar='c';push([9],'c = null: ahora @B tampoco tiene quien lo apunte…');
+          w.vars[2].ref=null;w.heap[0].dying=true;w.hotVar=null;
+          push([10],'…el GC lo barre y el heap queda vacío. Toda la memoria, devuelta.');run()}
+      ];
+    }
+  });
+});
+
+/* ================= LAB 02 · playground de lista ================= */
+safe('lab02-lista',function(){
+  var SRC=[
+    'class Nodo {',
+    '    int info;',
+    '    Nodo sig;',
+    '    Nodo(int x) { info = x; sig = null; }',
+    '}',
+    '',
+    'class Lista {',
+    '    Nodo prim = null;',
+    '',
+    '    void insertarInicio(int x) {',
+    '        Nodo nuevo = new Nodo(x);      // 1. nace suelto',
+    '        nuevo.sig = prim;              // 2. el nuevo mira al resto',
+    '        prim = nuevo;                  // 3. la cabecera lo adopta',
+    '    }',
+    '',
+    '    void insertarFinal(int x) {',
+    '        if (prim == null) { prim = new Nodo(x); return; }',
+    '        Nodo aux = prim;               // el caminante',
+    '        while (aux.sig != null)',
+    '            aux = aux.sig;',
+    '        aux.sig = new Nodo(x);         // enganche al final',
+    '    }',
+    '',
+    '    void insertarPos(int x, int k) {   // k = 0..largo',
+    '        if (k == 0) { insertarInicio(x); return; }',
+    '        Nodo prev = prim;',
+    '        for (int i = 0; i < k-1; i++) prev = prev.sig;',
+    '        Nodo nuevo = new Nodo(x);',
+    '        nuevo.sig = prev.sig;          // 1. el nuevo mira',
+    '        prev.sig = nuevo;              // 2. el ancla lo apunta',
+    '    }',
+    '',
+    '    boolean eliminar(int x) {',
+    '        Nodo prev = null, aux = prim;',
+    '        while (aux != null && aux.info != x) {',
+    '            prev = aux; aux = aux.sig;',
+    '        }',
+    '        if (aux == null) return false;     // no está',
+    '        if (prev == null) prim = aux.sig;  // caso 1: el primero',
+    '        else prev.sig = aux.sig;           // caso 2: interior',
+    '        return true;   // aux quedó desreferenciado → GC',
+    '    }',
+    '',
+    '    boolean buscar(int x) {',
+    '        Nodo aux = prim;',
+    '        while (aux != null && aux.info != x)',
+    '            aux = aux.sig;',
+    '        return aux != null;',
+    '    }',
+    '}'
+  ];
+  var mIni=fl(SRC,'void insertarInicio')-1,mFin=fl(SRC,'void insertarFinal')-1,
+      mPos=fl(SRC,'void insertarPos')-1,mEli=fl(SRC,'boolean eliminar')-1,mBus=fl(SRC,'boolean buscar')-1;
+  makeLab('lab-lista',{
+    tag:'LAB 02 · § 2.2',title:'Playground de lista simplemente enlazada',
+    hint:'insertar · eliminar · buscar',file:'Lista.java',code:SRC.join('\n'),
+    init:function(){return {nodes:[{id:1,val:12},{id:2,val:7},{id:3,val:25}],nid:4}},
+    draw:function(h,w){mount(h,listG(w))},
+    controls:function(api,ctl){
+      var inV=ctlInput(ctl,'lv','VALOR','ej: 9'),inK=ctlInput(ctl,'lk','POS','0');
+      function W(){return api.world}
+      function V(over){
+        var b={nodes:W().nodes.map(function(n){return {id:n.id,val:n.val}}),
+          ptrs:[{name:'prim',id:W().nodes.length?W().nodes[0].id:null,dy:-1}],
+          hl:[],vis:[],born:[],dying:[],ghost:null,jump:null};
+        if(over)for(var k in over)b[k]=over[k];
+        return b;
+      }
+      function val(){var n=parseNum(inV.value);if(n===null){bad(inV);api.msg('El valor tiene que ser un número entero.');return null}api.msg(null);return n}
+      function kpos(){var n=parseNum(inK.value);if(n===null||n<0||n>W().nodes.length){bad(inK);api.msg('La posición va de 0 a '+W().nodes.length+'.');return null}api.msg(null);return n}
+      function insInicio(x){
+        var steps=[],id=W().nid++,primId=W().nodes.length?W().nodes[0].id:null;
+        steps.push({lines:[fl(SRC,'Nodo nuevo = new Nodo(x)',mIni)],note:'Nodo nuevo = new Nodo('+x+'): nace suelto, nadie lo apunta todavía.',world:V({ghost:{val:x,at:0},ptrs:V().ptrs.concat([{name:'nuevo',slot:0,hot:true,dy:-1}])})});
+        steps.push({lines:[fl(SRC,'nuevo.sig = prim',mIni)],note:primId?'nuevo.sig = prim: el nuevo mira al resto ANTES de ser apuntado (regla de oro).':'prim es null → el nuevo apunta a null: será el único nodo.',world:V({ghost:{val:x,at:0,to:primId},ptrs:V().ptrs.concat([{name:'nuevo',slot:0,hot:true,dy:-1}])})});
+        W().nodes.unshift({id:id,val:x});
+        steps.push({lines:[fl(SRC,'prim = nuevo',mIni)],note:'prim = nuevo: listo, en O(1). Dos asignaciones, cero recorrido.',world:V({hl:[id],born:[id]})});
+        return steps;
+      }
+      ctlBtn(ctl,'Insertar al inicio').addEventListener('click',function(){
+        var x=val();if(x===null)return;
+        if(W().nodes.length>=8)return api.msg('El dibujo admite hasta 8 nodos: eliminá alguno primero.');
+        api.run(insInicio(x));
+      });
+      ctlBtn(ctl,'Insertar al final').addEventListener('click',function(){
+        var x=val();if(x===null)return;
+        if(W().nodes.length>=8)return api.msg('El dibujo admite hasta 8 nodos: eliminá alguno primero.');
+        if(!W().nodes.length)return api.run(insInicio(x));
+        var steps=[],i,first=W().nodes[0],id=W().nid++;
+        steps.push({lines:[fl(SRC,'Nodo aux = prim',mFin)],note:'aux arranca en la cabecera: será el caminante.',world:V({hl:[first.id],ptrs:V().ptrs.concat([{name:'aux',id:first.id,dy:-1,row:1,teal:true,hot:true}])})});
+        for(i=0;i<W().nodes.length-1;i++){
+          var nx=W().nodes[i+1];
+          steps.push({lines:[fl(SRC,'while (aux.sig != null)',mFin)],note:'aux.sig != null → aux avanza a '+nx.val+'.',world:V({hl:[nx.id],ptrs:V().ptrs.concat([{name:'aux',id:nx.id,dy:-1,row:1,teal:true,hot:true}])})});
+        }
+        var last=W().nodes[W().nodes.length-1];
+        steps.push({lines:[fl(SRC,'while (aux.sig != null)',mFin)],note:'aux.sig == null → salió del while: aux ES el último.',world:V({hl:[last.id],ptrs:V().ptrs.concat([{name:'aux',id:last.id,dy:-1,row:1,teal:true}])})});
+        steps.push({lines:[fl(SRC,'aux.sig = new Nodo(x)',mFin)],note:'El último apunta al nuevo, que nace con sig = null.',world:V({ghost:{val:x,at:W().nodes.length},ptrs:V().ptrs.concat([{name:'aux',id:last.id,dy:-1,row:1,teal:true},{name:'nuevo',slot:W().nodes.length,hot:true,dy:-1}])})});
+        W().nodes.push({id:id,val:x});
+        steps.push({lines:[fl(SRC,'aux.sig = new Nodo(x)',mFin)],note:'✓ Insertado al final. El recorrido fue O(n); el enganche, O(1).',world:V({hl:[id],born:[id]})});
+        api.run(steps);
+      });
+      ctlBtn(ctl,'Insertar en posición').addEventListener('click',function(){
+        var x=val(),k=kpos();if(x===null||k===null)return;
+        if(W().nodes.length>=8)return api.msg('El dibujo admite hasta 8 nodos: eliminá alguno primero.');
+        if(k===0)return api.run(insInicio(x));
+        var steps=[],id=W().nid++,i;
+        steps.push({lines:[fl(SRC,'Nodo prev = prim',mPos)],note:'prev (el ancla) arranca en la cabecera; hay que avanzar '+(k-1)+' veces.',world:V({hl:[W().nodes[0].id],ptrs:V().ptrs.concat([{name:'prev',id:W().nodes[0].id,dy:-1,row:1,hot:true}])})});
+        for(i=1;i<k;i++){
+          var nx=W().nodes[i];
+          steps.push({lines:[fl(SRC,'prev = prev.sig',mPos)],note:'prev avanza a '+nx.val+' ('+i+' de '+(k-1)+').',world:V({hl:[nx.id],ptrs:V().ptrs.concat([{name:'prev',id:nx.id,dy:-1,row:1,hot:true}])})});
+        }
+        var prev=W().nodes[k-1],target=W().nodes[k]?W().nodes[k].id:null;
+        steps.push({lines:[fl(SRC,'nuevo.sig = prev.sig',mPos)],note:'1) El nuevo mira a lo que será su siguiente'+(target?'':' (null: va al final)')+'.',world:V({ghost:{val:x,at:k,to:target},ptrs:V().ptrs.concat([{name:'prev',id:prev.id,dy:-1,row:1,hot:true},{name:'nuevo',slot:k,hot:true,dy:-1}])})});
+        W().nodes.splice(k,0,{id:id,val:x});
+        steps.push({lines:[fl(SRC,'prev.sig = nuevo',mPos)],note:'2) Recién ahora el ancla lo apunta. Nunca al revés.',world:V({hl:[id],born:[id]})});
+        api.run(steps);
+      });
+      ctlBtn(ctl,'Eliminar valor','warnb').addEventListener('click',function(){
+        var x=val();if(x===null)return;
+        var W2=W(),steps=[],prev=null,aux=null,i,found=-1;
+        if(!W2.nodes.length)return api.msg('La lista está vacía.');
+        aux=W2.nodes[0];
+        steps.push({lines:[fl(SRC,'Nodo prev = null, aux = prim',mEli)],note:'prev = null, aux = prim: la búsqueda arranca en la cabecera.',world:V({hl:[aux.id],ptrs:V().ptrs.concat([{name:'aux',id:aux.id,dy:-1,row:1,teal:true,hot:true},{name:'prev',id:null,dy:-1,row:2}])})});
+        for(i=0;i<W2.nodes.length&&W2.nodes[i].val!==x;i++){
+          prev=W2.nodes[i];aux=W2.nodes[i+1];
+          if(!aux)break;
+          steps.push({lines:[fl(SRC,'prev = aux; aux = aux.sig',mEli)],note:'¿'+prev.val+' == '+x+'? No → avanzan prev y aux.',world:V({hl:[aux.id],ptrs:V().ptrs.concat([{name:'aux',id:aux.id,dy:-1,row:1,teal:true,hot:true},{name:'prev',id:prev.id,dy:-1,row:2}])})});
+        }
+        found=(i<W2.nodes.length&&W2.nodes[i].val===x)?i:-1;
+        if(found<0){
+          steps.push({lines:[fl(SRC,'return false',mEli)],note:'aux llegó a null sin encontrar '+x+': no está.',world:V({ret:'false',ptrs:V().ptrs.concat([{name:'aux',id:null,dy:-1,row:1,teal:true}])})});
+          return api.run(steps);
+        }
+        var target=W2.nodes[found];
+        if(found===0){
+          var second=W2.nodes[1];
+          steps.push({lines:[fl(SRC,'prim = aux.sig',mEli)],note:'Era el primero: prim salta directo al segundo (caso 1).',world:V({hl:[target.id],dying:[target.id],ptrs:[{name:'prim',id:second?second.id:null,dy:-1,hot:true}]})});
+          W2.nodes.shift();
+          steps.push({lines:[fl(SRC,'return true',mEli)],note:'✓ El '+x+' quedó desreferenciado: nadie lo alcanza → el GC se lo lleva.',world:V({})});
+        }else{
+          var pv=W2.nodes[found-1],nx2=W2.nodes[found+1];
+          steps.push({lines:[fl(SRC,'prev.sig = aux.sig',mEli)],note:'Caso 2: prev.sig salta por encima de aux'+(nx2?' (hacia '+nx2.val+')':' (a null: era el último)')+'.',world:V({dying:[target.id],jump:nx2?{from:pv.id,to:nx2.id}:null,hl:[target.id],ptrs:V().ptrs.concat([{name:'prev',id:pv.id,dy:-1,row:1,hot:true},{name:'aux',id:target.id,dy:-1,row:2,teal:true}])})});
+          W2.nodes.splice(found,1);
+          steps.push({lines:[fl(SRC,'return true',mEli)],note:'✓ true. El nodo quedó aislado: basura para el GC.',world:V({ret:'true'})});
+        }
+        api.run(steps);
+      });
+      ctlBtn(ctl,'Buscar').addEventListener('click',function(){
+        var x=val();if(x===null)return;
+        var W2=W(),steps=[],i;
+        if(!W2.nodes.length)return api.msg('La lista está vacía.');
+        for(i=0;i<W2.nodes.length;i++){
+          var nd=W2.nodes[i];
+          steps.push({lines:[fl(SRC,'while (aux != null && aux.info != x)',mBus)],note:'¿'+nd.val+' == '+x+'? '+(nd.val===x?'¡Sí!':'No → aux avanza.'),world:V({hl:[nd.id],ptrs:V().ptrs.concat([{name:'aux',id:nd.id,dy:-1,row:1,teal:true,hot:true}])})});
+          if(nd.val===x){
+            steps.push({lines:[fl(SRC,'return aux != null',mBus)],note:'aux != null → return true: el caminante se detuvo sobre el valor.',world:V({vis:[nd.id],ret:'true',hl:[nd.id],ptrs:V().ptrs.concat([{name:'aux',id:nd.id,dy:-1,row:1,teal:true}])})});
+            return api.run(steps);
+          }
+        }
+        steps.push({lines:[fl(SRC,'return aux != null',mBus)],note:'aux llegó a null: recorrió toda la lista sin encontrarlo.',world:V({ret:'false',ptrs:V().ptrs.concat([{name:'aux',id:null,dy:-1,row:1,teal:true}])})});
+        api.run(steps);
+      });
+    }
+  });
+});
+
+/* ================= LAB 03 · lista doble ================= */
+safe('lab03-doble',function(){
+  var SRC=[
+    'class NodoDoble {',
+    '    int info;',
+    '    NodoDoble ant, sig;',
+    '}',
+    '',
+    'void insertarOrdenado(int x) {',
+    '    NodoDoble prev = null, aux = prim;',
+    '    while (aux != null && aux.info < x) {   // buscar hueco',
+    '        prev = aux; aux = aux.sig;',
+    '    }',
+    '    NodoDoble n = new NodoDoble(x);  // nace el nodo',
+    '    n.sig = aux;                     // enlace 1 de 4',
+    '    n.ant = prev;                    // enlace 2 de 4',
+    '    if (prev == null) prim = n;      // hueco al inicio',
+    '    else prev.sig = n;               // enlace 3 de 4',
+    '    if (aux != null) aux.ant = n;    // enlace 4 de 4',
+    '}',
+    '',
+    'void eliminar(int x) {',
+    '    NodoDoble aux = prim;',
+    '    while (aux != null && aux.info != x) aux = aux.sig;',
+    '    if (aux == null) return;',
+    '    if (aux.ant != null) aux.ant.sig = aux.sig;  // puente →',
+    '    else prim = aux.sig;',
+    '    if (aux.sig != null) aux.sig.ant = aux.ant;  // puente ←',
+    '}   // aux desreferenciado → GC'
+  ];
+  var mIns=fl(SRC,'void insertarOrdenado')-1,mEli=fl(SRC,'void eliminar(int x)')-1;
+  function drawDoble(h,w){
+    var NW=66,NH=38,GAP=32,Y=96;
+    var n=w.nodes.length;
+    var W=Math.max(600,64+n*(NW+GAP)+64),H=240;
+    var sv=svgEl(W,H);
+    var X=function(i){return 64+i*(NW+GAP)};
+    var idx=function(id){for(var i=0;i<w.nodes.length;i++)if(w.nodes[i].id===id)return i;return -1};
+    var outSet={};(w.out||[]).forEach(function(id){outSet[id]=1});
+    if(!n)tagTxt(sv,64,Y-52,'∅ lista vacía · prim = ult = null',{fill:COL.ink2});
+    for(var i=0;i<n-1;i++){
+      var a=w.nodes[i],b=w.nodes[i+1];
+      if(outSet[a.id]||outSet[b.id])continue;
+      var sigHot=has(w.hotSig,a.id),antHot=has(w.hotAnt,b.id);
+      var dim=has(w.dying,a.id)||has(w.dying,b.id);
+      arrow(sv,X(i)+NW-10,Y+12,X(i+1)+10,Y+12,{color:sigHot?COL.acc:(dim?COL.lineD:COL.ink),sw:sigHot?2.5:(dim?1.2:1.6),dash:dim?'4 5':''});
+      arrow(sv,X(i+1)+10,Y+26,X(i)+NW-10,Y+26,{color:antHot?COL.acc:(dim?COL.lineD:COL.ink),sw:antHot?2.5:(dim?1.2:1.6),dash:dim?'4 5':'',curve:-30});
+    }
+    tagTxt(sv,X(0)+10,Y-6,'ant',{anchor:'middle',fill:COL.ink2});
+    tagTxt(sv,X(0)+NW-10,Y-6,'sig',{anchor:'middle',fill:COL.ink2});
+    w.nodes.forEach(function(nn,i){
+      var g=S('g',{transform:'translate('+X(i)+','+Y+')'});
+      var inner=S('g',{class:'nd'+(has(w.hl,nn.id)?' hl':'')+(outSet[nn.id]||has(w.dying,nn.id)?' dying':'')+(has(w.born,nn.id)?' born':'')});
+      inner.appendChild(S('rect',{class:'nd-r',width:NW,height:NH,rx:4}));
+      inner.appendChild(S('line',{class:'nd-sep',x1:20,y1:0,x2:20,y2:NH}));
+      inner.appendChild(S('line',{class:'nd-sep',x1:NW-20,y1:0,x2:NW-20,y2:NH}));
+      inner.appendChild(S('text',{class:'nd-val',x:NW/2,y:NH/2+1,'dominant-baseline':'central',text:nn.val}));
+      inner.appendChild(S('circle',{class:'nd-dim',cx:10,cy:NH/2,r:2.6}));
+      inner.appendChild(S('circle',{class:'nd-dim',cx:NW-10,cy:NH/2,r:2.6}));
+      g.appendChild(inner);sv.appendChild(g);
+    });
+    if(w.ghost){
+      var gx=X(w.ghost.at),gy=Y-62;
+      var g2=S('g',{transform:'translate('+gx+','+gy+')'});
+      var inn=S('g',{class:'nd ghost born'});
+      inn.appendChild(S('rect',{class:'nd-r',width:NW,height:NH,rx:4}));
+      inn.appendChild(S('line',{class:'nd-sep',x1:20,y1:0,x2:20,y2:NH}));
+      inn.appendChild(S('line',{class:'nd-sep',x1:NW-20,y1:0,x2:NW-20,y2:NH}));
+      inn.appendChild(S('text',{class:'nd-val',x:NW/2,y:NH/2+1,'dominant-baseline':'central',text:w.ghost.val}));
+      inn.appendChild(S('circle',{class:'nd-dim',cx:10,cy:NH/2,r:2.6}));
+      inn.appendChild(S('circle',{class:'nd-dim',cx:NW-10,cy:NH/2,r:2.6}));
+      g2.appendChild(inn);sv.appendChild(g2);
+      if(w.ghost.sigTo){
+        var j=idx(w.ghost.sigTo);
+        if(j>=0)arrow(sv,gx+NW-10,gy+12,X(j)+10,Y+12,{color:COL.acc,sw:2.3,curve:-14});
+      }
+      if(w.ghost.antTo){
+        var k=idx(w.ghost.antTo);
+        if(k>=0)arrow(sv,gx+10,gy+26,X(k)+NW-10,Y+26,{color:COL.acc,sw:2.3,curve:14});
+      }
+    }
+    (w.ptrs||[]).forEach(function(p){
+      var i2=p.id?idx(p.id):-1;
+      if(i2<0){sv.appendChild(S('text',{x:80,y:p.dy>0?Y+NH+62:Y-72,class:'ptr-l','text-anchor':'middle',text:p.name+' = null'}));return}
+      var px=X(i2)+NW/2,top=p.dy<0;
+      ptrLabel(sv,px,top?Y-50:Y+NH+52,p.name,px,top?Y-4:Y+NH+4,{color:p.hot?COL.acc:COL.ink,curve:top?-12:12});
+    });
+    if(w.jumpFwd){
+      var a2=idx(w.jumpFwd.from),b2=idx(w.jumpFwd.to);
+      if(a2>=0&&b2>=0)arrow(sv,X(a2)+NW-10,Y+2,X(b2)+10,Y+2,{color:COL.acc,sw:2.4,curve:-22});
+    }
+    if(w.jumpBack){
+      var a3=idx(w.jumpBack.to),b3=idx(w.jumpBack.from);
+      if(a3>=0&&b3>=0)arrow(sv,X(a3)+10,Y+NH+8,X(b3)+NW-10,Y+NH+8,{color:COL.acc,sw:2.4,curve:22});
+    }
+    h.appendChild(sv);
+  }
+  makeLab('lab-doble',{
+    tag:'LAB 03 · § 3.1',title:'Lista doblemente enlazada: la regla de los cuatro enlaces',
+    hint:'insertar en orden · eliminar',file:'ListaDoble.java',code:SRC.join('\n'),
+    init:function(){return {nodes:[{id:1,val:4},{id:2,val:9},{id:3,val:16}],nid:4}},
+    draw:drawDoble,
+    controls:function(api,ctl){
+      var inV=ctlInput(ctl,'db','VALOR','ej: 12');
+      function W(){return api.world}
+      function V(over){
+        var b={nodes:W().nodes.map(function(n){return {id:n.id,val:n.val}}),
+          ptrs:[{name:'prim',id:W().nodes.length?W().nodes[0].id:null,dy:-1},{name:'ult',id:W().nodes.length?W().nodes[W().nodes.length-1].id:null,dy:1}],
+          hl:[],born:[],dying:[],out:[],hotSig:[],hotAnt:[],ghost:null,jumpFwd:null,jumpBack:null};
+        if(over)for(var k in over)b[k]=over[k];
+        return b;
+      }
+      function val(){var n=parseNum(inV.value);if(n===null){bad(inV);api.msg('Valor entero, por favor.');return null}api.msg(null);return n}
+      ctlBtn(ctl,'Insertar en orden').addEventListener('click',function(){
+        var x=val();if(x===null)return;
+        var W2=W();
+        if(W2.nodes.length>=6)return api.msg('El dibujo admite hasta 6 nodos.');
+        if(W2.nodes.some(function(n){return n.val===x}))return api.msg('Ese valor ya está en la lista: probá otro.');
+        var steps=[],prev=null,aux=null,i,k;
+        if(!W2.nodes.length){
+          var id0=W2.nid++;
+          steps.push({lines:[fl(SRC,'NodoDoble n = new NodoDoble(x)',mIns)],note:'Lista vacía: el nuevo es el único nodo; prim y ult lo apuntan.',world:V({ghost:{val:x,at:0}})});
+          W2.nodes.push({id:id0,val:x});
+          steps.push({lines:[fl(SRC,'prim = n',mIns)],note:'En una lista vacía sus dos enlaces quedan en null.',world:V({hl:[id0],born:[id0]})});
+          return api.run(steps);
+        }
+        aux=W2.nodes[0];
+        steps.push({lines:[fl(SRC,'NodoDoble prev = null, aux = prim',mIns)],note:'prev = null, aux = prim: buscar el hueco con el par de siempre.',world:V({hl:[aux.id],ptrs:V().ptrs.concat([{name:'aux',id:aux.id,dy:-1,row:1,teal:true,hot:true}])})});
+        for(i=0;i<W2.nodes.length&&W2.nodes[i].val<x;i++){
+          prev=W2.nodes[i];aux=W2.nodes[i+1]||null;
+          if(!aux)break;
+          steps.push({lines:[fl(SRC,'prev = aux; aux = aux.sig',mIns)],note:prev.val+' < '+x+' → avanzan.',world:V({hl:[aux.id],ptrs:V().ptrs.concat([{name:'aux',id:aux.id,dy:-1,row:1,teal:true,hot:true},{name:'prev',id:prev.id,dy:-1,row:2}])})});
+        }
+        k=prev?W2.nodes.indexOf(prev)+1:0;
+        var id=W2.nid++;
+        steps.push({lines:[fl(SRC,'n.sig = aux',mIns)],note:'ENLACE 1 de 4: n.sig = '+(aux?aux.val:'null')+'.',world:V({ghost:{val:x,at:k,sigTo:aux?aux.id:null}})});
+        steps.push({lines:[fl(SRC,'n.ant = prev',mIns)],note:'ENLACE 2 de 4: n.ant = '+(prev?prev.val:'null')+'.',world:V({ghost:{val:x,at:k,sigTo:aux?aux.id:null,antTo:prev?prev.id:null}})});
+        if(prev){
+          steps.push({lines:[fl(SRC,'prev.sig = n',mIns)],note:'ENLACE 3 de 4: la cadena hacia adelante adopta al nuevo.',world:(function(){W2.nodes.splice(k,0,{id:id,val:x});return V({hl:[id],born:[id],hotSig:[prev.id]})})()});
+          if(aux)steps.push({lines:[fl(SRC,'aux.ant = n',mIns)],note:'ENLACE 4 de 4: la cadena hacia atrás también. Sin este, la estructura queda contradictoria.',world:V({hl:[id],hotAnt:[aux.id]})});
+          else steps.push({lines:[fl(SRC,'aux.ant = n',mIns)],note:'No hay 4º enlace: entró al final (aux == null). El nuevo ya es el último.',world:V({hl:[id]})});
+        }else{
+          steps.push({lines:[fl(SRC,'prim = n',mIns)],note:'Hueco al inicio: prim = n (en lugar del enlace 3).',world:(function(){W2.nodes.unshift({id:id,val:x});return V({hl:[id],born:[id]})})()});
+          steps.push({lines:[fl(SRC,'aux.ant = n',mIns)],note:'ENLACE 4 de 4: el viejo primero ahora tiene al nuevo detrás.',world:V({hl:[id],hotAnt:[aux.id]})});
+        }
+        steps.push({lines:[],note:'✓ Cuatro enlaces, dos por dirección. Probá eliminar algo para ver los puentes.',world:V({hl:[id]})});
+        api.run(steps);
+      });
+      ctlBtn(ctl,'Eliminar valor','warnb').addEventListener('click',function(){
+        var x=val();if(x===null)return;
+        var W2=W();
+        if(!W2.nodes.length)return api.msg('La lista está vacía.');
+        var steps=[],i,found=-1;
+        steps.push({lines:[fl(SRC,'NodoDoble aux = prim',mEli)],note:'aux arranca en la cabecera.',world:V({hl:[W2.nodes[0].id],ptrs:V().ptrs.concat([{name:'aux',id:W2.nodes[0].id,dy:-1,row:1,teal:true,hot:true}])})});
+        for(i=0;i<W2.nodes.length;i++){
+          steps.push({lines:[fl(SRC,'while (aux != null && aux.info != x)',mEli)],note:'¿'+W2.nodes[i].val+' == '+x+'? '+(W2.nodes[i].val===x?'Sí.':'No → avanza.'),world:V({hl:[W2.nodes[i].id],ptrs:V().ptrs.concat([{name:'aux',id:W2.nodes[i].id,dy:-1,row:1,teal:true,hot:true}])})});
+          if(W2.nodes[i].val===x){found=i;break}
+        }
+        if(found<0){steps.push({lines:[fl(SRC,'return',mEli)],note:'aux llegó a null: el valor no está.',world:V({})});return api.run(steps)}
+        var tgt=W2.nodes[found],prev=found>0?W2.nodes[found-1]:null,next=W2.nodes[found+1]||null;
+        if(prev&&next){
+          steps.push({lines:[fl(SRC,'aux.ant.sig = aux.sig',mEli)],note:'Puente hacia adelante: '+prev.val+'.sig salta a '+next.val+'.',world:V({out:[tgt.id],dying:[tgt.id],jumpFwd:{from:prev.id,to:next.id},hl:[tgt.id],ptrs:V().ptrs.concat([{name:'aux',id:tgt.id,dy:-1,row:1,teal:true}])})});
+          steps.push({lines:[fl(SRC,'aux.sig.ant = aux.ant',mEli)],note:'Puente hacia atrás: '+next.val+'.ant salta a '+prev.val+'. Dos enlaces, lista consistente.',world:V({out:[tgt.id],dying:[tgt.id],jumpFwd:{from:prev.id,to:next.id},jumpBack:{from:prev.id,to:next.id}})});
+        }else if(prev){
+          steps.push({lines:[fl(SRC,'aux.sig.ant = aux.ant',mEli)],note:'Era el último: no hay puente hacia adelante, solo se corta (sig = null).',world:V({out:[tgt.id],dying:[tgt.id]})});
+        }else{
+          steps.push({lines:[fl(SRC,'prim = aux.sig',mEli)],note:'Era el primero: prim salta al segundo'+(next?' ('+next.val+')':' → lista queda vacía')+'.',world:V({out:[tgt.id],dying:[tgt.id],ptrs:[{name:'prim',id:next?next.id:null,dy:-1,hot:true},{name:'ult',id:(W2.nodes[W2.nodes.length-1]===tgt)?null:W2.nodes[W2.nodes.length-1].id,dy:1}]})});
+        }
+        W2.nodes.splice(found,1);
+        steps.push({lines:[],note:'✓ aux quedó desreferenciado por ambos lados: el GC se lo lleva.',world:V({})});
+        api.run(steps);
+      });
+    }
+  });
+});
+
+/* ================= LAB 04 · circular ================= */
+safe('lab04-circular',function(){
+  var SRC=[
+    'class ListaCircular {',
+    '    Nodo prim;        // no existe el null final',
+    '    Nodo ult;         // insertar al final en O(1)',
+    '',
+    '    void insertarFinal(int x) {',
+    '        Nodo nuevo = new Nodo(x);',
+    '        if (prim == null) {          // vacía: se apunta a sí mismo',
+    '            prim = nuevo; ult = nuevo;',
+    '            nuevo.sig = prim;',
+    '        } else {',
+    '            nuevo.sig = prim;        // 1. el nuevo mira al primero',
+    '            ult.sig = nuevo;         // 2. el último lo adopta',
+    '            ult = nuevo;             // 3. hay nuevo último',
+    '        }',
+    '    }',
+    '',
+    '    void recorrer() {',
+    '        if (prim == null) return;',
+    '        Nodo aux = prim;',
+    '        do {                         // entra AL MENOS una vez',
+    '            System.out.print(aux.info + " ");',
+    '            aux = aux.sig;',
+    '        } while (aux != prim);       // corta al volver a la entrada',
+    '    }',
+    '}'
+  ];
+  var mIns=fl(SRC,'void insertarFinal')-1,mRec=fl(SRC,'void recorrer')-1;
+  function drawCirc(h,w){
+    var n=w.nodes.length,W=580,H=370;
+    var sv=svgEl(W,H);
+    if(!n){tagTxt(sv,W/2,H/2,'∅ anillo vacío · prim = ult = null',{anchor:'middle',fill:COL.ink2});h.appendChild(sv);return}
+    var cx=290,cy=185,R=104;
+    var ang=function(i){return (-90+i*360/n)*Math.PI/180};
+    sv.appendChild(S('circle',{cx:cx,cy:cy,r:R+16,class:'ring'+(w.flow?' flow':'')}));
+    tagTxt(sv,cx,cy,'el anillo no tiene final',{anchor:'middle',fill:COL.ink2});
+    var delta=Math.asin(24/R)+.04;
+    for(var i=0;i<n;i++){
+      var j=(i+1)%n;
+      var a1=ang(i)+delta,a2=(j<=i?ang(j)+Math.PI*2:ang(j))-delta;
+      var sx=cx+R*Math.cos(a1),sy=cy+R*Math.sin(a1);
+      var ex=cx+R*Math.cos(a2),ey=cy+R*Math.sin(a2);
+      var col=(w.hotEdge===i)?COL.acc:COL.ink,sw=(w.hotEdge===i)?2.6:1.7;
+      if(i===j){
+        var nx=cx+R*Math.cos(ang(i)),ny=cy+R*Math.sin(ang(i));
+        var ox=cx+(R+34)*Math.cos(ang(i)),oy=cy+(R+34)*Math.sin(ang(i));
+        sv.appendChild(S('path',{d:'M'+(nx-8)+' '+(ny-14)+' Q'+ox+' '+oy+' '+(nx+8)+' '+(ny-14),fill:'none',stroke:col,'stroke-width':sw}));
+        sv.appendChild(head(nx+8,ny-14,1.2,col));
+      }else{
+        sv.appendChild(S('path',{d:'M'+sx+' '+sy+' A'+R+' '+R+' 0 0 1 '+ex+' '+ey,fill:'none',stroke:col,'stroke-width':sw}));
+        sv.appendChild(head(ex,ey,a2+Math.PI/2,col));
+      }
+    }
+    w.nodes.forEach(function(nn,i){
+      var a=ang(i);
+      treeCircle(sv,cx+R*Math.cos(a),cy+R*Math.sin(a),nn.val,{hl:has(w.hl,nn.id),vis:has(w.vis,nn.id),born:has(w.born,nn.id),r:21});
+    });
+    if(w.ghost){
+      var gx=cx+(R+56)*Math.cos(-.4),gy=cy+(R+56)*Math.sin(-.4);
+      treeCircle(sv,gx,gy,w.ghost.val,{r:21});
+      tagTxt(sv,gx,gy-34,'nuevo',{anchor:'middle',fill:COL.acc});
+      if(w.ghost.to){
+        var j2=-1;
+        w.nodes.forEach(function(nn,i){if(nn.id===w.ghost.to)j2=i});
+        if(j2>=0){var ta=ang(j2);arrow(sv,gx+14,gy+14,cx+21*Math.cos(ta),cy+21*Math.sin(ta),{color:COL.acc,sw:2.3,curve:30})}
+      }
+    }
+    var pa=ang(0);
+    ptrLabel(sv,cx+(R+16)*Math.cos(pa),cy+(R+16)*Math.sin(pa)-30,'prim',cx+R*Math.cos(pa),cy+(R-26)*Math.sin(pa),{color:w.ptrHot==='prim'?COL.acc:COL.ink});
+    var la=ang(n-1);
+    ptrLabel(sv,cx+(R+16)*Math.cos(la),cy+(R+34)*Math.sin(la)+40,'ult',cx+R*Math.cos(la),cy+(R-22)*Math.sin(la),{color:w.ptrHot==='ult'?COL.acc:COL.ink});
+    if(w.auxId){
+      var ai=-1;
+      w.nodes.forEach(function(nn,i){if(nn.id===w.auxId)ai=i});
+      if(ai>=0){var aa=ang(ai);ptrLabel(sv,cx+(R+66)*Math.cos(aa),cy+(R+66)*Math.sin(aa)+4,'aux',cx+(R+26)*Math.cos(aa),cy+(R+26)*Math.sin(aa),{color:COL.teal,curve:0})}
+    }
+    if(w.out&&w.out.length)tagTxt(sv,cx,H-16,'SALIDA:  '+w.out.join('   '),{anchor:'middle',fill:COL.teal});
+    h.appendChild(sv);
+  }
+  makeLab('lab-circ',{
+    tag:'LAB 04 · § 3.2',title:'Lista circular: insertar en O(1) y cortar con do-while',
+    hint:'probá insertar y recorrer',file:'ListaCircular.java',code:SRC.join('\n'),
+    init:function(){return {nodes:[{id:1,val:5},{id:2,val:12},{id:3,val:20}],nid:4}},
+    draw:drawCirc,
+    controls:function(api,ctl){
+      var inV=ctlInput(ctl,'ci','VALOR','ej: 9');
+      function W(){return api.world}
+      function V(over){
+        var b={nodes:W().nodes.map(function(n){return {id:n.id,val:n.val}}),hl:[],vis:[],born:[],ghost:null,hotEdge:-1,flow:false,auxId:null,out:[],ptrHot:null};
+        if(over)for(var k in over)b[k]=over[k];
+        return b;
+      }
+      function val(){var n=parseNum(inV.value);if(n===null){bad(inV);api.msg('Valor entero, por favor.');return null}api.msg(null);return n}
+      ctlBtn(ctl,'Insertar al final').addEventListener('click',function(){
+        var x=val();if(x===null)return;
+        var W2=W();
+        if(W2.nodes.length>=7)return api.msg('El anillo admite hasta 7 nodos.');
+        var steps=[],id=W2.nid++;
+        if(!W2.nodes.length){
+          steps.push({lines:[fl(SRC,'Nodo nuevo = new Nodo(x)',mIns)],note:'Anillo vacío: el primer nodo tendrá que apuntarse a sí mismo.',world:V({ghost:{val:x}})});
+          W2.nodes.push({id:id,val:x});
+          steps.push({lines:[fl(SRC,'nuevo.sig = prim',mIns)],note:'prim = ult = nuevo y nuevo.sig = prim: un anillo de un solo nodo.',world:V({hl:[id],born:[id],hotEdge:0,ptrHot:'prim'})});
+          api.run(steps);return;
+        }
+        var primId=W2.nodes[0].id;
+        steps.push({lines:[fl(SRC,'Nodo nuevo = new Nodo(x)',mIns)],note:'Nodo nuevo = new Nodo('+x+'): nace por fuera del anillo.',world:V({ghost:{val:x}})});
+        steps.push({lines:[fl(SRC,'nuevo.sig = prim',mIns)],note:'1) nuevo.sig = prim: el nuevo ya mira al primero (regla de oro).',world:V({ghost:{val:x,to:primId},ptrHot:'ult'})});
+        steps.push({lines:[fl(SRC,'ult.sig = nuevo',mIns)],note:'2) ult.sig = nuevo: el viejo último lo adopta. Mirá el arco que se abre.',world:(function(){W2.nodes.push({id:id,val:x});return V({hl:[id],born:[id],hotEdge:W2.nodes.length-2,ptrHot:'ult'})})()});
+        steps.push({lines:[fl(SRC,'ult = nuevo',mIns)],note:'3) ult = nuevo. Tres asignaciones, CERO recorrido: insertar al final es O(1).',world:V({hl:[id],ptrHot:'ult'})});
+        api.run(steps);
+      });
+      ctlBtn(ctl,'Recorrer (do-while)').addEventListener('click',function(){
+        var W2=W();
+        if(!W2.nodes.length)return api.msg('El anillo está vacío.');
+        var steps=[],entrada=W2.nodes[0],i;
+        steps.push({lines:[fl(SRC,'Nodo aux = prim',mRec)],note:'La entrada al anillo es prim. El do-while garantiza entrar al menos una vez.',world:V({auxId:entrada.id,hl:[entrada.id],flow:true})});
+        for(i=0;i<W2.nodes.length;i++){
+          var nd=W2.nodes[i],out=W2.nodes.slice(0,i+1).map(function(m){return m.val});
+          steps.push({lines:[fl(SRC,'System.out.print',mRec)],note:'Procesa '+nd.val+' → SALIDA. Acá iría cualquier trabajo sobre el nodo.',world:V({auxId:nd.id,vis:W2.nodes.slice(0,i+1).map(function(m){return m.id}),out:out,flow:true})});
+          var nxt=W2.nodes[(i+1)%W2.nodes.length];
+          steps.push({lines:[fl(SRC,'aux = aux.sig',mRec)],note:'aux = aux.sig → avanza a '+nxt.val+(nxt===entrada?'. ¡Volvió a la entrada!':'.'),world:V({auxId:nxt.id,vis:W2.nodes.slice(0,i+1).map(function(m){return m.id}),out:out,flow:true,hotEdge:i})});
+        }
+        steps.push({lines:[fl(SRC,'while (aux != prim)',mRec)],note:'La guardia da FALSO (aux == prim) → corta. Un while común nunca terminaría: no hay null.',world:V({vis:W2.nodes.map(function(m){return m.id}),out:W2.nodes.map(function(m){return m.val}),flow:true})});
+        api.run(steps);
+      });
+    }
+  });
+});
+
+/* ================= LAB 05 · indexada ================= */
+safe('lab05-indexada',function(){
+  var SRC=[
+    'class ListaIndexada {',
+    '    Nodo prim;        // la lista, ordenada',
+    '    Nodo[] tabla;     // atajos a nodos "molinete"',
+    '',
+    '    Nodo buscar(int x) {',
+    '        int s = elegirSector(x);      // 1. la tabla elige',
+    '        Nodo aux = tabla[s];          // 2. salto al molinete',
+    '        while (aux != null && aux.info <= x) {',
+    '            if (aux.info == x) return aux;   // encontrado',
+    '            aux = aux.sig;             // 3. caminar DENTRO del sector',
+    '        }',
+    '        return null;    // se pasó del sector: no está',
+    '    }',
+    '}'
+  ];
+  makeLab('lab-index',{
+    tag:'LAB 05 · § 3.3',title:'Lista indexada: la tabla elige el sector',
+    hint:'buscá valores entre 0 y 99',file:'ListaIndexada.java',code:SRC.join('\n'),
+    init:function(){return {nums:[3,17,25,42,58,64,71,88,93,97],idx:[{lo:0,hi:49,at:0},{lo:50,hi:99,at:4}]}},
+    draw:function(h,w){
+      var W=780,H=250;
+      var sv=svgEl(W,H);
+      var X=function(i){return 44+i*72};
+      tagTxt(sv,44,26,'TABLA DE ÍNDICES (arreglo de referencias)',{mono:1});
+      w.idx.forEach(function(se,k){
+        var x=120+k*220,hot=w.hotIdx===k;
+        sv.appendChild(S('rect',{x:x,y:36,width:150,height:34,rx:6,fill:hot?'#FBE9E2':'#FCFAF3',stroke:hot?COL.acc:COL.ink,'stroke-width':hot?2.4:1.4}));
+        tagTxt(sv,x+75,58,se.lo+' – '+se.hi,{anchor:'middle',fill:hot?COL.acc:COL.ink,mono:1});
+        arrow(sv,x+75,72,X(se.at)+23,106,{color:hot?COL.acc:COL.teal,sw:hot?2.5:1.6,curve:-16});
+      });
+      tagTxt(sv,44,102,'LISTA ORDENADA',{mono:1});
+      var last=w.nums.length-1;
+      w.nums.forEach(function(v,i){
+        var hot=(w.auxPos===i),vis=has(w.visPos,i);
+        var g=S('g',{transform:'translate('+X(i)+',112)'});
+        var inner=S('g',{class:'nd'+(hot?' hl':'')+(vis?' vis':'')});
+        inner.appendChild(S('rect',{class:'nd-r',width:46,height:34,rx:4}));
+        inner.appendChild(S('line',{class:'nd-sep',x1:31,y1:0,x2:31,y2:34}));
+        inner.appendChild(S('text',{class:'nd-val',x:15.5,y:18,'dominant-baseline':'central',text:v}));
+        inner.appendChild(S('circle',{class:'nd-dim',cx:39,cy:17,r:2.6}));
+        g.appendChild(inner);sv.appendChild(g);
+        if(i<last)arrow(sv,X(i)+37,129,X(i+1)+4,129,{color:COL.ink,sw:1.6});
+      });
+      arrow(sv,X(last)+37,146,X(last)+37,158,{color:COL.ink,sw:1.4,hs:5});
+      ground(sv,X(last)+37,160);
+      if(w.auxPos!==undefined&&w.auxPos!==null)ptrLabel(sv,X(w.auxPos)+23,96,'aux',X(w.auxPos)+23,110,{color:COL.teal,curve:0});
+      if(w.ret!==undefined)retBox(sv,W-80,H-22,String(w.ret));
+      h.appendChild(sv);
+    },
+    controls:function(api,ctl){
+      var inV=ctlInput(ctl,'ix','BUSCAR','0–99');
+      ctlBtn(ctl,'Buscar').addEventListener('click',function(){
+        var x=parseNum(inV.value);
+        if(x===null||x<0||x>99){bad(inV);api.msg('Ingresá un número entre 0 y 99.');return}
+        api.msg(null);
+        var w=api.world,steps=[],si=(x<50?0:1),sec=w.idx[si],jumps=0;
+        function snap(over){var b={nums:w.nums,idx:w.idx,hotIdx:si,auxPos:null,visPos:[],ret:undefined};if(over)for(var k in over)b[k]=over[k];return clone(b)}
+        steps.push({lines:[fl(SRC,'elegirSector(x)')],note:'elegirSector('+x+'): cae en el sector '+sec.lo+'–'+sec.hi+'. La tabla decide, sin caminar.',world:snap({})});
+        steps.push({lines:[fl(SRC,'aux = tabla[s]')],note:'Salto directo al molinete '+w.nums[sec.at]+'. Este salto reemplaza '+sec.at+' recorridos.',world:snap({auxPos:sec.at,visPos:[sec.at]})});
+        var i=sec.at,vis=[];
+        while(i<w.nums.length&&w.nums[i]<=x){
+          vis.push(i);jumps++;
+          if(w.nums[i]===x){
+            steps.push({lines:[fl(SRC,'return aux')],note:'¡Encontrado en '+w.nums[i]+' tras '+jumps+' salto(s) dentro del sector!',world:snap({auxPos:i,visPos:vis.slice(),ret:w.nums[i]})});
+            return api.run(steps);
+          }
+          steps.push({lines:[fl(SRC,'aux = aux.sig')],note:w.nums[i]+' ≤ '+x+' → aux avanza a '+(w.nums[i+1]!==undefined?w.nums[i+1]:'null')+'.',world:snap({auxPos:Math.min(i+1,w.nums.length-1),visPos:vis.slice()})});
+          i++;
+        }
+        steps.push({lines:[fl(SRC,'return null')],note:'aux.info > '+x+' → se pasó del sector: no está (la lista está ordenada, no hace falta seguir).',world:snap({auxPos:Math.min(i,w.nums.length-1),visPos:vis.slice(),ret:'null'})});
+        api.run(steps);
+      });
+    }
+  });
+});
+
+/* ================= LAB 06 · ABB ================= */
+safe('lab06-abb',function(){
+  var SRC=[
+    'class NodoABB {',
+    '    int info;',
+    '    NodoABB izq, der;',
+    '}',
+    '',
+    'void insertar(int x) {',
+    '    NodoABB nuevo = new NodoABB(x);',
+    '    if (raiz == null) { raiz = nuevo; return; }',
+    '    NodoABB aux = raiz;',
+    '    while (true) {',
+    '        if (x < aux.info) {              // menor → izquierda',
+    '            if (aux.izq == null) { aux.izq = nuevo; return; }',
+    '            aux = aux.izq;',
+    '        } else {                          // mayor → derecha',
+    '            if (aux.der == null) { aux.der = nuevo; return; }',
+    '            aux = aux.der;',
+    '        }',
+    '    }',
+    '}',
+    '',
+    'NodoABB buscar(int x) {',
+    '    NodoABB aux = raiz;',
+    '    while (aux != null && aux.info != x) {',
+    '        if (x < aux.info) aux = aux.izq;  // descarto la mitad der.',
+    '        else aux = aux.der;               // descarto la mitad izq.',
+    '    }',
+    '    return aux;',
+    '}',
+    '',
+    'int minimo() {              // siempre a la izquierda',
+    '    NodoABB aux = raiz;',
+    '    while (aux.izq != null) aux = aux.izq;',
+    '    return aux.info;',
+    '}'
+  ];
+  var mIns=fl(SRC,'void insertar')-1,mBus=fl(SRC,'NodoABB buscar')-1,mMin=fl(SRC,'int minimo')-1;
+  function count(n){return n?1+count(n.l)+count(n.r):0}
+  function hasV(n,v){if(!n)return false;if(n.val===v)return true;return hasV(n.l,v)||hasV(n.r,v)}
+  makeLab('lab-bst',{
+    tag:'LAB 06 · § 4.2',title:'ABB: insertar, buscar, mínimo y máximo',
+    hint:'probá tus valores',file:'ABB.java',code:SRC.join('\n'),
+    init:function(){
+      var w={root:null,nid:1};
+      [50,30,70,20,40,60,80].forEach(function(v){
+        var n={id:w.nid++,val:v,l:null,r:null};
+        if(!w.root){w.root=n;return}
+        var a=w.root;
+        while(1){if(v<a.val){if(!a.l){a.l=n;return}a=a.l}else{if(!a.r){a.r=n;return}a=a.r}}
+      });
+      return w;
+    },
+    draw:function(h,w){mount(h,treeG({root:w.root,hl:w.hl,edgeOn:w.edgeOn,born:w.born,vis:w.vis,ret:w.ret,hud:w.hud}))},
+    controls:function(api,ctl){
+      var inV=ctlInput(ctl,'bs','VALOR','ej: 35');
+      function W(){return api.world}
+      function V(over){
+        var b={root:clone(W().root),hl:[],edgeOn:[],born:[],vis:[],ret:undefined,hud:null};
+        if(over)for(var k in over)b[k]=over[k];
+        return b;
+      }
+      function val(){var n=parseNum(inV.value);if(n===null){bad(inV);api.msg('Valor entero, por favor.');return null}api.msg(null);return n}
+      ctlBtn(ctl,'Insertar').addEventListener('click',function(){
+        var x=val();if(x===null)return;
+        var w=W();
+        if(hasV(w.root,x))return api.msg('Un ABB no repite valores: '+x+' ya está.');
+        if(count(w.root)>=11)return api.msg('El dibujo admite hasta 11 nodos.');
+        var steps=[],id=w.nid++;
+        if(!w.root){
+          w.root={id:id,val:x,l:null,r:null};
+          steps.push({lines:[fl(SRC,'raiz = nuevo',mIns)],note:'Árbol vacío: el nuevo ES la raíz.',world:V({born:[id],hl:[id]})});
+          return api.run(steps);
+        }
+        var aux=w.root,first=true;
+        while(true){
+          steps.push({lines:[fl(SRC,(x<aux.val)?'if (x < aux.info)':'else',mIns)],note:(first?'aux = raíz; ':'')+(x<aux.val?x+' < '+aux.val+' → voy por la izquierda.':x+' > '+aux.val+' → voy por la derecha.'),world:V({hl:[aux.id]})});
+          first=false;
+          if(x<aux.val){
+            if(!aux.l){
+              aux.l={id:id,val:x,l:null,r:null};
+              steps.push({lines:[fl(SRC,'aux.izq = nuevo',mIns)],note:'aux.izq == null: ahí está el hueco. El padre (que hacía de prev) engancha al nuevo.',world:V({born:[id],hl:[id],edgeOn:[id]})});
+              break;
+            }
+            steps.push({lines:[fl(SRC,'aux = aux.izq',mIns)],note:'Bajo a '+aux.l.val+'.',world:V({hl:[aux.l.id],edgeOn:[aux.l.id]})});
+            aux=aux.l;
+          }else{
+            if(!aux.r){
+              aux.r={id:id,val:x,l:null,r:null};
+              steps.push({lines:[fl(SRC,'aux.der = nuevo',mIns)],note:'aux.der == null: hueco a la derecha. Enganchado.',world:V({born:[id],hl:[id],edgeOn:[id]})});
+              break;
+            }
+            steps.push({lines:[fl(SRC,'aux = aux.der',mIns)],note:'Bajo a '+aux.r.val+'.',world:V({hl:[aux.r.id],edgeOn:[aux.r.id]})});
+            aux=aux.r;
+          }
+        }
+        api.run(steps);
+      });
+      ctlBtn(ctl,'Buscar').addEventListener('click',function(){
+        var x=val();if(x===null)return;
+        var w=W();
+        if(!w.root)return api.msg('El árbol está vacío.');
+        var steps=[],aux=w.root,depth=0;
+        while(aux&&aux.val!==x){
+          steps.push({lines:[fl(SRC,(x<aux.val)?'aux = aux.izq':'aux = aux.der',mBus)],note:(x<aux.val?x+' < '+aux.val+' → izquierda: descarto el subárbol derecho entero.':x+' > '+aux.val+' → derecha: descarto el subárbol izquierdo entero.'),world:V({hl:[aux.id],hud:'comparaciones: '+(depth+1)})});
+          var nx=x<aux.val?aux.l:aux.r;depth++;
+          if(!nx)break;
+          steps.push({lines:[fl(SRC,'aux = aux.izq',mBus)],note:'aux avanza a '+nx.val+'.',world:V({hl:[nx.id],edgeOn:[nx.id],hud:'comparaciones: '+depth})});
+          aux=nx;
+        }
+        if(aux&&aux.val===x)steps.push({lines:[fl(SRC,'return aux',mBus)],note:'Encontrado en '+depth+' comparación(es). En una lista hubiesen sido hasta '+count(w.root)+'.',world:V({vis:[aux.id],ret:'true',hl:[aux.id]})});
+        else steps.push({lines:[fl(SRC,'return aux',mBus)],note:'aux llegó a null: '+x+' no está. Costo: la altura del camino, no el tamaño.',world:V({ret:'null',hud:'comparaciones: '+depth})});
+        api.run(steps);
+      });
+      ctlBtn(ctl,'Mínimo','ghost').addEventListener('click',function(){
+        var w=W();if(!w.root)return api.msg('El árbol está vacío.');
+        var steps=[],aux=w.root;
+        steps.push({lines:[fl(SRC,'NodoABB aux = raiz',mMin)],note:'El mínimo SIEMPRE está en el extremo izquierdo.',world:V({hl:[aux.id]})});
+        while(aux.l){
+          steps.push({lines:[fl(SRC,'aux = aux.izq',mMin)],note:'aux.izq != null → bajo a '+aux.l.val+'.',world:V({hl:[aux.l.id],edgeOn:[aux.l.id]})});
+          aux=aux.l;
+        }
+        steps.push({lines:[fl(SRC,'return aux.info',mMin)],note:'aux.izq == null: no hay nadie menor. return '+aux.val+'.',world:V({vis:[aux.id],ret:aux.val,hl:[aux.id]})});
+        api.run(steps);
+      });
+      ctlBtn(ctl,'Máximo','ghost').addEventListener('click',function(){
+        var w=W();if(!w.root)return api.msg('El árbol está vacío.');
+        var steps=[],aux=w.root;
+        steps.push({lines:[fl(SRC,'NodoABB aux = raiz',mMin)],note:'El máximo es el espejo: siempre a la derecha.',world:V({hl:[aux.id]})});
+        while(aux.r){
+          steps.push({lines:[fl(SRC,'aux = aux.der',mMin)],note:'aux.der != null → bajo a '+aux.r.val+'.',world:V({hl:[aux.r.id],edgeOn:[aux.r.id]})});
+          aux=aux.r;
+        }
+        steps.push({lines:[fl(SRC,'return aux.info',mMin)],note:'aux.der == null: no hay nadie mayor. return '+aux.val+'.',world:V({vis:[aux.id],ret:aux.val,hl:[aux.id]})});
+        api.run(steps);
+      });
+    }
+  });
+});
+
+/* ================= LAB 07 · recorridos ================= */
+safe('lab07-recorridos',function(){
+  var SRC=[
+    'void inorden(NodoABB n) {      // izq · nodo · der',
+    '    if (n == null) return;',
+    '    inorden(n.izq);',
+    '    System.out.print(n.info + " ");',
+    '    inorden(n.der);',
+    '}',
+    '',
+    'void preorden(NodoABB n) {     // nodo · izq · der',
+    '    if (n == null) return;',
+    '    System.out.print(n.info + " ");',
+    '    preorden(n.izq);',
+    '    preorden(n.der);',
+    '}',
+    '',
+    'void postorden(NodoABB n) {    // izq · der · nodo',
+    '    if (n == null) return;',
+    '    postorden(n.izq);',
+    '    postorden(n.der);',
+    '    System.out.print(n.info + " ");',
+    '}',
+    '',
+    'void porNiveles(NodoABB raiz) {  // iterativo, con COLA',
+    '    Cola c = new Cola();',
+    '    c.encolar(raiz);',
+    '    while (!c.vacia()) {',
+    '        NodoABB n = c.desencolar();',
+    '        System.out.print(n.info + " ");',
+    '        if (n.izq != null) c.encolar(n.izq);',
+    '        if (n.der != null) c.encolar(n.der);',
+    '    }',
+    '}'
+  ];
+  var mName={in:'void inorden',pre:'void preorden',post:'void postorden',niv:'void porNiveles'};
+  function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+  function buildTree(vals){
+    var root=null,nid=1;
+    function ins(n){if(!root){root=n;return}var a=root;while(1){if(n.val<a.val){if(!a.l){a.l=n;return}a=a.l}else{if(!a.r){a.r=n;return}a=a.r}}}
+    vals.forEach(function(v){ins({id:nid++,val:v,l:null,r:null})});
+    return {root:root,nid:nid};
+  }
+  makeLab('lab-rec',{
+    tag:'LAB 07 · § 4.3',title:'Los cuatro recorridos, con la pila a la vista',
+    hint:'mirá cómo sube y baja la recursión',file:'Recorridos.java',code:SRC.join('\n'),
+    init:function(){return buildTree([50,30,70,20,40,60,80])},
+    draw:function(h,w){
+      var T=treeG({root:w.root,hl:w.hl,edgeOn:w.edgeOn,vis:w.vis},{dx:52,dy:60,x0:46,y0:78,r:16});
+      var W=Math.max(T.W+250,600),H=Math.max(T.H,360);
+      var sv=svgEl(W,H);
+      sv.appendChild(T.g);
+      var px=T.W+30;
+      function find(n,id){if(!n)return null;if(n.id===id)return n;return find(n.l,id)||find(n.r,id)}
+      if(w.mode==='niv'){
+        tagTxt(sv,px,44,'COLA (FIFO)',{mono:1});
+        (w.q||[]).forEach(function(id,i){var n=find(w.root,id);if(n)chip(sv,px+34+i*52,86,n.val)});
+        if(!(w.q||[]).length)tagTxt(sv,px+34,90,'(vacía)',{fill:COL.ink2});
+      }else{
+        tagTxt(sv,px+86,44,'PILA DE LLAMADAS',{anchor:'middle',mono:1});
+        tagTxt(sv,px+172,60,'← cima',{anchor:'end',fill:COL.ink2});
+        var base=H-58;
+        (w.stack||[]).forEach(function(f,i){
+          var y=base-i*36;
+          sv.appendChild(S('rect',{x:px,y:y-13,width:172,height:28,rx:5,class:'stk-r',style:f.phase==='in'?('stroke:'+COL.acc+';stroke-width:2'):''}));
+          tagTxt(sv,px+86,y+1,f.label,{anchor:'middle'});
+        });
+        if(!(w.stack||[]).length)tagTxt(sv,px+86,base,'(pila vacía)',{anchor:'middle',fill:COL.ink2});
+      }
+      tagTxt(sv,46,H-18,'SALIDA:  '+(w.out||[]).join('  '),{fill:COL.teal});
+      h.appendChild(sv);
+    },
+    controls:function(api,ctl){
+      function gen(mode){
+        var w=api.world,root=w.root;
+        var st={root:clone(root),mode:mode,out:[],stack:[],hl:[],edgeOn:[],vis:[],q:[]};
+        var steps=[];
+        function snap(lines,note,over){
+          st.hl=(over&&over.hl)||[];st.edgeOn=(over&&over.edgeOn)||[];
+          if(over&&over.vis)st.vis=over.vis;
+          if(over&&over.q)st.q=over.q;
+          steps.push({lines:lines,note:note,world:clone(st)});
+        }
+        var m=fl(SRC,mName[mode]),fn=mode==='in'?'inorden':mode==='pre'?'preorden':mode==='post'?'postorden':'porNiveles';
+        if(mode==='niv'){
+          var lEnq=fl(SRC,'c.encolar(raiz)',m-1),lDeq=fl(SRC,'c.desencolar()',m-1),
+              lEnI=fl(SRC,'c.encolar(n.izq)',m-1),lEnD=fl(SRC,'c.encolar(n.der)',m-1);
+          st.q=[root.id];
+          snap([lEnq],'Encolo la raíz: la cola siembra el recorrido por niveles.',{hl:[root.id]});
+          var q=[root],visN=[];
+          while(q.length){
+            var n=q.shift();
+            visN.push(n.id);st.out.push(n.val);
+            snap([lDeq],'Desencolo '+n.val+' y lo proceso. La cola es FIFO: ya salieron todos los niveles anteriores.',{hl:[n.id],vis:visN.slice(),q:q.map(function(x){return x.id})});
+            if(n.l){q.push(n.l);snap([lEnI],'Encolo su hijo izquierdo ('+n.l.val+'): seguirá DESPUÉS de los que ya están.',{hl:[n.id],vis:visN.slice(),q:q.map(function(x){return x.id})})}
+            if(n.r){q.push(n.r);snap([lEnD],'Encolo su hijo derecho ('+n.r.val+').',{hl:[n.id],vis:visN.slice(),q:q.map(function(x){return x.id})})}
+          }
+          snap([],'Cola vacía: recorrido por niveles completo. Notá que no hubo una sola llamada recursiva.',{vis:visN.slice(),q:[]});
+          return steps;
+        }
+        var lPrint=fl(SRC,'System.out.print',m-1),lNull=fl(SRC,'if (n == null)',m-1),
+            lIzq=fl(SRC,fn+'(n.izq)',m-1),lDer=fl(SRC,fn+'(n.der)',m-1);
+        var visR=[];
+        function rec(n,fromLine,fromNote){
+          st.stack.push({label:fn+'('+n.val+')',phase:'in'});
+          snap(fromLine||[m],fromNote||('Se apila '+fn+'('+n.val+').'),{hl:[n.id]});
+          if(mode==='pre'){visR.push(n.id);st.out.push(n.val);snap([lPrint],'PROCESA '+n.val+' primero: en preorden el padre va antes que los hijos.',{hl:[n.id],vis:visR.slice()})}
+          if(n.l){
+            snap([lIzq],'Baja a la izquierda de '+n.val+'.',{hl:[n.id],edgeOn:[n.l.id]});
+            rec(n.l,[lIzq],'Se apila '+fn+'('+n.l.val+').');
+            st.stack.pop();
+            snap([lIzq],'Terminó el subárbol izquierdo de '+n.val+': su frame sale de la pila.',{hl:[n.id]});
+          }else snap([lNull],'izq de '+n.val+' es null → caso base: retorna sin apilarse.',{hl:[n.id]});
+          if(mode==='in'){visR.push(n.id);st.out.push(n.val);snap([lPrint],'PROCESA '+n.val+': en inorden sale entre su izquierda y su derecha → la SALIDA queda ordenada.',{hl:[n.id],vis:visR.slice()})}
+          if(n.r){
+            snap([lDer],'Baja a la derecha de '+n.val+'.',{hl:[n.id],edgeOn:[n.r.id]});
+            rec(n.r,[lDer],'Se apila '+fn+'('+n.r.val+').');
+            st.stack.pop();
+            snap([lDer],'Terminó el subárbol derecho de '+n.val+': su frame sale.',{hl:[n.id]});
+          }else snap([lNull],'der de '+n.val+' es null → caso base.',{hl:[n.id]});
+          if(mode==='post'){visR.push(n.id);st.out.push(n.val);snap([lPrint],'PROCESA '+n.val+' AL FINAL: en postorden los hijos van antes que el padre.',{hl:[n.id],vis:visR.slice()})}
+        }
+        rec(root,[m],'Se apila la primera llamada: '+fn+'('+root.val+').');
+        st.stack.pop();
+        snap([],'El último frame sale: recorrido completo. La SALIDA quedó: '+st.out.join(', ')+'.',{vis:visR.slice()});
+        return steps;
+      }
+      [['Preorden','pre'],['Inorden','in'],['Postorden','post'],['Por niveles','niv']].forEach(function(b){
+        ctlBtn(ctl,b[0]).addEventListener('click',function(){api.msg(null);api.run(gen(b[1]))});
+      });
+      ctlBtn(ctl,'↻ otro árbol','ghost').addEventListener('click',function(){
+        var t=buildTree(shuffle([50,30,70,20,40,60,80,10,90]).slice(0,7+Math.floor(Math.random()*3)));
+        api.world=t;api.render();api.msg('Árbol nuevo: volvé a recorrerlo.');
+      });
+    }
+  });
+});
+
+/* ================= LAB 08 · eliminar en ABB ================= */
+safe('lab08-eliminar',function(){
+  var SRC=[
+    'void eliminar(int x) {',
+    '    NodoABB prev = null, aux = raiz;',
+    '    while (aux != null && aux.info != x) {   // 1. buscar',
+    '        prev = aux;',
+    '        aux = (x < aux.info) ? aux.izq : aux.der;',
+    '    }',
+    '    if (aux == null) return;          // no está',
+    '',
+    '    if (aux.izq != null && aux.der != null) {  // CASO 3: dos hijos',
+    '        NodoABB s = aux.der;          // sucesor inorden:',
+    '        while (s.izq != null) s = s.izq;   // mín. del subárbol der.',
+    '        aux.info = s.info;            // copiar el DATO',
+    '        eliminarSucesor(s);           // borrarlo (cae en caso 1 o 2)',
+    '    }',
+    '    else if (aux.izq != null) enganchar(prev, aux, aux.izq);  // CASO 2',
+    '    else if (aux.der != null) enganchar(prev, aux, aux.der);  // CASO 2',
+    '    else enganchar(prev, aux, null);         // CASO 1: hoja',
+    '}',
+    '',
+    'void enganchar(prev, aux, hijo) {',
+    '    if (prev == null) raiz = hijo;',
+    '    else if (prev.izq == aux) prev.izq = hijo;',
+    '    else prev.der = hijo;',
+    '}'
+  ];
+  var mEli=fl(SRC,'void eliminar(int x)')-1,mEng=fl(SRC,'void enganchar')-1;
+  function findPath(root,x){
+    var prev=null,aux=root,dir=null;
+    while(aux&&aux.val!==x){prev=aux;dir=x<aux.val?'l':'r';aux=aux[dir]}
+    return {prev:prev,aux:aux,dir:dir};
+  }
+  function replaceChild(w,parent,node,child){
+    if(!parent)w.root=child;
+    else if(parent.l===node)parent.l=child;
+    else parent.r=child;
+  }
+  makeLab('lab-del',{
+    tag:'LAB 08 · § 4.4',title:'Eliminar en ABB: los tres casos',
+    hint:'probá 20 (hoja), 60 (un hijo), 30 (dos hijos)',file:'Eliminar.java',code:SRC.join('\n'),
+    init:function(){
+      return {root:{id:1,val:50,l:{id:2,val:30,l:{id:4,val:20,l:null,r:null},r:{id:5,val:40,l:null,r:null}},r:{id:3,val:70,l:{id:6,val:60,l:null,r:null},r:{id:7,val:80,l:null,r:null}}},nid:8};
+    },
+    draw:function(h,w){mount(h,treeG({root:w.root,hl:w.hl,edgeOn:w.edgeOn,gone:w.gone,born:w.born,ret:w.ret,oldVal:w.oldVal,hud:w.hud}))},
+    controls:function(api,ctl){
+      var inV=ctlInput(ctl,'de','ELIMINAR','ej: 30');
+      function W(){return api.world}
+      function V(over){
+        var b={root:clone(W().root),hl:[],edgeOn:[],gone:[],born:[],ret:undefined,oldVal:null,hud:null};
+        if(over)for(var k in over)b[k]=over[k];
+        return b;
+      }
+      ctlBtn(ctl,'Eliminar','warnb').addEventListener('click',function(){
+        var x=parseNum(inV.value);
+        if(x===null){bad(inV);api.msg('Valor entero, por favor.');return}
+        api.msg(null);
+        var w=W(),steps=[];
+        if(!w.root)return api.msg('El árbol está vacío.');
+        var p=findPath(w.root,x),prev=p.prev,aux=p.aux;
+        if(!aux){
+          steps.push({lines:[fl(SRC,'return',mEli)],note:x+' no está en el árbol: no hay nada que eliminar.',world:V({ret:'null'})});
+          return api.run(steps);
+        }
+        var path=[];
+        (function mark(n){if(!n)return;path.push(n.id);if(n.val!==x)mark(x<n.val?n.l:n.r)})(w.root);
+        steps.push({lines:[fl(SRC,'while (aux != null && aux.info != x)',mEli)],note:'1) Buscar el nodo: el camino marcado es el que comparó el while.',world:V({hl:[aux.id],edgeOn:path})});
+        var kids=(aux.l?1:0)+(aux.r?1:0);
+        steps.push({lines:[fl(SRC,'aux.izq != null && aux.der != null',mEli)],note:'Encontrado '+x+' con '+kids+' hijo(s) → CASO '+(kids===0?'1 (hoja)':kids===1?'2 (un hijo)':'3 (dos hijos)')+'.',world:V({hl:[aux.id],vis:path})});
+        if(kids===0){
+          steps.push({lines:[fl(SRC,'enganchar(prev, aux, null)',mEli)],note:'CASO 1: es hoja → el padre apunta a null. La rama se corta.',world:V({gone:[aux.id],hl:[aux.id],edgeOn:path})});
+          replaceChild(w,prev,aux,null);
+          steps.push({lines:[fl(SRC,'}',mEli)],note:'✓ '+x+' eliminado. Sin hijos, sin drama.',world:V({ret:'✓'})});
+        }else if(kids===1){
+          var hijo=aux.l||aux.r;
+          steps.push({lines:[fl(SRC,'enganchar(prev, aux, '+(aux.l?'aux.izq':'aux.der')+')',mEli)],note:'CASO 2: el hijo sube — el padre adopta DIRECTO al nieto.',world:V({gone:[aux.id],hl:[hijo.id],edgeOn:path})});
+          replaceChild(w,prev,aux,hijo);
+          steps.push({lines:[fl(SRC,'}',mEli)],note:'✓ '+x+' eliminado: '+hijo.val+' ocupó su lugar (mirá cómo se reacomodó el dibujo).',world:V({born:[hijo.id],ret:'✓'})});
+        }else{
+          steps.push({lines:[fl(SRC,'NodoABB s = aux.der',mEli)],note:'CASO 3: nadie puede subir. Busco el SUCESOR INORDEN: el mínimo del subárbol derecho.',world:V({hl:[aux.r.id],vis:path})});
+          var sp=aux.r,s=aux.r;
+          while(s.l){sp=s;s=s.l}
+          if(s!==aux.r)steps.push({lines:[fl(SRC,'while (s.izq != null) s = s.izq',mEli)],note:'Bajando siempre a la izquierda… el sucesor es '+s.val+': el próximo valor después de '+x+' en el orden.',world:V({hl:[s.id],vis:path})});
+          else steps.push({lines:[fl(SRC,'while (s.izq != null)',mEli)],note:'El subárbol derecho no tiene rama izquierda: su raíz ('+s.val+') ya es el sucesor.',world:V({hl:[s.id],vis:path})});
+          var oldVal=aux.val;
+          aux.val=s.val;
+          steps.push({lines:[fl(SRC,'aux.info = s.info',mEli)],note:'TRUCO CLAVE: no se mueven nodos — se COPIA el dato del sucesor sobre el nodo a borrar.',world:V({hl:[aux.id],oldVal:{id:aux.id,old:oldVal},vis:path})});
+          steps.push({lines:[fl(SRC,'eliminarSucesor(s)',mEli)],note:'Ahora hay que borrar al sucesor ('+s.val+')… que por ser mínimo NO tiene hijo izquierdo: cae en el caso 1 o 2.',world:V({gone:[s.id],hl:[aux.id],vis:path})});
+          replaceChild(w,sp,s,s.r);
+          steps.push({lines:[fl(SRC,'}',mEli)],note:'✓ El orden quedó intacto (verificalo con el inorden del LAB 07).',world:V({ret:'✓',hl:[aux.id]})});
+        }
+        api.run(steps);
+      });
+    }
+  });
+});
+
+/* ================= LAB 09 · árbol de listas ================= */
+safe('lab09-arbol-listas',function(){
+  var SRC=[
+    'class Area {                 // nodo del ÁRBOL',
+    '    String nombre;',
+    '    Area izq, der;',
+    '    Registro prim;          // cabecera de SU lista',
+    '}',
+    '',
+    'class Registro {             // nodo de la LISTA colgante',
+    '    int legajo;',
+    '    Registro sig;',
+    '}',
+    '',
+    'void matricular(String area, int legajo) {',
+    '    Area a = buscarArea(raiz, area);   // 1. el árbol localiza',
+    '    if (a.prim == null) {              // 2. la lista desagrega',
+    '        a.prim = new Registro(legajo);',
+    '        return;',
+    '    }',
+    '    Registro aux = a.prim;',
+    '    while (aux.sig != null) aux = aux.sig;',
+    '    aux.sig = new Registro(legajo);    // enganche al final',
+    '}'
+  ];
+  var mMat=fl(SRC,'void matricular')-1;
+  function findArea(node,name,path){
+    if(!node)return null;
+    path.push(node.id);
+    if(name===node.val)return node;
+    return findArea(name<node.val?node.l:node.r,name,path);
+  }
+  makeLab('lab-al',{
+    tag:'LAB 09 · § 5.1',title:'Árbol de listas: áreas y legajos',
+    hint:'el árbol localiza · la lista desagrega',file:'ArbolDeListas.java',code:SRC.join('\n'),
+    init:function(){
+      return {root:{id:1,val:'MAT',l:{id:2,val:'BIO',l:{id:3,val:'ART',l:null,r:null},r:null},r:{id:4,val:'SIS',l:{id:5,val:'QUI',l:null,r:null},r:null}},
+        regs:{1:[210,215],2:[101,105],3:[],4:[305],5:[]},nid:6};
+    },
+    draw:function(h,w){
+      var T=treeG({root:w.root,hl:w.hl,edgeOn:w.edgeOn,born:w.born},{dx:64,dy:58,x0:64,y0:76,r:21});
+      var W=Math.max(T.W,760),H=T.H+30;
+      var sv=svgEl(W,H);
+      sv.appendChild(T.g);
+      (function walk(n){
+        if(!n)return;
+        var p=T.XY(n.id),regs=w.regs[n.id]||[],ly=p.y+40;
+        if(regs.length){
+          regs.forEach(function(leg,i){
+            var x=p.x-22+i*52;
+            var g=S('g',{transform:'translate('+x+','+ly+')'});
+            var cls='nd'+((w.hlReg&&w.hlReg.area===n.id&&w.hlReg.i===i)?' hl':'')+((w.bornReg&&w.bornReg.area===n.id&&w.bornReg.i===i)?' born':'')+((w.visReg&&w.visReg.area===n.id&&w.visReg.i===i)?' vis':'');
+            var inner=S('g',{class:cls});
+            inner.appendChild(S('rect',{class:'nd-r',width:44,height:28,rx:4}));
+            inner.appendChild(S('line',{class:'nd-sep',x1:30,y1:0,x2:30,y2:28}));
+            inner.appendChild(S('text',{class:'nd-val',x:15,y:15,'dominant-baseline':'central','font-size':'12px',text:leg}));
+            inner.appendChild(S('circle',{class:'nd-dim',cx:37,cy:14,r:2.2}));
+            g.appendChild(inner);sv.appendChild(g);
+            if(i<regs.length-1)arrow(sv,x+35,ly+14,x+56,ly+14,{color:COL.ink,sw:1.4,hs:5});
+          });
+          arrow(sv,p.x,p.y+21,p.x,ly-3,{color:COL.teal,sw:1.5,hs:6});
+        }else{
+          tagTxt(sv,p.x,ly+14,'∅',{anchor:'middle',fill:COL.ink2});
+          arrow(sv,p.x,p.y+21,p.x,ly+2,{color:COL.teal,sw:1.5,hs:6});
+        }
+        walk(n.l);walk(n.r);
+      })(w.root);
+      h.appendChild(sv);
+    },
+    controls:function(api,ctl){
+      var inA=ctlInput(ctl,'aa','ÁREA','MAT','MAT'),inL=ctlInput(ctl,'al','LEGAJO','ej: 208');
+      function W(){return api.world}
+      function V(over){
+        var b={root:clone(W().root),regs:clone(W().regs),hl:[],edgeOn:[],born:[],hlReg:null,bornReg:null,visReg:null};
+        if(over)for(var k in over)b[k]=over[k];
+        return b;
+      }
+      ctlBtn(ctl,'Matricular legajo').addEventListener('click',function(){
+        var area=inA.value.trim().toUpperCase(),leg=parseNum(inL.value);
+        if(!area){bad(inA);api.msg('Escribí el área (MAT, BIO, SIS…).');return}
+        if(leg===null){bad(inL);api.msg('Legajo numérico, por favor.');return}
+        api.msg(null);
+        var w=W(),steps=[],path=[];
+        var a=findArea(w.root,area,path);
+        if(!a)return api.msg('El área '+area+' no existe. Creala primero con «nueva área».');
+        steps.push({lines:[fl(SRC,'buscarArea(raiz, area)',mMat)],note:'1) El ÁRBOL localiza: comparo alfabéticamente y bajo hasta '+area+'.',world:V({hl:[a.id],edgeOn:path})});
+        var regs=w.regs[a.id]||[];
+        if(!regs.length){
+          w.regs[a.id]=[leg];
+          steps.push({lines:[fl(SRC,'a.prim = new Registro(legajo)',mMat)],note:'2) Su lista estaba vacía: el legajo '+leg+' es el primer registro del área.',world:V({hl:[a.id],bornReg:{area:a.id,i:0}})});
+        }else{
+          steps.push({lines:[fl(SRC,'aux = a.prim',mMat)],note:'2) La LISTA desagrega: aux recorre los '+regs.length+' registro(s) del área.',world:V({hl:[a.id],visReg:{area:a.id,i:0}})});
+          for(var i=0;i<regs.length-1;i++)
+            steps.push({lines:[fl(SRC,'while (aux.sig != null)',mMat)],note:'aux.sig != null → avanza al registro '+regs[i+1]+'.',world:V({hl:[a.id],visReg:{area:a.id,i:i+1}})});
+          steps.push({lines:[fl(SRC,'aux.sig = new Registro(legajo)',mMat)],note:'Enganche al final: el último registro apunta al legajo '+leg+'.',world:V({hl:[a.id],visReg:{area:a.id,i:regs.length-1}})});
+          w.regs[a.id]=regs.concat([leg]);
+          steps.push({lines:[fl(SRC,'}',mMat)],note:'✓ Matriculado. El árbol costó O(log a); la lista, O(r). Cada estructura hizo SU trabajo.',world:V({hl:[a.id],bornReg:{area:a.id,i:regs.length}})});
+        }
+        api.run(steps);
+      });
+      ctlBtn(ctl,'Nueva área','ghost').addEventListener('click',function(){
+        var area=inA.value.trim().toUpperCase();
+        if(!/^[A-Z]{2,4}$/.test(area)){bad(inA);api.msg('Nombre de área: 2 a 4 letras (ej: ECO).');return}
+        api.msg(null);
+        var w=W();
+        if(findArea(w.root,area,[]))return api.msg('El área '+area+' ya existe.');
+        if(w.nid>7)return api.msg('El dibujo admite hasta 7 áreas.');
+        var steps=[],path=[],node=w.root;
+        while(true){
+          path.push(node.id);
+          steps.push({lines:[fl(SRC,'buscarArea(raiz, area)',mMat)],note:area+(area<node.val?' < ':' > ')+node.val+' → '+(area<node.val?'izquierda':'derecha')+'.',world:V({hl:[node.id],edgeOn:path})});
+          var nxt=area<node.val?node.l:node.r;
+          if(!nxt)break;
+          node=nxt;
+        }
+        var id=w.nid++,n={id:id,val:area,l:null,r:null};
+        if(area<node.val)node.l=n;else node.r=n;
+        w.regs[id]=[];
+        steps.push({lines:[fl(SRC,'a.prim = null',mMat)],note:'✓ Área '+area+' insertada en el árbol, con su lista vacía (∅). Ya podés matricularle legajos.',world:V({born:[id],hl:[id]})});
+        api.run(steps);
+      });
+    }
+  });
+});
+
+/* ================= LAB 10 · bosque ================= */
+safe('lab10-bosque',function(){
+  var SRC=[
+    'class Jugador {              // nodo de la LISTA',
+    '    String nombre;',
+    '    Jugador sig;',
+    '    NodoABB partidas;       // SU árbol, la raíz cuelga acá',
+    '}',
+    '',
+    'void registrar(String nom, int pts) {',
+    '    Jugador aux = primero;',
+    '    while (!aux.nombre.equals(nom))  // 1. la LISTA localiza',
+    '        aux = aux.sig;',
+    '    insertarABB(aux.partidas, pts);  // 2. el ÁRBOL desagrega',
+    '}'
+  ];
+  function ins(root,n){if(!root)return n;var a=root;while(1){if(n.val<a.val){if(!a.l){a.l=n;return root}a=a.l}else{if(!a.r){a.r=n;return root}a=a.r}}}
+  function hasV(n,v){if(!n)return false;if(n.val===v)return true;return hasV(n.l,v)||hasV(n.r,v)}
+  makeLab('lab-bosque',{
+    tag:'LAB 10 · § 5.2',title:'Bosque: una lista de árboles',
+    hint:'la lista localiza · el árbol desagrega',file:'Bosque.java',code:SRC.join('\n'),
+    init:function(){
+      var nid={n:1};
+      function t(vals){var r=null;vals.forEach(function(v){r=ins(r,{id:nid.n++,val:v,l:null,r:null})});return r}
+      return {players:[{name:'P1',root:t([30,20,40])},{name:'P2',root:t([55,45])},{name:'P3',root:t([70,60,80,65])}],nid:nid};
+    },
+    draw:function(h,w){
+      function PX(k){return 70+k*235}
+      var W=PX(3),H=340;
+      var sv=svgEl(W,H);
+      tagTxt(sv,70,42,'LA LISTA (ranking)',{mono:1});
+      tagTxt(sv,W-14,42,'EL BOSQUE (un árbol por jugador)',{anchor:'end',mono:1});
+      w.players.forEach(function(p,k){
+        var x=PX(k),hl=w.hlP===k,vis=w.visP===k;
+        var g=S('g',{transform:'translate('+x+',52)'});
+        var inner=S('g',{class:'nd'+(hl?' hl':'')+(vis?' vis':'')});
+        inner.appendChild(S('rect',{class:'nd-r',width:64,height:34,rx:4}));
+        inner.appendChild(S('line',{class:'nd-sep',x1:44,y1:0,x2:44,y2:34}));
+        inner.appendChild(S('text',{class:'nd-val',x:22,y:18,'dominant-baseline':'central',text:p.name}));
+        inner.appendChild(S('circle',{class:'nd-dim',cx:54,cy:17,r:2.6}));
+        g.appendChild(inner);sv.appendChild(g);
+        if(k<w.players.length-1)arrow(sv,x+55,69,PX(k+1)+6,69,{color:COL.ink,sw:1.6});
+        arrow(sv,x+54,86,x+32,108,{color:COL.teal,sw:1.5,hs:6});
+        tagTxt(sv,x+70,102,'partidas',{fill:COL.ink2});
+      });
+      ground(sv,PX(w.players.length-1)+69,94);
+      w.players.forEach(function(p,k){
+        var sub=treeG({root:p.root,hl:w.hlP===k?w.hl:[],born:w.hlP===k?w.born:[]},{dx:38,dy:44,x0:PX(k)-8,y0:150,r:13,bottom:36});
+        $$('.tn-t',sub.g).forEach(function(t){t.setAttribute('style','font-size:11px')});
+        sv.appendChild(sub.g);
+      });
+      h.appendChild(sv);
+    },
+    controls:function(api,ctl){
+      var inJ=ctlInput(ctl,'bj','JUGADOR (1-3)','2','2'),inP=ctlInput(ctl,'bp','PUNTOS','ej: 50');
+      ctlBtn(ctl,'Registrar partida').addEventListener('click',function(){
+        var j=parseNum(inJ.value),pts=parseNum(inP.value);
+        if(j===null||j<1||j>api.world.players.length){bad(inJ);api.msg('Jugador entre 1 y '+api.world.players.length+'.');return}
+        if(pts===null){bad(inP);api.msg('Puntos numéricos, por favor.');return}
+        api.msg(null);
+        var w=api.world,steps=[],k=j-1;
+        function V(over){
+          var b={players:clone(w.players),hlP:null,visP:null,hl:[],born:[]};
+          if(over)for(var kk in over)b[kk]=over[kk];
+          return b;
+        }
+        steps.push({lines:[fl(SRC,'Jugador aux = primero')],note:'1) La LISTA localiza: aux arranca en el primero del ranking.',world:V({hlP:0})});
+        for(var i=0;i<k;i++)
+          steps.push({lines:[fl(SRC,'aux = aux.sig')],note:'¿Es '+w.players[i].name+'? No → aux avanza a '+w.players[i+1].name+'.',world:V({hlP:i+1,visP:i})});
+        steps.push({lines:[fl(SRC,'aux.nombre.equals(nom')],note:'Encontrado: '+w.players[k].name+'. Ahora empieza el trabajo del ÁRBOL.',world:V({hlP:k,visP:k})});
+        if(hasV(w.players[k].root,pts)){
+          steps.push({lines:[fl(SRC,'insertarABB')],note:pts+' ya está en el árbol de '+w.players[k].name+': los ABB no repiten valores.',world:V({hlP:k,visP:k})});
+          return api.run(steps);
+        }
+        var a=w.players[k].root;
+        while(true){
+          steps.push({lines:[fl(SRC,'insertarABB(aux.partidas, pts)')],note:(pts<a.val?pts+' < '+a.val+' → izquierda.':pts+' > '+a.val+' → derecha.'),world:V({hlP:k,visP:k,hl:[a.id]})});
+          var nxt=pts<a.val?a.l:a.r;
+          if(!nxt){
+            var id=w.nid.n++,nn={id:id,val:pts,l:null,r:null};
+            if(pts<a.val)a.l=nn;else a.r=nn;
+            steps.push({lines:[fl(SRC,'insertarABB(aux.partidas, pts)')],note:'✓ Hueco encontrado: '+pts+' quedó en el árbol de '+w.players[k].name+'. La lista ordenó jugadores; el árbol ordenó partidas.',world:V({hlP:k,visP:k,hl:[id],born:[id]})});
+            break;
+          }
+          a=nxt;
+        }
+        api.run(steps);
+      });
+    }
+  });
+});
+
+/* ================= LAB 11 · atajos ================= */
+safe('lab11-atajos',function(){
+  var SRC=[
+    'class Atajo {                 // nodo de la lista de referencias',
+    '    NodoABB destino;         // NO guarda un dato: apunta ADENTRO del árbol',
+    '    Atajo sig;',
+    '}',
+    '',
+    'NodoABB buscarConAtajos(int x) {',
+    '    Atajo mejor = null;',
+    '    Atajo aux = primAtajo;',
+    '    while (aux != null && aux.destino.info <= x) {',
+    '        mejor = aux;                // 1. el atajo más cercano por debajo',
+    '        aux = aux.sig;',
+    '    }',
+    '    NodoABB n = (mejor == null) ? raiz : mejor.destino;',
+    '    while (n != null && n.info != x)   // 3. seguir desde ahí',
+    '        n = (x < n.info) ? n.izq : n.der;',
+    '    return n;',
+    '}',
+    '',
+    'NodoABB buscarSinAtajos(int x) {   // desde la raíz, piso a piso',
+    '    NodoABB aux = raiz;',
+    '    while (aux != null && aux.info != x)',
+    '        aux = (x < aux.info) ? aux.izq : aux.der;',
+    '    return aux;',
+    '}'
+  ];
+  var mCon=fl(SRC,'buscarConAtajos')-1,mSin=fl(SRC,'buscarSinAtajos')-1;
+  function nodeById(root,id){return (function f(n){return n?(n.id===id?n:f(n.r)):null})(root)}
+  makeLab('lab-atajo',{
+    tag:'LAB 11 · § 5.3',title:'Lista de referencias: atajos sobre un ABB degenerado',
+    hint:'compará buscar CON y SIN atajos',file:'Atajos.java',code:SRC.join('\n'),
+    init:function(){
+      var root=null,cur=null;
+      [10,20,30,40,50,60].forEach(function(v,i){
+        var n={id:i+1,val:v,l:null,r:null};
+        if(!root)root=n;else cur.r=n;
+        cur=n;
+      });
+      return {root:root,atajos:[{ref:2},{ref:4}]};
+    },
+    draw:function(h,w){
+      var T=treeG({root:w.root,hl:w.hl,edgeOn:w.edgeOn,vis:w.vis,ret:w.ret},{dx:88,dy:56,x0:190,y0:70,r:17,bottom:60});
+      var W=Math.max(T.W,640),H=T.H;
+      var sv=svgEl(W,H);
+      sv.appendChild(T.g);
+      tagTxt(sv,30,44,'LISTA DE ATAJOS',{mono:1});
+      tagTxt(sv,30,58,'(referencias adentro del árbol)',{fill:COL.ink2});
+      w.atajos.forEach(function(a,i){
+        var y=104+i*56,hot=w.hlAtajo===i;
+        var node=nodeById(w.root,a.ref);
+        sv.appendChild(S('rect',{x:30,y:y,width:74,height:34,rx:6,fill:hot?'#FBE9E2':'#FCFAF3',stroke:hot?COL.acc:COL.teal,'stroke-width':hot?2.4:1.5}));
+        tagTxt(sv,67,y+21,'→ '+(node?node.val:'?'),{anchor:'middle',fill:hot?COL.acc:COL.teal,mono:1});
+        if(i<w.atajos.length-1)arrow(sv,67,y+34,67,y+56,{color:COL.teal,sw:1.5,hs:6});
+        if(node){var p=T.XY(node.id);arrow(sv,104,y+17,p.x-22,p.y,{color:hot?COL.acc:COL.teal,sw:hot?2.4:1.5,curve:26})}
+      });
+      tagTxt(sv,196,64,'ABB DEGENERADO (inserción ordenada = una lista disfrazada)',{fill:COL.ink2});
+      if(w.hud)tagTxt(sv,W-12,26,w.hud,{anchor:'end'});
+      h.appendChild(sv);
+    },
+    controls:function(api,ctl){
+      var inV=ctlInput(ctl,'at','BUSCAR','ej: 50');
+      function W(){return api.world}
+      function V(over){
+        var b={root:clone(W().root),atajos:clone(W().atajos),hl:[],edgeOn:[],vis:[],ret:undefined,hlAtajo:-1,hud:null};
+        if(over)for(var k in over)b[k]=over[k];
+        return b;
+      }
+      function sinSteps(x){
+        var w=W(),steps=[],aux=w.root,saltos=0;
+        while(aux&&aux.val!==x){
+          steps.push({lines:[fl(SRC,'aux = (x < aux.info)',mSin)],note:x+(x<aux.val?' < ':' > ')+aux.val+' → derecha (¡el árbol degenerado solo tiene derecha!).',world:V({hl:[aux.id],hud:'saltos: '+saltos})});
+          aux=aux.r;saltos++;
+        }
+        if(aux)steps.push({lines:[fl(SRC,'return aux',mSin)],note:'Encontrado tras '+saltos+' salto(s) desde la raíz: un salto POR PISO.',world:V({vis:[aux.id],hl:[aux.id],ret:String(aux.val),hud:'saltos: '+saltos})});
+        else steps.push({lines:[fl(SRC,'return aux',mSin)],note:x+' no está. Igual: '+saltos+' saltos para descubrirlo.',world:V({ret:'null',hud:'saltos: '+saltos})});
+        return {steps:steps,saltos:saltos};
+      }
+      ctlBtn(ctl,'Buscar SIN atajos').addEventListener('click',function(){
+        var x=parseNum(inV.value);
+        if(x===null){bad(inV);api.msg('Valor entero (10, 20, … 60).');return}
+        api.msg(null);
+        api.run(sinSteps(x).steps);
+      });
+      ctlBtn(ctl,'Buscar CON atajos').addEventListener('click',function(){
+        var x=parseNum(inV.value);
+        if(x===null){bad(inV);api.msg('Valor entero (10, 20, … 60).');return}
+        api.msg(null);
+        var w=W(),steps=[],mejor=-1,saltos=0;
+        for(var i=0;i<w.atajos.length;i++){
+          var nv=nodeById(w.root,w.atajos[i].ref).val;
+          if(nv<=x){
+            steps.push({lines:[fl(SRC,'mejor = aux',mCon)],note:'Atajo →'+nv+': '+nv+' ≤ '+x+' → es candidato (el más cercano por debajo, por ahora).',world:V({hlAtajo:i,hl:[w.atajos[i].ref]})});
+            mejor=i;
+          }else{
+            steps.push({lines:[fl(SRC,'while (aux != null && aux.destino.info <= x)',mCon)],note:'Atajo →'+nv+': '+nv+' > '+x+' → me paso: corto el while.',world:V({hlAtajo:i,hl:[w.atajos[i].ref]})});
+            break;
+          }
+        }
+        var start;
+        if(mejor<0){
+          start=w.root;
+          steps.push({lines:[fl(SRC,'(mejor == null) ? raiz',mCon)],note:'Ningún atajo sirve (todos se pasan): arranco desde la raíz, como siempre.',world:V({hl:[w.root.id]})});
+        }else{
+          start=nodeById(w.root,w.atajos[mejor].ref);saltos=1;
+          steps.push({lines:[fl(SRC,'mejor.destino',mCon)],note:'Aterrizo DIRECTO en '+start.val+': 1 salto. La lista de referencias me metió al árbol ya cerca del objetivo.',world:V({hlAtajo:mejor,vis:[start.id],hl:[start.id],hud:'saltos: 1'})});
+        }
+        var aux=start;
+        while(aux&&aux.val!==x){
+          var nxt=x<aux.val?aux.l:aux.r;
+          steps.push({lines:[fl(SRC,'n = (x < n.info)',mCon)],note:x+(x<aux.val?' < ':' > ')+aux.val+' → '+(x<aux.val?'izquierda':'derecha')+'.',world:V({hl:[aux.id],vis:[start.id],hud:'saltos: '+(saltos+1)})});
+          if(!nxt)break;
+          aux=nxt;saltos++;
+          steps.push({lines:[fl(SRC,'while (n != null && n.info != x)',mCon)],note:'Sigo desde donde aterricé: ahora sí, piso a piso.',world:V({hl:[aux.id],vis:[start.id],hud:'saltos: '+saltos})});
+        }
+        var sin=sinSteps(x).saltos;
+        if(aux&&aux.val===x)
+          steps.push({lines:[fl(SRC,'return n',mCon)],note:'✓ Encontrado: 1 salto de aterrizaje + '+(saltos-1)+' de caminata = '+saltos+' en total. SIN atajos costaba '+sin+'.',world:V({vis:[start.id,aux.id],hl:[aux.id],ret:String(aux.val),hud:'CON: '+saltos+' · SIN: '+sin})});
+        else
+          steps.push({lines:[fl(SRC,'return n',mCon)],note:x+' no está — pero contá igual: CON atajos '+saltos+' saltos vs '+sin+' sin ellos.',world:V({vis:[start.id],ret:'null',hud:'CON: '+saltos+' · SIN: '+sin})});
+        api.run(steps);
+      });
+    }
+  });
+});
+
+/* ================= LAB 12 · anillo de hermanos ================= */
+safe('lab12-hermanos',function(){
+  var SRC=[
+    'class NodoH {                 // TRES punteros por nodo',
+    '    int info;',
+    '    NodoH izq, der;          // la estructura del árbol',
+    '    NodoH herm;              // el anillo de hermanos',
+    '}',
+    '',
+    'void listarHermanos(NodoH padre) {',
+    '    NodoH entrada = padre.izq;   // el PRIMER hijo',
+    '    NodoH aux = entrada;',
+    '    do {                          // entra al menos una vez',
+    '        System.out.print(aux.info + " ");',
+    '        aux = aux.herm;           // gira por el anillo',
+    '    } while (aux != entrada);     // corta al volver a la entrada',
+    '}'
+  ];
+  var SIB={1:[2,3],2:[4,5],3:[6,7]};
+  var NAMES={};
+  makeLab('lab-herm',{
+    tag:'LAB 12 · § 5.4',title:'El tercer puntero: el anillo de hermanos',
+    hint:'enumerar hijos sin volver al padre',file:'Hermanos.java',code:SRC.join('\n'),
+    init:function(){
+      var t={id:1,val:30,l:{id:2,val:10,l:{id:4,val:5,l:null,r:null},r:{id:5,val:15,l:null,r:null}},r:{id:3,val:50,l:{id:6,val:40,l:null,r:null},r:{id:7,val:60,l:null,r:null}}};
+      (function m(n){if(!n)return;NAMES[n.id]=n.val;m(n.l);m(n.r)})(t);
+      return {root:t};
+    },
+    draw:function(h,w){
+      var herm=[];
+      Object.keys(SIB).forEach(function(pid){
+        var ids=SIB[pid];
+        for(var i=0;i<ids.length;i++)herm.push({a:ids[i],b:ids[(i+1)%ids.length]});
+      });
+      var T=treeG({root:w.root,hl:w.hl,vis:w.vis,herm:herm,hermOn:w.hermOn,ring:w.ring?{ids:SIB[w.ring]}:null},{dx:62,dy:64,x0:60,y0:86,r:17,bottom:80});
+      var W=Math.max(T.W,620),H=T.H+40;
+      var sv=svgEl(W,H);
+      sv.appendChild(T.g);
+      if((w.out||[]).length){
+        tagTxt(sv,46,H-30,'SALIDA:',{fill:COL.teal});
+        w.out.forEach(function(v,i){chip(sv,110+i*56,H-30,v)});
+      }
+      if(w.hud)tagTxt(sv,W-12,26,w.hud,{anchor:'end'});
+      h.appendChild(sv);
+    },
+    controls:function(api,ctl){
+      function V(over){
+        var b={root:clone(api.world.root),hl:[],vis:[],hermOn:[],ring:null,out:[],hud:null};
+        if(over)for(var k in over)b[k]=over[k];
+        return b;
+      }
+      function idxBase(pid){
+        var c=0;
+        for(var p in SIB){if(p===String(pid))break;c+=SIB[p].length}
+        return c;
+      }
+      [[30,1],[10,2],[50,3]].forEach(function(b){
+        ctlBtn(ctl,'Hijos de '+b[0]).addEventListener('click',function(){
+          api.msg(null);
+          var steps=[],ids=SIB[b[1]],base=idxBase(b[1]),entry=ids[0];
+          steps.push({lines:[fl(SRC,'entrada = padre.izq')],note:'El primer hijo de '+b[0]+' es '+NAMES[entry]+': será la ENTRADA del anillo.',world:V({hl:[entry],ring:b[1]})});
+          var vis=[],out=[];
+          for(var i=0;i<ids.length;i++){
+            var cur=ids[i];
+            vis.push(cur);out.push(NAMES[cur]);
+            steps.push({lines:[fl(SRC,'System.out.print')],note:'Procesa '+NAMES[cur]+' → SALIDA. Sin subir al padre ni volver a bajar.',world:V({hl:[cur],vis:vis.slice(),ring:b[1],out:out.slice()})});
+            var nxt=ids[(i+1)%ids.length];
+            steps.push({lines:[fl(SRC,'aux = aux.herm')],note:'aux = aux.herm → gira a '+NAMES[nxt]+(nxt===entry?'. ¡Es la entrada de nuevo!':'.'),world:V({vis:vis.slice(),ring:b[1],hermOn:[base+i],out:out.slice()})});
+          }
+          steps.push({lines:[fl(SRC,'while (aux != entrada)')],note:'La guardia da FALSO (aux == entrada) → corta. El mismo do-while del capítulo 03: no hay null en un anillo.',world:V({vis:vis.slice(),ring:b[1],out:out.slice(),hud:'hermanos de '+b[0]+': '+out.join(' · ')})});
+          api.run(steps);
+        });
+      });
+    }
+  });
+});
+
+/* ================= codeboxes estáticos ================= */
+safe('codigo-estatico',function(){
+  staticCode('code-nodo','Nodo.java',[
+    'class Nodo {',
+    '    int info;      // el dato',
+    '    Nodo sig;      // ← AUTOREFERENCIA: el tipo es la propia clase',
+    '',
+    '    Nodo(int info) {',
+    '        this.info = info;',
+    '        this.sig = null;   // todo nodo nace mirando a null',
+    '    }',
+    '}'
+  ].join('\n'));
+  staticCode('code-cola','Cola.java',[
+    'class Cola {                      // FIFO: lista con DOS punteros',
+    '    Nodo frente, fondo;',
+    '',
+    '    void encolar(int x) {',
+    '        Nodo n = new Nodo(x);',
+    '        if (frente == null) frente = n;   // primera: frente y fondo',
+    '        else fondo.sig = n;               // engancha detrás',
+    '        fondo = n;                        // nuevo fondo, en O(1)',
+    '    }',
+    '',
+    '    Nodo desencolar() {                   // quita del frente, O(1)',
+    '        Nodo n = frente;',
+    '        frente = frente.sig;',
+    '        if (frente == null) fondo = null; // quedó vacía',
+    '        return n;',
+    '    }',
+    '}'
+  ].join('\n'));
+  staticCode('code-min','MinimoMaximo.java',[
+    'int minimo() {              // iterativo: SIEMPRE a la izquierda',
+    '    NodoABB aux = raiz;',
+    '    while (aux.izq != null)',
+    '        aux = aux.izq;',
+    '    return aux.info;',
+    '}',
+    '',
+    'int maximo() {              // espejo: SIEMPRE a la derecha',
+    '    NodoABB aux = raiz;',
+    '    while (aux.der != null)',
+    '        aux = aux.der;',
+    '    return aux.info;',
+    '}'
+  ].join('\n'));
+  staticCode('code-alt','Altura.java',[
+    'int altura(NodoABB n) {     // recursivo · altura(vacío) = −1',
+    '    if (n == null) return -1;',
+    '    int hi = altura(n.izq);',
+    '    int hd = altura(n.der);',
+    '    return 1 + Math.max(hi, hd);   // 1 + el hijo más profundo',
+    '}'
+  ].join('\n'));
+});
+
+/* ================= chrome: progreso · spy · drawer ================= */
+safe('chrome',function(){
+  var prog=$('#progress');
+  var links=$$('nav.toc a[data-spy]');
+  var marks=links.map(function(a){return {a:a,t:document.getElementById(a.getAttribute('data-spy'))}}).filter(function(m){return m.t});
+  function spy(){
+    var act=-1;
+    marks.forEach(function(m,i){if(m.t.getBoundingClientRect().top<140)act=i});
+    links.forEach(function(a){a.classList.remove('on')});
+    if(act>=0){
+      marks[act].a.classList.add('on');
+      if(marks[act].a.parentElement.classList.contains('sub')){
+        for(var i=act;i>=0;i--){
+          if(!marks[i].a.parentElement.classList.contains('sub')){marks[i].a.classList.add('on');break}
+        }
+      }
+    }
+  }
+  function onScroll(){
+    var d=document.documentElement;
+    prog.style.width=(d.scrollTop/Math.max(1,d.scrollHeight-innerHeight)*100).toFixed(2)+'%';
+    spy();
+  }
+  addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+  var drawer=$('#drawer'),overlay=$('#overlay'),dtoc=$('#drawer-toc');
+  if(dtoc&&$('nav.toc'))dtoc.innerHTML=$('nav.toc').innerHTML.replace(/ data-spy="[^"]*"/g,'');
+  function openD(){drawer.classList.add('open');overlay.classList.add('open')}
+  function closeD(){drawer.classList.remove('open');overlay.classList.remove('open')}
+  var bi=$('#btn-index'),bc=$('#btn-close');
+  if(bi)bi.addEventListener('click',openD);
+  if(bc)bc.addEventListener('click',closeD);
+  if(overlay)overlay.addEventListener('click',closeD);
+  $$('a',drawer).forEach(function(a){a.addEventListener('click',closeD)});
+});
+
+/* reporte de carga: abrí la consola (F12) para verlo */
+setTimeout(function(){
+  console.log('%c[IP2] Apunte interactivo — '+BOOT.ok.length+' módulos cargados OK.','font-weight:bold;color:#C43D14');
+  if(BOOT.err.length)console.warn('[IP2] Módulos con error (el resto sigue funcionando):\n  · '+BOOT.err.join('\n  · '));
+},0);
+})();
+</script>
+</body>
+</html>
+
